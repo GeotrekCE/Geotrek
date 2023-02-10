@@ -140,6 +140,22 @@ or
    make flake8
 
 
+**isort**
+
+run:
+
+::
+
+   docker-compose run --rm web isort geotrek
+
+
+or
+
+::
+
+   make isort
+
+
 Run tests
 =========
 

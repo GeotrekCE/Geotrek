@@ -6,7 +6,7 @@ Conventions
 -----------
 
 * Before contributing, open an issue and discuss about it with community (is it a bug or a feature ? What is the best way to achieve my goal ?)
-* Use flake8
+* Use flake8 and isort
 * KISS & DRY as much as possible
 * Elegant and generic is good, simple is better
 * Separate bug fixes and new features in several pull requests.

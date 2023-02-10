@@ -13,6 +13,9 @@ deps:
 flake8:
 	docker-compose run --rm web flake8 geotrek
 
+isort:
+	docker-compose run --rm web isort geotrek
+
 messages:
 	docker-compose run --rm web ./manage.py makemessages -a --no-location
 

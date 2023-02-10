@@ -11,7 +11,6 @@ echo "Check dependency graph and fix requirements"
 dockercompose run -T --rm web bash -c "pip-compile -q && pip-compile requirements-dev.in"
 
 
-
 echo "run Flake8..."
 
 dockercompose run -T --rm web flake8 geotrek
@@ -23,3 +22,7 @@ then
 else
   echo "Flake8 check is ok..."
 fi
+
+echo "run isort..."
+
+dockercompose run -T --rm web isort geotrek

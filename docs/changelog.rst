@@ -54,9 +54,10 @@ CHANGELOG
 
 - New contributing guide (docs/CONTRIBUTING.rst).
 - Development dependencies are now split in dedicated file.
-- pip-tools and flake8 are now available in developer environment.
-- Dependency graph is now checked in CI (see docs/contribute/development to how add a new dependency).
-- New git pre-commit hook to check all is alright before commit (see docs/contribute/development).
+- pip-tools and flake8 are now available in developer environment
+- Dependency graph is now checked in CI (see docs/contribute/development to how add a new dependency)
+- New git pre-commit hook to check all is alright before commit (see docs/contribute/development)
+- Add isort quality check
 
 **Warning**
 

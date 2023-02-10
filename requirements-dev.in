@@ -2,6 +2,7 @@
 
 pip-tools
 flake8
+isort
 freezegun
 coverage
 factory_boy
