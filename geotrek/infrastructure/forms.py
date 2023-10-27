@@ -4,7 +4,7 @@ from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from mapentity.widgets import MapWidget
 
-from geotrek.common.forms import CommonForm
+from ..common.mixins.forms import CommonForm
 from geotrek.core.forms import TopologyForm
 
 from .models import Infrastructure

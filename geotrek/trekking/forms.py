@@ -13,7 +13,7 @@ from crispy_forms.layout import Layout, Submit, HTML, Div, Fieldset
 from mapentity.forms import TranslatedModelForm
 from mapentity.widgets import SelectMultipleWithPop, MapWidget
 
-from geotrek.common.forms import CommonForm
+from ..common.mixins.forms import CommonForm
 from geotrek.core.forms import TopologyForm
 from geotrek.core.widgets import LineTopologyWidget, PointTopologyWidget
 from .models import Trek, POI, WebLink, Service, ServiceType, OrderedTrekChild, RatingScale

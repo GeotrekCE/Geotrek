@@ -7,7 +7,7 @@ from crispy_forms.layout import Div, HTML, Fieldset
 
 from .models import (TouristicContent, TouristicEvent, TouristicEventParticipantCount,
                      TouristicEventParticipantCategory)
-from geotrek.common.forms import CommonForm
+from ..common.mixins.forms import CommonForm
 
 
 class TouristicContentForm(CommonForm):

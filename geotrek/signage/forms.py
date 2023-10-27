@@ -10,8 +10,7 @@ from crispy_forms.helper import FormHelper
 
 from mapentity.widgets import MapWidget
 
-
-from geotrek.common.forms import CommonForm
+from geotrek.common.mixins.forms import CommonForm
 from geotrek.core.fields import TopologyField
 from geotrek.core.widgets import PointTopologyWidget
 from geotrek.infrastructure.forms import BaseInfrastructureForm

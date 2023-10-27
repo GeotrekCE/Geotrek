@@ -5,7 +5,7 @@ from django.forms.fields import CharField
 from django.forms.widgets import HiddenInput, Textarea
 from django.utils.translation import gettext as _
 
-from geotrek.common.forms import CommonForm
+from ..common.mixins.forms import CommonForm
 
 from .models import PredefinedEmail, Report, ReportStatus, TimerEvent, WorkflowDistrict, WorkflowManager
 

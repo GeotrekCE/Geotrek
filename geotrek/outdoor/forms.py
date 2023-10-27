@@ -3,7 +3,7 @@ from crispy_forms.layout import Div
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext as _
-from geotrek.common.forms import CommonForm
+from geotrek.common.mixins.forms import CommonForm
 from geotrek.outdoor.models import RatingScale, Site, Course, OrderedCourseChild
 
 

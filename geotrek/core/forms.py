@@ -5,7 +5,7 @@ from django.forms.models import inlineformset_factory
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Div, Fieldset, Layout
 
-from geotrek.common.forms import CommonForm
+from geotrek.common.mixins.forms import CommonForm
 from geotrek.core.widgets import LineTopologyWidget
 from geotrek.core.models import Path, Trail, CertificationTrail
 from geotrek.core.fields import TopologyField, SnappedLineStringField

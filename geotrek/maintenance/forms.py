@@ -8,7 +8,7 @@ from django.forms import FloatField
 from django.forms.models import inlineformset_factory
 from django.utils.translation import gettext_lazy as _
 
-from geotrek.common.forms import CommonForm
+from ..common.mixins.forms import CommonForm
 from geotrek.core.fields import TopologyField
 from geotrek.core.models import Topology
 from geotrek.feedback.models import WorkflowManager

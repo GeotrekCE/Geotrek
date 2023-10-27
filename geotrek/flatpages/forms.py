@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.utils.html import strip_tags
 from django.utils.translation import gettext_lazy as _
-from geotrek.common.forms import CommonForm
+from geotrek.common.mixins.forms import CommonForm
 from geotrek.common.models import Attachment, FileType
 from geotrek.flatpages.models import FlatPage
 if 'modeltranslation' in settings.INSTALLED_APPS:

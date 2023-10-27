@@ -1,5 +1,5 @@
 from .models import Dive
-from geotrek.common.forms import CommonForm
+from ..common.mixins.forms import CommonForm
 
 from crispy_forms.layout import Div
 
