@@ -8,7 +8,7 @@ from mapentity.filters import PolygonFilter, PythonPolygonFilter
 
 from geotrek.altimetry.filters import AltimetryPointFilterSet
 from geotrek.authent.filters import StructureRelatedFilterSet
-from geotrek.common.filters import OptionalRangeFilter, RightFilter
+from geotrek.common.mixins.filters import OptionalRangeFilter, RightFilter
 from geotrek.zoning.filters import (IntersectionFilterCity, IntersectionFilterDistrict,
                                     IntersectionFilterRestrictedArea, IntersectionFilterRestrictedAreaType,
                                     ZoningFilterSet)

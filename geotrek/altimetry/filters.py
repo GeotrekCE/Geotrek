@@ -2,7 +2,7 @@ from django.utils.translation import gettext_lazy as _
 
 from django_filters import FilterSet
 
-from geotrek.common.filters import OptionalRangeFilter
+from geotrek.common.mixins.filters import OptionalRangeFilter
 
 
 class AltimetryPointFilterSet(FilterSet):

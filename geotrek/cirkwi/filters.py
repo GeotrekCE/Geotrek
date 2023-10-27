@@ -1,6 +1,6 @@
 from django_filters import FilterSet
 from geotrek.authent.models import Structure
-from geotrek.common.filters import ComaSeparatedMultipleModelChoiceFilter
+from geotrek.common.mixins.filters import ComaSeparatedMultipleModelChoiceFilter
 from geotrek.common.models import TargetPortal
 from geotrek.trekking.models import POI, Trek
 

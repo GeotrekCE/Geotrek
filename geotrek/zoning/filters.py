@@ -3,7 +3,7 @@ from django.db.models import Q, Exists, OuterRef
 from django.utils.translation import gettext_lazy as _
 
 
-from geotrek.common.filters import RightFilter
+from geotrek.common.mixins.filters import RightFilter
 from geotrek.zoning.models import City, District, RestrictedArea, RestrictedAreaType
 
 

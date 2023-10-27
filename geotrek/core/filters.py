@@ -7,7 +7,7 @@ from .models import Topology, Path, Trail, CertificationLabel, Network, Usage, C
 
 from geotrek.altimetry.filters import AltimetryAllGeometriesFilterSet
 from geotrek.authent.filters import StructureRelatedFilterSet
-from geotrek.common.filters import RightFilter
+from geotrek.common.mixins.filters import RightFilter
 from geotrek.common.functions import GeometryType
 from geotrek.maintenance import models as maintenance_models
 from geotrek.maintenance.filters import InterventionFilterSet, ProjectFilterSet
