@@ -1,3 +1,4 @@
+import logging
 from copy import deepcopy
 
 from django import forms
@@ -11,9 +12,10 @@ from django.utils.translation import gettext_lazy as _
 from mapentity.forms import MapEntityForm
 
 from geotrek.authent.models import StructureRelated, StructureOrNoneRelated, default_structure
-from geotrek.common.forms import logger
 from geotrek.common.mixins.models import NoDeleteMixin, PublishableMixin
 from geotrek.common.utils.translation import get_translated_fields
+
+logger = logging.getLogger(__name__)
 
 
 class FormsetMixin:
