@@ -21,7 +21,7 @@ jobs:
     name: Documentation
     runs-on: ubuntu-latest
     container:
-      image: python:3.8
+      image: python:3.10
       env:
         LANG: C.UTF-8
     steps:

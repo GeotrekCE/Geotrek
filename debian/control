@@ -10,9 +10,9 @@ Build-Depends:
  debhelper (>= 9),
  dh-virtualenv (>= 1.0),
  git,
- python3.8 (>= 3.8),
- python3.8-venv (>= 3.8),
- python3.8-dev (>= 3.8),
+ python3.10 (>= 3.10),
+ python3.10-venv (>= 3.10),
+ python3.10-dev (>= 3.10),
  libgdal-dev (>= 2.2),
  libffi-dev (>= 3),
  libxml2-dev (>= 2.9.2),
@@ -37,6 +37,6 @@ Depends:
  screamshotter (>= 2.0.9),
  screamshotter (<< 3.0.0),
  convertit,
- python3.8 (>= 3.8),
+ python3.10 (>= 3.10),
  libvips
 Description: Manage and promote your trails and tourist content and activities.

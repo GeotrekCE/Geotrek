@@ -36,7 +36,7 @@ setup(
         'mapentity',
         'cairosvg',
         'cairocffi',
-        'env_file',
+        'python-dotenv',
         # pinned by requirements.txt
         'pymemcache',
         'coreschema',

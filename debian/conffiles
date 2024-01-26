@@ -1,4 +1,4 @@
-opt/geotrek-admin/var/conf/env.in
-opt/geotrek-admin/var/conf/nginx.conf.in
-opt/geotrek-admin/var/conf/gunicorn-geotrek.conf.py.in
-opt/geotrek-admin/var/conf/gunicorn-geotrek_api.conf.py.in
+/opt/geotrek-admin/var/conf/env.in
+/opt/geotrek-admin/var/conf/nginx.conf.in
+/opt/geotrek-admin/var/conf/gunicorn-geotrek.conf.py.in
+/opt/geotrek-admin/var/conf/gunicorn-geotrek_api.conf.py.in

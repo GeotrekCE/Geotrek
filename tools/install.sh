@@ -4,10 +4,10 @@
 
 set -e
 
-if lsb_release -d | grep 'Ubuntu 20.04' > /dev/null; then
-	echo "Ubuntu 20.04 found"
+if lsb_release -d | grep 'Ubuntu 20.04' || lsb_release -d | grep 'Ubuntu 22.04' > /dev/null; then
+	echo "Either, Ubuntu 20.04, 22.04 found"
 else
-	echo "ERROR! Ubuntu 20.04 not found."
+	echo "ERROR! Neither Ubuntu 20.04, Ubuntu 22.04 found."
 	exit 1
 fi
 

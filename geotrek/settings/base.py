@@ -1,11 +1,10 @@
-import env_file
 import os
 import sys
 
+from django.conf.global_settings import LANGUAGES as LANGUAGES_LIST
 from django.contrib.gis.geos import fromstr
 from django.contrib.messages import constants as messages
-from django.conf.global_settings import LANGUAGES as LANGUAGES_LIST
-
+from dotenv import load_dotenv
 from easy_thumbnails.conf import Settings as easy_thumbnails_defaults
 
 from geotrek import __version__
@@ -33,7 +32,7 @@ TMP_DIR = os.path.join(VAR_DIR, 'tmp')
 
 DOT_ENV_FILE = os.path.join(VAR_DIR, 'conf/env')
 if os.path.exists(DOT_ENV_FILE):
-    env_file.load(path=DOT_ENV_FILE)
+    load_dotenv(DOT_ENV_FILE)
 
 ALLOWED_HOSTS = os.getenv('SERVER_NAME', 'localhost').split(' ')
 ALLOWED_HOSTS = ['*' if host == '_' else host for host in ALLOWED_HOSTS]

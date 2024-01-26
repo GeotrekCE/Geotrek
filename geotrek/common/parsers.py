@@ -13,7 +13,7 @@ import textwrap
 import xlrd
 import xml.etree.ElementTree as ET
 from functools import reduce
-from collections import Iterable
+from collections.abc import Iterable
 from time import sleep
 from PIL import Image, UnidentifiedImageError
 
