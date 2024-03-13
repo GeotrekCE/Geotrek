@@ -20,7 +20,7 @@ class AdminSiteTest(AuthentFixturesTest):
         response = self.client.get('/admin/trekking/')
         self.assertEqual(response.status_code, 404)
         response = self.client.get('/admin/')
-        self.assertContains(response, 'Core')
+        self.assertContains(response, 'Topology')
         self.assertContains(response, 'Maintenance')
         self.assertContains(response, 'Infrastructure')
         self.assertContains(response, 'Signage')

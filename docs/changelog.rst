@@ -11,6 +11,7 @@ CHANGELOG
 - Tourism : add price to TouristicEvent model - ref #3587
 - Add `check_versions` command to check Geotrek, Python, Django, PostgreSQL and PostGIS versions.
 - Add ``GeotrekCourseParser`` and ``GeotrekSiteParser`` in Aggregator to retrieve Outdoor models (refs #3569)
+- Change `geotrek.core` verbose name to "Topology"
 
 **Bug fixes**
 
