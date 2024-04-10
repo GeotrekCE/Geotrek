@@ -511,10 +511,12 @@ L.Handler.MultiPath = L.Handler.extend({
             fetch(window.SETTINGS.urls['trek_geometry'], {
                 method: 'POST',
                 headers: {
-                    "X-CSRFToken": csrftoken
-                }
-            }).then(response => response.text())
-                .then(data => console.log(data))
+                    "X-CSRFToken": csrftoken, 
+                    content_type: "application/json"
+                },
+                body: JSON.stringify({param: 2})
+            }).then(response => response.json())
+                .then(data => console.log(data.res))
                 .catch(e => {
                     console.log("computePaths", e)
                 })

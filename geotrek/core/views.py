@@ -448,4 +448,6 @@ class TrekGeometry(View):
         return HttpResponse("This is a GET")
 
     def post(self, request):
-        return HttpResponse("This is a POST")
+        import json
+        params = json.loads(request.body.decode())
+        return HttpResponse(json.dumps({'res': 2 * params['param']}))
