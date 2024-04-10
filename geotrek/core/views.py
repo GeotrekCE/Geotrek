@@ -15,6 +15,7 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import gettext as _
 from django.views.decorators.cache import cache_control
 from django.views.decorators.http import last_modified as cache_last_modified
+from django.views import View
 from django.views.generic import TemplateView
 from django.views.generic.detail import BaseDetailView
 from mapentity.serializers import GPXSerializer
@@ -439,3 +440,12 @@ class TrailViewSet(GeotrekMapentityViewSet):
         else:
             qs = qs.defer('geom', 'geom_3d')
         return qs
+
+
+class TrekGeometry(View):
+
+    def get(self, request):
+        return HttpResponse("This is a GET")
+
+    def post(self, request):
+        return HttpResponse("This is a POST")

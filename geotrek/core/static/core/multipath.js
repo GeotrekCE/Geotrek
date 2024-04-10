@@ -486,9 +486,38 @@ L.Handler.MultiPath = L.Handler.extend({
         return -1;
     },
 
+
+    getCookie: function(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    },
+
     computePaths: function() {
         if (this.canCompute()) {
+            console.log('computePaths:', 'graph', this.graph, 'steps', this.steps)
             var computed_paths = Geotrek.shortestPath(this.graph, this.steps);
+            console.log('computed_paths:' , computed_paths)
+            let csrftoken = this.getCookie('csrftoken');
+            fetch(window.SETTINGS.urls['trek_geometry'], {
+                method: 'POST',
+                headers: {
+                    "X-CSRFToken": csrftoken
+                }
+            }).then(response => response.text())
+                .then(data => console.log(data))
+                .catch(e => {
+                    console.log("computePaths", e)
+                })
             this._onComputedPaths(computed_paths);
         }
     },
@@ -756,6 +785,7 @@ L.Handler.MultiPath = L.Handler.extend({
     },
 
     onComputedPaths: function(data) {
+        console.log("onComputedPaths: data = ", data)
         var self = this;
         var topology = Geotrek.TopologyHelper.buildTopologyFromComputedPath(this.idToLayer, data);
 
