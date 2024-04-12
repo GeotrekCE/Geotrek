@@ -9,7 +9,7 @@ from django.contrib.gis.db.models.functions import Transform
 from django.core.cache import caches
 from django.db.models import Sum, Prefetch
 from django.http import HttpResponseRedirect
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.decorators import method_decorator
@@ -25,6 +25,11 @@ from mapentity.views import (MapEntityList, MapEntityDetail, MapEntityDocument, 
 from rest_framework.decorators import action
 from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
 from rest_framework.response import Response
+
+
+import numpy as np
+from scipy.sparse.csgraph import dijkstra
+from scipy.sparse import csr_matrix
 
 from geotrek.authent.decorators import same_structure_required
 from geotrek.common.functions import Length
@@ -445,8 +450,76 @@ class TrailViewSet(GeotrekMapentityViewSet):
 
 class TrekGeometry(View):
 
+    def get_cs_graph(self):
+
+        def get_edge_id_by_nodes(node1, node2):
+            for value in node1[1].values():
+                if value in node2[1].values():
+                    return value
+            return None
+
+        def get_edge_weight(edge_id):
+            edge = self.edges.get(str(edge_id))
+            if edge is None:
+                return None
+            return edge.get('length')
+        
+        array = []
+        for node1 in self.nodes.items():
+            key1, value1 = node1
+            row = []
+            for node2 in self.nodes.items():
+                key2, _ = node2
+                if key1 == key2:
+                    # If it's the same node, the weight is 0
+                    row.append(0)
+                elif key2 in value1.keys():
+                    # If the nodes are linked by a single edge, the weight is
+                    # the edge length
+                    edge_id = get_edge_id_by_nodes(node1, node2)
+                    edge_weight = get_edge_weight(edge_id)
+                    if edge_weight is not None:
+                        row.append(edge_weight)
+                else:
+                    # If the nodes are not directly linked, the weight is 0
+                    row.append(0)
+            array.append(row)
+
+        return np.array(array)
+
+    def get_start_and_end_node_ids(self):
+        # For each step, get its associated edge:
+        step_edges = [self.edges.get(str(x.get('edge_id'))) for x in self.steps]
+
+        # For each of these edges, get its starting and ending node
+        bound_nodes = [(x.get('nodes_id')[0], x.get('nodes_id')[1]) for x in step_edges]
+
+        path_starting_node = bound_nodes[0][0]
+        path_ending_node = bound_nodes[-1][-1]
+        return path_starting_node, path_ending_node
+
     def post(self, request):
-        params = json.loads(request.body.decode())
-        print(params['graph'])
-        print(params['steps'])
-        return HttpResponse(json.dumps(params['graph']))
+        try:
+            params = json.loads(request.body.decode())
+            self.steps = params['steps']
+            graph = params['graph']
+            self.nodes = graph['nodes']
+            self.edges = graph['edges']
+        except:
+            print("TrekGeometry POST: incorrect parameters")
+            # TODO: Bad request
+
+        cs_graph = self.get_cs_graph()
+        matrix = csr_matrix(cs_graph)
+
+        start_node, end_node = self.get_start_and_end_node_ids()
+        print("start_node, end_node", start_node, end_node)
+
+        result = dijkstra(matrix, return_predecessors=True, indices=2,
+                          directed=False)
+        print(result)
+
+        return JsonResponse({
+            'graph': params['graph'],
+            'steps': params['steps'],
+        })

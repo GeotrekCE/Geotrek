@@ -241,6 +241,7 @@ numpy==1.23.4
     # via
     #   large-image
     #   large-image-source-vips
+    #   scipy
     #   shapely
 packaging==24.0
     # via
@@ -321,6 +322,8 @@ ruamel-yaml==0.18.6
     # via drf-yasg
 ruamel-yaml-clib==0.2.7
     # via ruamel-yaml
+scipy==1.10.1
+    # via geotrek (setup.py)
 sentry-sdk==2.5.1
     # via geotrek (setup.py)
 shapely==2.0.4

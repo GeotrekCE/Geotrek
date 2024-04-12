@@ -503,8 +503,13 @@ L.Handler.MultiPath = L.Handler.extend({
     },
 
     computePaths: function() {
+
         if (this.canCompute()) {
-            console.log('computePaths:', 'graph', this.graph, 'steps', this.steps)
+            
+            var computed_paths = Geotrek.shortestPath(this.graph, this.steps);
+            console.log('computed_paths:' , computed_paths)
+            
+            let csrftoken = this.getCookie('csrftoken');
             
             var sent_steps = []
             this.steps.forEach((step) => {
@@ -516,10 +521,7 @@ L.Handler.MultiPath = L.Handler.extend({
                 sent_steps.push(sent_step)
             })
             
-            var computed_paths = Geotrek.shortestPath(this.graph, this.steps);
-            console.log('computed_paths:' , computed_paths)
-
-            let csrftoken = this.getCookie('csrftoken');
+            console.log('computePaths:', 'graph', this.graph, 'steps', sent_steps)
             fetch(window.SETTINGS.urls['trek_geometry'], {
                 method: 'POST',
                 headers: {
