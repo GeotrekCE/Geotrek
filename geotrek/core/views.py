@@ -1,5 +1,6 @@
 import logging
 from collections import defaultdict
+import json
 
 from django.conf import settings
 from django.contrib import messages
@@ -444,10 +445,8 @@ class TrailViewSet(GeotrekMapentityViewSet):
 
 class TrekGeometry(View):
 
-    def get(self, request):
-        return HttpResponse("This is a GET")
-
     def post(self, request):
-        import json
         params = json.loads(request.body.decode())
-        return HttpResponse(json.dumps({'res': 2 * params['param']}))
+        print(params['graph'])
+        print(params['steps'])
+        return HttpResponse(json.dumps(params['graph']))

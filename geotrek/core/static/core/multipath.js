@@ -505,8 +505,20 @@ L.Handler.MultiPath = L.Handler.extend({
     computePaths: function() {
         if (this.canCompute()) {
             console.log('computePaths:', 'graph', this.graph, 'steps', this.steps)
+            
+            var sent_steps = []
+            this.steps.forEach((step) => {
+                var sent_step = {
+                    path_length: step.path_length,
+                    percent_distance: step.percent_distance,
+                    edge_id: step.polyline.properties.id,
+                }
+                sent_steps.push(sent_step)
+            })
+            
             var computed_paths = Geotrek.shortestPath(this.graph, this.steps);
             console.log('computed_paths:' , computed_paths)
+
             let csrftoken = this.getCookie('csrftoken');
             fetch(window.SETTINGS.urls['trek_geometry'], {
                 method: 'POST',
@@ -514,12 +526,17 @@ L.Handler.MultiPath = L.Handler.extend({
                     "X-CSRFToken": csrftoken, 
                     content_type: "application/json"
                 },
-                body: JSON.stringify({param: 2})
-            }).then(response => response.json())
-                .then(data => console.log(data.res))
-                .catch(e => {
-                    console.log("computePaths", e)
+                body: JSON.stringify({
+                    graph: this.graph,
+                    steps: sent_steps,
                 })
+            })
+            .then(response => response.json())
+            .then(data => console.log('response:', data))
+            .catch(e => {
+                console.log("computePaths", e)
+            })
+            
             this._onComputedPaths(computed_paths);
         }
     },
