@@ -521,6 +521,8 @@ L.Handler.MultiPath = L.Handler.extend({
             })
             
             console.log('computePaths:', 'graph', this.graph, 'steps', this.steps)
+            console.log('sent_steps', sent_steps)
+            
             fetch(window.SETTINGS.urls['trek_geometry'], {
                 method: 'POST',
                 headers: {

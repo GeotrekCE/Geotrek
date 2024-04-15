@@ -517,20 +517,19 @@ class TrekGeometry(View):
         print("start_node_id, end_node_id", start_node_id, end_node_id)
 
         # Tuples (index, id) for all nodes -> for interpreting the results
-        self.nodes_idx_per_id = list(enumerate(self.nodes.keys()))
-        print(self.nodes_idx_per_id)
+        self.nodes_ids = list(self.nodes.keys())
+        print('self.nodes_ids', self.nodes_ids)
 
         def get_node_idx_per_id(node_id):
-            for (index, id) in self.nodes_idx_per_id:
-                if node_id == id:
-                    return index
-            return None
+            try:
+                return self.nodes_ids.index(node_id)
+            except ValueError:
+                return None
 
         def get_node_id_per_idx(node_idx):
-            for (index, id) in self.nodes_idx_per_id:
-                if node_idx == index:
-                    return id
-            return None
+            if node_idx >= len(self.nodes_ids):
+                return None
+            return self.nodes_ids[node_idx]
 
         start_node_idx = get_node_idx_per_id(start_node_id)
         end_node_idx = get_node_idx_per_id(end_node_id)
