@@ -507,7 +507,6 @@ L.Handler.MultiPath = L.Handler.extend({
         if (this.canCompute()) {
             
             var computed_paths = Geotrek.shortestPath(this.graph, this.steps);
-            console.log('computed_paths:' , computed_paths)
             
             let csrftoken = this.getCookie('csrftoken');
             
@@ -538,6 +537,14 @@ L.Handler.MultiPath = L.Handler.extend({
             .catch(e => {
                 console.log("computePaths", e)
             })
+
+            var refacto_computed_path = {
+                'from_pop': this.steps[0],
+                'to_pop': this.steps[1],
+                // 'path': {
+                //     'weight':
+                // },
+            }
             
             this._onComputedPaths(computed_paths);
         }
@@ -582,13 +589,14 @@ L.Handler.MultiPath = L.Handler.extend({
     },
 
     _onComputedPaths: function(new_computed_paths) {
-        var self = this;
-        var old_computed_paths = this.computed_paths;
+        // var self = this;
+        // var old_computed_paths = this.computed_paths;
         this.computed_paths = new_computed_paths;
 
         // compute and store all edges of the new paths (usefull for further computation)
         this.all_edges = this._extractAllEdges(new_computed_paths);
 
+        console.log('computed_paths', new_computed_paths, 'new_edges', this.all_edges)
         this.fire('computed_paths', {
             'computed_paths': new_computed_paths,
             'new_edges': this.all_edges,

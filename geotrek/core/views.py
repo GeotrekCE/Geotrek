@@ -553,5 +553,5 @@ class TrekGeometry(View):
         print(path)
 
         return JsonResponse({
-            'path': path,
+            'path': path[::-1],
         })
