@@ -496,7 +496,7 @@ class TrekGeometry(View):
 
         path_starting_node = bound_nodes[0][0]
         path_ending_node = bound_nodes[-1][-1]
-        return path_starting_node, path_ending_node
+        return str(path_starting_node), str(path_ending_node)
 
     def post(self, request):
         try:
@@ -511,15 +511,47 @@ class TrekGeometry(View):
 
         cs_graph = self.get_cs_graph()
         matrix = csr_matrix(cs_graph)
+        print("cs_graph:", cs_graph)
 
-        start_node, end_node = self.get_start_and_end_node_ids()
-        print("start_node, end_node", start_node, end_node)
+        start_node_id, end_node_id = self.get_start_and_end_node_ids()
+        print("start_node_id, end_node_id", start_node_id, end_node_id)
 
-        result = dijkstra(matrix, return_predecessors=True, indices=2,
+        # Tuples (index, id) for all nodes -> for interpreting the results
+        self.nodes_idx_per_id = list(enumerate(self.nodes.keys()))
+        print(self.nodes_idx_per_id)
+
+        def get_node_idx_per_id(node_id):
+            for (index, id) in self.nodes_idx_per_id:
+                if node_id == id:
+                    return index
+            return None
+
+        def get_node_id_per_idx(node_idx):
+            for (index, id) in self.nodes_idx_per_id:
+                if node_idx == index:
+                    return id
+            return None
+
+        start_node_idx = get_node_idx_per_id(start_node_id)
+        end_node_idx = get_node_idx_per_id(end_node_id)
+        result = dijkstra(matrix, return_predecessors=True, indices=start_node_idx,
                           directed=False)
         print(result)
 
+        # Retracing the path index by index, from end to start
+        predecessors = result[1]
+        current_node_id, current_node_idx = end_node_id, end_node_idx
+        path = [current_node_id]
+        while current_node_id != start_node_id:
+            # print("current_node_id", current_node_id, "current_node_idx", current_node_idx)
+            # print('start_node_id', start_node_id)
+            # print(type(current_node_id), type(start_node_id))
+            current_node_idx = predecessors[current_node_idx]
+            current_node_id = get_node_id_per_idx(current_node_idx)
+            path.append(current_node_id)
+
+        print(path)
+
         return JsonResponse({
-            'graph': params['graph'],
-            'steps': params['steps'],
+            'path': path,
         })

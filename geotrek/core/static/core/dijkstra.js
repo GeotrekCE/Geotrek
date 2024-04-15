@@ -17,7 +17,6 @@ Geotrek.Dijkstra = (function() {
                 // Warning - weight is in fact edge.length in our data
                 l.push({'node_id': node_dest_id, 'weight': graph_edges[edge_id].length});
             });
-            console.log("getPairWeightNode", l)
             return l;
         }
 
@@ -193,7 +192,6 @@ Geotrek.shortestPath = (function() {
          *  Returns list of paths, and null if not found.
          */
         var paths = [];
-        console.log('tzhrhtrztszth')
         for (var j = 0; j < steps.length - 1; j++) {
             var path = computeTwoStepsPath(graph, steps[j], steps[j + 1]);
             if (!path)
@@ -219,7 +217,6 @@ Geotrek.shortestPath = (function() {
         //   path : Array of { start: Node_id, end: Node_id, edge: Edge, weight: Int (edge.length) }
         //   weight: Int
         // }
-        console.log("AZERTY")
         var weighted_path = Geotrek.Dijkstra.get_shortest_path_from_graph(graph, from_nodes, to_nodes);
 
         // restore graph
