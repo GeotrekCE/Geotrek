@@ -960,6 +960,7 @@ Geotrek.PointOnPolyline.prototype.addToGraph = function(graph) {
 
     var self = this;
 
+    // Gettings the corresponding edge and its nodes
     var edge = graph.edges[this.polyline.properties.id]
       , first_node_id = edge.nodes_id[0]
       , last_node_id = edge.nodes_id[1];
@@ -971,6 +972,7 @@ Geotrek.PointOnPolyline.prototype.addToGraph = function(graph) {
     ;
 
     var new_node_id = Geotrek.getNextId();
+    console.log('new_node_id', new_node_id)
 
     var edge1 = {'id': Geotrek.getNextId(), 'length': dist_start_point, 'nodes_id': [first_node_id, new_node_id] };
     var edge2 = {'id': Geotrek.getNextId(), 'length': dist_end_point, 'nodes_id': [new_node_id, last_node_id]};
@@ -988,6 +990,9 @@ Geotrek.PointOnPolyline.prototype.addToGraph = function(graph) {
     $.extend(graph.nodes[first_node_id], first_node);
     $.extend(graph.nodes[last_node_id], last_node);
     // </Alter Graph>
+    // console.log('Temp graph.nodes[new_node_id]', graph.nodes[new_node_id])
+    // console.log('Temp graph.nodes', graph.nodes)
+    // console.log('Temp graph', graph)
 
     function rmFromGraph() {
         delete graph.edges[edge1.id];
@@ -997,6 +1002,7 @@ Geotrek.PointOnPolyline.prototype.addToGraph = function(graph) {
         delete graph.nodes[first_node_id][new_node_id];
         delete graph.nodes[last_node_id][new_node_id];
     }
+
 
     return {
         self: self,

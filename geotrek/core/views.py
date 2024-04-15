@@ -498,17 +498,34 @@ class TrekGeometry(View):
         path_ending_node = bound_nodes[-1][-1]
         return str(path_starting_node), str(path_ending_node)
 
-    def post(self, request):
-        try:
-            params = json.loads(request.body.decode())
-            self.steps = params['steps']
-            graph = params['graph']
-            self.nodes = graph['nodes']
-            self.edges = graph['edges']
-        except:
-            print("TrekGeometry POST: incorrect parameters")
-            # TODO: Bad request
+    def compute_list_of_paths(self):
+        list_of_paths = []
+        for i in range(len(self.steps) - 1):
+            from_step = self.steps[i]
+            to_step = self.steps[i + 1]
+            path = self.compute_two_steps_path(from_step, to_step)
+            # TODO:
+            # path['from_pop'] =
+            # path['to_pop'] =
+            list_of_paths.append(path)
+        return list_of_paths
 
+    def compute_two_steps_path(self, from_step, to_step):
+        # Adding the steps to the graph
+        self.add_step_to_graph(from_step)
+        self.add_step_to_graph(to_step)
+
+        # TODO: dijkstra
+        path = self.get_shortest_path()
+
+        # Restoring the graph (removing the steps)
+        # TODO
+        return path
+
+    def add_step_to_graph(self, step):
+        ...
+
+    def get_shortest_path(self):
         cs_graph = self.get_cs_graph()
         matrix = csr_matrix(cs_graph)
         print("cs_graph:", cs_graph)
@@ -549,8 +566,22 @@ class TrekGeometry(View):
             current_node_id = get_node_id_per_idx(current_node_idx)
             path.append(current_node_id)
 
-        print(path)
+        path.reverse()
+        return path
+
+    def post(self, request):
+        try:
+            params = json.loads(request.body.decode())
+            self.steps = params['steps']
+            graph = params['graph']
+            self.nodes = graph['nodes']
+            self.edges = graph['edges']
+        except:
+            print("TrekGeometry POST: incorrect parameters")
+            # TODO: Bad request
+
+        paths = self.compute_list_of_paths()
 
         return JsonResponse({
-            'path': path[::-1],
+            'paths': paths,
         })
