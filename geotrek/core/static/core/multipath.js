@@ -530,7 +530,6 @@ L.Handler.MultiPath = L.Handler.extend({
                     content_type: "application/json"
                 },
                 body: JSON.stringify({
-                    graph: this.graph,
                     steps: sent_steps,
                 })
             })

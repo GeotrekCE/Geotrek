@@ -459,7 +459,7 @@ class TrekGeometry(View):
             return None
 
         def get_edge_weight(edge_id):
-            edge = self.edges.get(str(edge_id))
+            edge = self.edges.get(edge_id)
             if edge is None:
                 return None
             return edge.get('length')
@@ -514,11 +514,11 @@ class TrekGeometry(View):
 
     def add_step_to_graph(self, step):
         # Getting the edge this step is on
-        edge_id = str(step.get('edge_id'))
+        edge_id = step.get('edge_id')
         edge = self.edges[edge_id]
         # Getting its nodes
-        first_node_id = str(edge.get('nodes_id')[0])
-        last_node_id = str(edge.get('nodes_id')[1])
+        first_node_id = edge.get('nodes_id')[0]
+        last_node_id = edge.get('nodes_id')[1]
 
         # Getting the length of the edges that will be created
         path_distance = step.get('path_length')
@@ -565,8 +565,8 @@ class TrekGeometry(View):
         # Getting the 2 nodes of the original edge (the one the step was on)
         original_edge = self.edges[node_info['original_egde_id']]
         nodes_id = original_edge['nodes_id']
-        first_node = self.nodes[str(nodes_id[0])]
-        last_node = self.nodes[str(nodes_id[1])]
+        first_node = self.nodes[nodes_id[0]]
+        last_node = self.nodes[nodes_id[1]]
 
         # Removing the new node from the graph
         removed_node_id = node_info['node_id']
@@ -616,21 +616,22 @@ class TrekGeometry(View):
 
     def generate_id(self):
         self.id_count += 1
-        return str(self.id_count)
+        return self.id_count
 
     def post(self, request):
         try:
             params = json.loads(request.body.decode())
             self.steps = params['steps']
-            graph = params['graph']
-            self.nodes = graph['nodes']
-            self.edges = graph['edges']
         except KeyError:
             print("TrekGeometry POST: incorrect parameters")
             # TODO: Bad request
 
         # To generate IDs for temporary nodes and edges
         self.id_count = 90000000
+
+        graph = graph_lib.graph_edges_nodes_of_qs(Path.objects.exclude(draft=True))
+        self.nodes = graph['nodes']
+        self.edges = graph['edges']
 
         paths = self.compute_list_of_paths()
 
