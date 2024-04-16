@@ -535,20 +535,28 @@ L.Handler.MultiPath = L.Handler.extend({
                 })
             })
             .then(response => response.json())
-            .then(data => console.log('response:', data))
-            .catch(e => {
-                console.log("computePaths", e)
-            })
+            .then(data => {
+                console.log('response:', data)
+                var trek = data.trek
 
-            var refacto_computed_path = {
-                'from_pop': this.steps[0],
-                'to_pop': this.steps[1],
-                // 'path': {
-                //     'weight':
-                // },
-            }
-            
-            this._onComputedPaths(computed_paths);
+                var refacto_computed_path = {
+                    'from_pop': this.steps[0],
+                    'to_pop': this.steps[1],
+                    // 'path': {
+                    //     'weight':
+                    // },
+                }
+
+                var test_computed_path = {
+                    'computed_paths': computed_paths,
+                    'trek': trek,
+                }
+                
+                this._onComputedPaths(test_computed_path);
+            })
+            // .catch(e => {
+            //     console.log("computePaths", e)
+            // })
         }
     },
 
@@ -593,15 +601,16 @@ L.Handler.MultiPath = L.Handler.extend({
     _onComputedPaths: function(new_computed_paths) {
         // var self = this;
         // var old_computed_paths = this.computed_paths;
-        this.computed_paths = new_computed_paths;
+        this.computed_paths = new_computed_paths['computed_paths'];
 
         // compute and store all edges of the new paths (usefull for further computation)
-        this.all_edges = this._extractAllEdges(new_computed_paths);
+        this.all_edges = this._extractAllEdges(new_computed_paths['computed_paths']);
 
-        console.log('computed_paths', new_computed_paths, 'new_edges', this.all_edges)
+        console.log('computed_paths', new_computed_paths['computed_paths'], 'new_edges', this.all_edges)
         this.fire('computed_paths', {
-            'computed_paths': new_computed_paths,
+            'computed_paths': new_computed_paths['computed_paths'],
             'new_edges': this.all_edges,
+            'trek': new_computed_paths['trek'],
             // 'old': old_computed_paths,
             // 'marker_source': this.marker_source,
             // 'marker_dest': this.marker_dest
@@ -749,7 +758,8 @@ L.Handler.MultiPath = L.Handler.extend({
                     }
                 }
             })();
-        this.markPath.updateGeom(layer);
+
+            this.markPath.updateGeom(layer);
     },
 
     getMarkers: function() {
@@ -817,10 +827,15 @@ L.Handler.MultiPath = L.Handler.extend({
 
     onComputedPaths: function(data) {
         console.log("onComputedPaths: data = ", data)
+
         var self = this;
         var topology = Geotrek.TopologyHelper.buildTopologyFromComputedPath(this.idToLayer, data);
 
         this.showPathGeom(topology.layer);
+
+        // Hard-coded polyline
+        L.geoJson(data.trek, {color:"red" }).addTo(self.map);
+   
         this.fire('computed_topology', {topology:topology.serialized});
 
         // ## ONCE ##
