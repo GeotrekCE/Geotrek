@@ -960,7 +960,7 @@ Geotrek.PointOnPolyline.prototype.addToGraph = function(graph) {
 
     var self = this;
 
-    // Gettings the corresponding edge and its nodes
+    // Getting the corresponding edge and its nodes
     var edge = graph.edges[this.polyline.properties.id]
       , first_node_id = edge.nodes_id[0]
       , last_node_id = edge.nodes_id[1];
@@ -990,6 +990,7 @@ Geotrek.PointOnPolyline.prototype.addToGraph = function(graph) {
     $.extend(graph.nodes[first_node_id], first_node);
     $.extend(graph.nodes[last_node_id], last_node);
     // </Alter Graph>
+    
     // console.log('Temp graph.nodes[new_node_id]', graph.nodes[new_node_id])
     // console.log('Temp graph.nodes', graph.nodes)
     // console.log('Temp graph', graph)

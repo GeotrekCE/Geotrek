@@ -463,7 +463,7 @@ class TrekGeometry(View):
             if edge is None:
                 return None
             return edge.get('length')
-        
+
         array = []
         for node1 in self.nodes.items():
             key1, value1 = node1
@@ -487,55 +487,105 @@ class TrekGeometry(View):
 
         return np.array(array)
 
-    def get_start_and_end_node_ids(self):
-        # For each step, get its associated edge:
-        step_edges = [self.edges.get(str(x.get('edge_id'))) for x in self.steps]
-
-        # For each of these edges, get its starting and ending node
-        bound_nodes = [(x.get('nodes_id')[0], x.get('nodes_id')[1]) for x in step_edges]
-
-        path_starting_node = bound_nodes[0][0]
-        path_ending_node = bound_nodes[-1][-1]
-        return str(path_starting_node), str(path_ending_node)
-
     def compute_list_of_paths(self):
         list_of_paths = []
+        # Computing the shortest path for each pair of adjacent steps
         for i in range(len(self.steps) - 1):
             from_step = self.steps[i]
             to_step = self.steps[i + 1]
             path = self.compute_two_steps_path(from_step, to_step)
             # TODO:
-            # path['from_pop'] =
-            # path['to_pop'] =
+            # path['from_pop'] = ...
+            # path['to_pop'] = ...
             list_of_paths.append(path)
         return list_of_paths
 
     def compute_two_steps_path(self, from_step, to_step):
         # Adding the steps to the graph
-        self.add_step_to_graph(from_step)
-        self.add_step_to_graph(to_step)
+        from_node_info = self.add_step_to_graph(from_step)
+        to_node_info = self.add_step_to_graph(to_step)
 
-        # TODO: dijkstra
-        path = self.get_shortest_path()
+        path = self.get_shortest_path(from_node_info['node_id'], to_node_info['node_id'])
 
         # Restoring the graph (removing the steps)
-        # TODO
+        print('before', self.nodes, self.edges)
+        self.remove_step_from_graph(from_node_info)
+        self.remove_step_from_graph(to_node_info)
+        print('after', self.nodes, self.edges)
         return path
 
     def add_step_to_graph(self, step):
-        ...
+        # Getting the edge this step is on
+        edge_id = str(step.get('edge_id'))
+        edge = self.edges[edge_id]
+        # Getting its nodes
+        first_node_id = str(edge.get('nodes_id')[0])
+        last_node_id = str(edge.get('nodes_id')[1])
 
-    def get_shortest_path(self):
+        # Getting the length of the edges that will be created
+        path_distance = step.get('path_length')
+        percent_distance = step.get('percent_distance')
+        dist_to_start = path_distance * percent_distance
+        dist_to_end = path_distance * (1 - percent_distance)
+
+        # Creating the new node and edges
+        new_node_id = self.generate_id()
+        edge1 = {
+            'id': self.generate_id(),
+            'length': dist_to_start,
+            'nodes_id': [first_node_id, new_node_id],
+        }
+        edge2 = {
+            'id': self.generate_id(),
+            'length': dist_to_end,
+            'nodes_id': [new_node_id, last_node_id],
+        }
+        first_node, last_node, new_node = {}, {}, {}
+        first_node[new_node_id] = new_node[first_node_id] = edge1['id']
+        last_node[new_node_id] = new_node[last_node_id] = edge2['id']
+
+        # Adding them to the graph
+        self.edges[edge1['id']] = edge1
+        self.edges[edge2['id']] = edge2
+        self.nodes[new_node_id] = new_node
+        self.extend_dict(self.nodes[first_node_id], first_node)
+        self.extend_dict(self.nodes[last_node_id], last_node)
+
+        # TODO: return a 'new edges' array?
+        return {
+            'node_id': new_node_id,
+            'new_edge1_id': edge1['id'],
+            'new_edge2_id': edge2['id'],
+            'original_egde_id': edge_id,
+        }
+
+    def remove_step_from_graph(self, node_info):
+        # Removing the 2 new edges from the graph
+        del self.edges[node_info['new_edge1_id']]
+        del self.edges[node_info['new_edge2_id']]
+
+        # Getting the 2 nodes of the original edge (the one the step was on)
+        original_edge = self.edges[node_info['original_egde_id']]
+        nodes_id = original_edge['nodes_id']
+        first_node = self.nodes[str(nodes_id[0])]
+        last_node = self.nodes[str(nodes_id[1])]
+
+        # Removing the new node from the graph
+        removed_node_id = node_info['node_id']
+        del self.nodes[removed_node_id]
+        del first_node[removed_node_id]
+        del last_node[removed_node_id]
+
+    def extend_dict(self, dict, source):
+        for key, value in source.items():
+            dict[key] = value
+
+    def get_shortest_path(self, from_node_id, to_node_id):
         cs_graph = self.get_cs_graph()
         matrix = csr_matrix(cs_graph)
-        print("cs_graph:", cs_graph)
-
-        start_node_id, end_node_id = self.get_start_and_end_node_ids()
-        print("start_node_id, end_node_id", start_node_id, end_node_id)
 
         # Tuples (index, id) for all nodes -> for interpreting the results
         self.nodes_ids = list(self.nodes.keys())
-        print('self.nodes_ids', self.nodes_ids)
 
         def get_node_idx_per_id(node_id):
             try:
@@ -548,26 +598,27 @@ class TrekGeometry(View):
                 return None
             return self.nodes_ids[node_idx]
 
-        start_node_idx = get_node_idx_per_id(start_node_id)
-        end_node_idx = get_node_idx_per_id(end_node_id)
-        result = dijkstra(matrix, return_predecessors=True, indices=start_node_idx,
+        from_node_idx = get_node_idx_per_id(from_node_id)
+        to_node_idx = get_node_idx_per_id(to_node_id)
+        result = dijkstra(matrix, return_predecessors=True, indices=from_node_idx,
                           directed=False)
         print(result)
 
         # Retracing the path index by index, from end to start
         predecessors = result[1]
-        current_node_id, current_node_idx = end_node_id, end_node_idx
+        current_node_id, current_node_idx = to_node_id, to_node_idx
         path = [current_node_id]
-        while current_node_id != start_node_id:
-            # print("current_node_id", current_node_id, "current_node_idx", current_node_idx)
-            # print('start_node_id', start_node_id)
-            # print(type(current_node_id), type(start_node_id))
+        while current_node_id != from_node_id:
             current_node_idx = predecessors[current_node_idx]
             current_node_id = get_node_id_per_idx(current_node_idx)
             path.append(current_node_id)
 
         path.reverse()
         return path
+
+    def generate_id(self):
+        self.id_count += 1
+        return str(self.id_count)
 
     def post(self, request):
         try:
@@ -576,9 +627,12 @@ class TrekGeometry(View):
             graph = params['graph']
             self.nodes = graph['nodes']
             self.edges = graph['edges']
-        except:
+        except KeyError:
             print("TrekGeometry POST: incorrect parameters")
             # TODO: Bad request
+
+        # To generate IDs for temporary nodes and edges
+        self.id_count = 90000000
 
         paths = self.compute_list_of_paths()
 
