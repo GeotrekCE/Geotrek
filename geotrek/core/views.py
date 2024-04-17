@@ -627,7 +627,16 @@ class TrekGeometry(View):
         path.reverse()
         return path
     
-    def convert_paths_to_polyline(self, paths_list):
+    def convert_paths_to_geojson(self, paths_list):
+        # TODO:
+        # For each computed path, save its corresponding LineStrings
+        #   (before resetting the graph -> paths must contain LineStrings, not node ids)
+        #   real edge -> edge_id is Path pk
+        #   temp edge -> create a temp LineString
+        # concat the LineStrings:
+        #   create a MultiLineString
+        #   use MultiLineString.merged()
+        # use GEOSGeometry.geojson (LineString.geojson?)
         return []
 
     def generate_id(self):
@@ -652,11 +661,11 @@ class TrekGeometry(View):
 
         paths = self.compute_list_of_paths()
 
-        path_polyline = self.convert_paths_to_polyline(paths)
+        path_geojson = self.convert_paths_to_geojson(paths)
 
         return JsonResponse({
             'paths': paths,
-            'path_polyline': path_polyline,
+            'path_geojson': path_geojson,
             'trek': self.trek,
         })
     
