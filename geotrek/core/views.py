@@ -6,7 +6,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 from django.contrib.gis.db.models.functions import Transform
-from django.contrib.gis.geos import Point
+from django.contrib.gis.geos import Point, LineString, MultiLineString
 from django.core.cache import caches
 from django.db.models import Sum, Prefetch
 from django.http import HttpResponseRedirect
@@ -451,14 +451,8 @@ class TrailViewSet(GeotrekMapentityViewSet):
 
 
 class TrekGeometry(View):
-
+    
     def get_cs_graph(self):
-
-        def get_edge_id_by_nodes(node1, node2):
-            for value in node1[1].values():
-                if value in node2[1].values():
-                    return value
-            return None
 
         def get_edge_weight(edge_id):
             edge = self.edges.get(edge_id)
@@ -478,7 +472,7 @@ class TrekGeometry(View):
                 elif key2 in value1.keys():
                     # If the nodes are linked by a single edge, the weight is
                     # the edge length
-                    edge_id = get_edge_id_by_nodes(node1, node2)
+                    edge_id = self.get_edge_id_by_nodes(node1, node2)
                     edge_weight = get_edge_weight(edge_id)
                     if edge_weight is not None:
                         row.append(edge_weight)
@@ -489,28 +483,55 @@ class TrekGeometry(View):
 
         return np.array(array)
 
+    def get_edge_id_by_nodes(self, node1, node2):
+        for value in node1[1].values():
+            if value in node2[1].values():
+                return value
+        return None
+
     def compute_list_of_paths(self):
-        list_of_paths = []
+        total_line_strings = []
         # Computing the shortest path for each pair of adjacent steps
         for i in range(len(self.steps) - 1):
             from_step = self.steps[i]
             to_step = self.steps[i + 1]
-            path = self.compute_two_steps_path(from_step, to_step)
-            list_of_paths.append(path)
-        return list_of_paths
+            line_strings = self.compute_two_steps_line_strings(from_step, to_step)
+            total_line_strings += line_strings
+        return total_line_strings
 
-    def compute_two_steps_path(self, from_step, to_step):
+    def compute_two_steps_line_strings(self, from_step, to_step):
         # Adding the steps to the graph
         from_node_info = self.add_step_to_graph(from_step)
         to_node_info = self.add_step_to_graph(to_step)
 
-        path = self.get_shortest_path(from_node_info['node_id'],
-                                      to_node_info['node_id'])
+        shortest_path = self.get_shortest_path(from_node_info['node_id'],
+                                               to_node_info['node_id'])
+        line_strings = self.node_list_to_line_strings(shortest_path)
 
         # Restoring the graph (removing the steps)
         self.remove_step_from_graph(from_node_info)
         self.remove_step_from_graph(to_node_info)
-        return path
+        return line_strings
+    
+    def node_list_to_line_strings(self, node_list):
+        print("node_list", node_list)
+        # Getting a LineString for each pair of adjacent nodes in the path
+        for i in range(len(node_list) - 1):
+            # Getting the id of the edge corresponding to these nodes
+            node1 = self.nodes[node_list[i]]
+            node2 = self.nodes[node_list[i + 1]]
+            edge_id = self.get_edge_id_by_nodes(node1, node2)
+
+            # If it's a real edge (i.e. it corresponds to a whole path),
+            # we get its LineString
+            ...  # TODO: edge_id is Path pk
+
+            # If it's an edge created because of a marker, a temporary
+            # LineString is created
+            ...  # TODO: use ST_LineSubstring?
+
+
+
 
     def add_step_to_graph(self, step):
         # Creating a Point corresponding to this step
@@ -613,7 +634,6 @@ class TrekGeometry(View):
         to_node_idx = get_node_idx_per_id(to_node_id)
         result = dijkstra(matrix, return_predecessors=True, indices=from_node_idx,
                           directed=False)
-        print('predecessors', result[1])
 
         # Retracing the path index by index, from end to start
         predecessors = result[1]
@@ -627,17 +647,9 @@ class TrekGeometry(View):
         path.reverse()
         return path
     
-    def convert_paths_to_geojson(self, paths_list):
-        # TODO:
-        # For each computed path, save its corresponding LineStrings
-        #   (before resetting the graph -> paths must contain LineStrings, not node ids)
-        #   real edge -> edge_id is Path pk
-        #   temp edge -> create a temp LineString
-        # concat the LineStrings:
-        #   create a MultiLineString
-        #   use MultiLineString.merged()
-        # use GEOSGeometry.geojson (LineString.geojson?)
-        return []
+    def merge_line_strings(self, line_strings):
+        multi_line_string = MultiLineString(line_strings)
+        return multi_line_string.merged
 
     def generate_id(self):
         new_id = self.id_count
@@ -659,12 +671,14 @@ class TrekGeometry(View):
         self.nodes = graph['nodes']
         self.edges = graph['edges']
 
-        paths = self.compute_list_of_paths()
+        line_strings = self.compute_list_of_paths()
+        merged_line_string = self.merge_line_strings(line_strings)
 
-        path_geojson = self.convert_paths_to_geojson(paths)
+        # TODO: use GEOSGeometry.geojson (LineString?)
+        path_geojson = merged_line_string.geojson
 
         return JsonResponse({
-            'paths': paths,
+            'paths': line_strings,
             'path_geojson': path_geojson,
             'trek': self.trek,
         })
