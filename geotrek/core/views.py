@@ -528,7 +528,7 @@ class TrekGeometry(View):
 
         # Getting the percentage of the Path this Point is on
         base_path_str = "'{}'".format(base_path.geom)
-        point_str = "'{}'".format(point)
+        point_str = "'{}'".format(point.ewkt)
         percent_distance = sqlfunction('SELECT ST_LineLocatePoint',
                                        base_path_str, point_str)[0]
 
@@ -626,6 +626,9 @@ class TrekGeometry(View):
 
         path.reverse()
         return path
+    
+    def convert_paths_to_polyline(self, paths_list):
+        return []
 
     def generate_id(self):
         new_id = self.id_count
@@ -649,8 +652,11 @@ class TrekGeometry(View):
 
         paths = self.compute_list_of_paths()
 
+        path_polyline = self.convert_paths_to_polyline(paths)
+
         return JsonResponse({
             'paths': paths,
+            'path_polyline': path_polyline,
             'trek': self.trek,
         })
     
