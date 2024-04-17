@@ -510,12 +510,21 @@ L.Handler.MultiPath = L.Handler.extend({
             
             let csrftoken = this.getCookie('csrftoken');
             
+            // var sent_steps_old = []
+            // this.steps.forEach((step) => {
+            //     var sent_step = {
+            //         path_length: step.path_length,
+            //         percent_distance: step.percent_distance,
+            //         edge_id: step.polyline.properties.id,
+            //     }
+            //     sent_steps_old.push(sent_step)
+            // })
+            
             var sent_steps = []
             this.steps.forEach((step) => {
                 var sent_step = {
-                    path_length: step.path_length,
-                    percent_distance: step.percent_distance,
-                    edge_id: step.polyline.properties.id,
+                    lat: step.ll.lat,
+                    lng: step.ll.lng,
                 }
                 sent_steps.push(sent_step)
             })

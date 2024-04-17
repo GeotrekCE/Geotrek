@@ -6,6 +6,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 from django.contrib.gis.db.models.functions import Transform
+from django.contrib.gis.geos import Point
 from django.core.cache import caches
 from django.db.models import Sum, Prefetch
 from django.http import HttpResponseRedirect
@@ -33,6 +34,7 @@ from scipy.sparse import csr_matrix
 
 from geotrek.authent.decorators import same_structure_required
 from geotrek.common.functions import Length
+from geotrek.common.utils import sqlfunction
 from geotrek.common.mixins.views import CustomColumnsMixin
 from geotrek.common.mixins.forms import FormsetMixin
 from geotrek.common.permissions import PublicOrReadPermMixin
@@ -494,9 +496,6 @@ class TrekGeometry(View):
             from_step = self.steps[i]
             to_step = self.steps[i + 1]
             path = self.compute_two_steps_path(from_step, to_step)
-            # TODO:
-            # path['from_pop'] = ...
-            # path['to_pop'] = ...
             list_of_paths.append(path)
         return list_of_paths
 
@@ -505,7 +504,8 @@ class TrekGeometry(View):
         from_node_info = self.add_step_to_graph(from_step)
         to_node_info = self.add_step_to_graph(to_step)
 
-        path = self.get_shortest_path(from_node_info['node_id'], to_node_info['node_id'])
+        path = self.get_shortest_path(from_node_info['node_id'],
+                                      to_node_info['node_id'])
 
         # Restoring the graph (removing the steps)
         self.remove_step_from_graph(from_node_info)
@@ -513,18 +513,30 @@ class TrekGeometry(View):
         return path
 
     def add_step_to_graph(self, step):
-        # Getting the edge this step is on
-        edge_id = step.get('edge_id')
+        # Creating a Point corresponding to this step
+        point = Point(step['lng'], step['lat'], srid=settings.API_SRID)
+        point.transform(settings.SRID)
+
+        # Getting the Path (and corresponding graph edge) this Point is on
+        base_path = Path.closest(point)
+        edge_id = base_path.pk
         edge = self.edges[edge_id]
-        # Getting its nodes
+
+        # Getting the edge nodes
         first_node_id = edge.get('nodes_id')[0]
         last_node_id = edge.get('nodes_id')[1]
 
+        # Getting the percentage of the Path this Point is on
+        base_path_str = "'{}'".format(base_path.geom)
+        point_str = "'{}'".format(point)
+        percent_distance = sqlfunction('SELECT ST_LineLocatePoint',
+                                       base_path_str, point_str)[0]
+
+        path_length = base_path.length
+
         # Getting the length of the edges that will be created
-        path_distance = step.get('path_length')
-        percent_distance = step.get('percent_distance')
-        dist_to_start = path_distance * percent_distance
-        dist_to_end = path_distance * (1 - percent_distance)
+        dist_to_start = path_length * percent_distance
+        dist_to_end = path_length * (1 - percent_distance)
 
         # Creating the new node and edges
         new_node_id = self.generate_id()
@@ -550,12 +562,13 @@ class TrekGeometry(View):
         self.extend_dict(self.nodes[last_node_id], last_node)
 
         # TODO: return a 'new edges' array?
-        return {
+        new_node_info = {
             'node_id': new_node_id,
             'new_edge1_id': edge1['id'],
             'new_edge2_id': edge2['id'],
             'original_egde_id': edge_id,
         }
+        return new_node_info
 
     def remove_step_from_graph(self, node_info):
         # Removing the 2 new edges from the graph
@@ -615,8 +628,9 @@ class TrekGeometry(View):
         return path
 
     def generate_id(self):
+        new_id = self.id_count
         self.id_count += 1
-        return self.id_count
+        return new_id
 
     def post(self, request):
         try:
