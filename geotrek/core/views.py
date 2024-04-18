@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import permission_required
 from django.contrib.gis.db.models.functions import Transform
 from django.contrib.gis.geos import Point, LineString, MultiLineString
 from django.core.cache import caches
+from django.db import connection
 from django.db.models import Sum, Prefetch
 from django.http import HttpResponseRedirect
 from django.http.response import HttpResponse, JsonResponse
@@ -461,18 +462,16 @@ class TrekGeometry(View):
             return edge.get('length')
 
         array = []
-        for node1 in self.nodes.items():
-            key1, value1 = node1
+        for key1, value1 in self.nodes.items():
             row = []
-            for node2 in self.nodes.items():
-                key2, _ = node2
+            for key2, value2 in self.nodes.items():
                 if key1 == key2:
                     # If it's the same node, the weight is 0
                     row.append(0)
                 elif key2 in value1.keys():
                     # If the nodes are linked by a single edge, the weight is
                     # the edge length
-                    edge_id = self.get_edge_id_by_nodes(node1, node2)
+                    edge_id = self.get_edge_id_by_nodes(value1, value2)
                     edge_weight = get_edge_weight(edge_id)
                     if edge_weight is not None:
                         row.append(edge_weight)
@@ -484,14 +483,14 @@ class TrekGeometry(View):
         return np.array(array)
 
     def get_edge_id_by_nodes(self, node1, node2):
-        for value in node1[1].values():
-            if value in node2[1].values():
+        for value in node1.values():
+            if value in node2.values():
                 return value
         return None
 
     def compute_list_of_paths(self):
         total_line_strings = []
-        # Computing the shortest path for each pair of adjacent steps
+        # Compute the shortest path for each pair of adjacent steps
         for i in range(len(self.steps) - 1):
             from_step = self.steps[i]
             to_step = self.steps[i + 1]
@@ -500,54 +499,91 @@ class TrekGeometry(View):
         return total_line_strings
 
     def compute_two_steps_line_strings(self, from_step, to_step):
-        # Adding the steps to the graph
+        # Add the steps to the graph
+        # TODO: only add them if the step is a marker?
         from_node_info = self.add_step_to_graph(from_step)
         to_node_info = self.add_step_to_graph(to_step)
 
         shortest_path = self.get_shortest_path(from_node_info['node_id'],
                                                to_node_info['node_id'])
-        line_strings = self.node_list_to_line_strings(shortest_path)
+        line_strings = self.node_list_to_line_strings(shortest_path,
+                                                      from_node_info, to_node_info)
 
-        # Restoring the graph (removing the steps)
+        # Restore the graph (remove the steps)
         self.remove_step_from_graph(from_node_info)
         self.remove_step_from_graph(to_node_info)
         return line_strings
     
-    def node_list_to_line_strings(self, node_list):
-        print("node_list", node_list)
-        # Getting a LineString for each pair of adjacent nodes in the path
+    def node_list_to_line_strings(self, node_list, from_node_info, to_node_info):
+        line_strings = []
+        # Get a LineString for each pair of adjacent nodes in the path
         for i in range(len(node_list) - 1):
-            # Getting the id of the edge corresponding to these nodes
-            node1 = self.nodes[node_list[i]]
-            node2 = self.nodes[node_list[i + 1]]
-            edge_id = self.get_edge_id_by_nodes(node1, node2)
+
+            # If it's the first or last edge of this subpath (it can be both!),
+            # then the edge is temporary (i.e. created because of a step) 
+            if i == 0 or i == len(node_list) - 2:
+                # Start and end percentages of the line substring to be created
+                start_fraction = 0
+                end_fraction = 1
+                if i == 0:
+                    original_path = Path.objects.get(pk=from_node_info['original_egde_id'])
+                    start_fraction = from_node_info['percent_of_edge']
+                if i == len(node_list) - 2:
+                    original_path = Path.objects.get(pk=to_node_info['original_egde_id'])
+                    end_fraction = to_node_info['percent_of_edge']
+
+                line_substring = self.create_line_substring(
+                    original_path.geom,
+                    start_fraction,
+                    end_fraction
+                )
+                line_strings.append(line_substring)
 
             # If it's a real edge (i.e. it corresponds to a whole path),
-            # we get its LineString
-            ...  # TODO: edge_id is Path pk
+            # we use its LineString
+            else:
+                # Get the id of the edge corresponding to these nodes
+                node1 = self.nodes[node_list[i]]
+                node2 = self.nodes[node_list[i + 1]]
+                edge_id = self.get_edge_id_by_nodes(node1, node2)
 
-            # If it's an edge created because of a marker, a temporary
-            # LineString is created
-            ...  # TODO: use ST_LineSubstring?
+                path = Path.objects.get(pk=edge_id)
+                line_strings.append(path.geom)
 
+        return line_strings
+    
+    def create_line_substring(self, geometry, start_fraction, end_fraction):
+        sql = """
+        SELECT ST_AsText(ST_LineSubstring('{}'::geometry, {}, {})) 
+        """.format(geometry, start_fraction, end_fraction)
 
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        result = cursor.fetchone()[0]
 
+        # Convert the string into an array of arrays of floats
+        coords_str = result.split('(')[1].split(')')[0]
+        str_points_array = [elem.split(' ') for elem in coords_str.split(',')]
+        arr = [[float(nb) for nb in sub_array] for sub_array in str_points_array]
+
+        line_substring = LineString(arr, srid=settings.SRID)
+        return line_substring
 
     def add_step_to_graph(self, step):
-        # Creating a Point corresponding to this step
+        # Create a Point corresponding to this step
         point = Point(step['lng'], step['lat'], srid=settings.API_SRID)
         point.transform(settings.SRID)
 
-        # Getting the Path (and corresponding graph edge) this Point is on
+        # Get the Path (and corresponding graph edge) this Point is on
         base_path = Path.closest(point)
         edge_id = base_path.pk
         edge = self.edges[edge_id]
 
-        # Getting the edge nodes
+        # Get the edge nodes
         first_node_id = edge.get('nodes_id')[0]
         last_node_id = edge.get('nodes_id')[1]
 
-        # Getting the percentage of the Path this Point is on
+        # Get the percentage of the Path this Point is on
         base_path_str = "'{}'".format(base_path.geom)
         point_str = "'{}'".format(point.ewkt)
         percent_distance = sqlfunction('SELECT ST_LineLocatePoint',
@@ -555,11 +591,11 @@ class TrekGeometry(View):
 
         path_length = base_path.length
 
-        # Getting the length of the edges that will be created
+        # Get the length of the edges that will be created
         dist_to_start = path_length * percent_distance
         dist_to_end = path_length * (1 - percent_distance)
 
-        # Creating the new node and edges
+        # Create the new node and edges
         new_node_id = self.generate_id()
         edge1 = {
             'id': self.generate_id(),
@@ -575,7 +611,7 @@ class TrekGeometry(View):
         first_node[new_node_id] = new_node[first_node_id] = edge1['id']
         last_node[new_node_id] = new_node[last_node_id] = edge2['id']
 
-        # Adding them to the graph
+        # Add them to the graph
         self.edges[edge1['id']] = edge1
         self.edges[edge2['id']] = edge2
         self.nodes[new_node_id] = new_node
@@ -588,21 +624,22 @@ class TrekGeometry(View):
             'new_edge1_id': edge1['id'],
             'new_edge2_id': edge2['id'],
             'original_egde_id': edge_id,
+            'percent_of_edge': percent_distance,
         }
         return new_node_info
 
     def remove_step_from_graph(self, node_info):
-        # Removing the 2 new edges from the graph
+        # Remove the 2 new edges from the graph
         del self.edges[node_info['new_edge1_id']]
         del self.edges[node_info['new_edge2_id']]
 
-        # Getting the 2 nodes of the original edge (the one the step was on)
+        # Get the 2 nodes of the original edge (the one the step was on)
         original_edge = self.edges[node_info['original_egde_id']]
         nodes_id = original_edge['nodes_id']
         first_node = self.nodes[nodes_id[0]]
         last_node = self.nodes[nodes_id[1]]
 
-        # Removing the new node from the graph
+        # Remove the new node from the graph
         removed_node_id = node_info['node_id']
         del self.nodes[removed_node_id]
         del first_node[removed_node_id]
@@ -616,7 +653,7 @@ class TrekGeometry(View):
         cs_graph = self.get_cs_graph()
         matrix = csr_matrix(cs_graph)
 
-        # Tuples (index, id) for all nodes -> for interpreting the results
+        # List of all nodes indexes -> to interprete dijkstra results
         self.nodes_ids = list(self.nodes.keys())
 
         def get_node_idx_per_id(node_id):
@@ -635,7 +672,7 @@ class TrekGeometry(View):
         result = dijkstra(matrix, return_predecessors=True, indices=from_node_idx,
                           directed=False)
 
-        # Retracing the path index by index, from end to start
+        # Retrace the path index by index, from end to start
         predecessors = result[1]
         current_node_id, current_node_idx = to_node_id, to_node_idx
         path = [current_node_id]
@@ -648,8 +685,18 @@ class TrekGeometry(View):
         return path
     
     def merge_line_strings(self, line_strings):
-        multi_line_string = MultiLineString(line_strings)
+        rounded_line_strings = [
+            self.round_line_string_coordinates(ls) for ls in line_strings
+        ]
+        multi_line_string = MultiLineString(rounded_line_strings, srid=settings.SRID)
         return multi_line_string.merged
+
+    def round_line_string_coordinates(self, line_string):
+        # TODO: see which precision level is best
+        coords = line_string.coords
+        new_coords = [[round(nb, 4) for nb in pt_coord] for pt_coord in coords]
+        new_line_string = LineString(new_coords, srid=line_string.srid)
+        return new_line_string
 
     def generate_id(self):
         new_id = self.id_count
@@ -673,14 +720,17 @@ class TrekGeometry(View):
 
         line_strings = self.compute_list_of_paths()
         merged_line_string = self.merge_line_strings(line_strings)
+        merged_line_string.transform(settings.API_SRID)
 
         # TODO: use GEOSGeometry.geojson (LineString?)
-        path_geojson = merged_line_string.geojson
+        geojson = merged_line_string.geojson
+        print(geojson, type(geojson))
 
         return JsonResponse({
-            'paths': line_strings,
-            'path_geojson': path_geojson,
-            'trek': self.trek,
+            'geojson': {
+                'type': 'LineString',
+                'coordinates': merged_line_string.coords,
+            },
         })
     
     trek = {

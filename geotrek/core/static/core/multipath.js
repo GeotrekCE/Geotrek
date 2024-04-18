@@ -530,7 +530,6 @@ L.Handler.MultiPath = L.Handler.extend({
             })
             
             console.log('computePaths:', 'graph', this.graph, 'steps', this.steps)
-            console.log('sent_steps', sent_steps)
             
             fetch(window.SETTINGS.urls['trek_geometry'], {
                 method: 'POST',
@@ -545,20 +544,21 @@ L.Handler.MultiPath = L.Handler.extend({
             .then(response => response.json())
             .then(data => {
                 console.log('response:', data)
-                var trek = data.trek
 
                 var refacto_computed_path = {
                     'from_pop': this.steps[0],
                     'to_pop': this.steps[1],
-                    // 'path': {
-                    //     'weight':
-                    // },
                 }
 
                 var test_computed_path = {
                     'computed_paths': computed_paths,
-                    'trek': trek,
+                    'geojson': data.geojson,
+                    'trek': data.geojson,
                 }
+
+                console.log("geojson", data.geojson/* , "trek", data.trek */)
+                // var mainmap = window.maps[0]
+                // mainmap.addLayers
                 
                 this._onComputedPaths(test_computed_path);
             })
@@ -614,7 +614,6 @@ L.Handler.MultiPath = L.Handler.extend({
         // compute and store all edges of the new paths (usefull for further computation)
         this.all_edges = this._extractAllEdges(new_computed_paths['computed_paths']);
 
-        console.log('computed_paths', new_computed_paths['computed_paths'], 'new_edges', this.all_edges)
         this.fire('computed_paths', {
             'computed_paths': new_computed_paths['computed_paths'],
             'new_edges': this.all_edges,
@@ -834,15 +833,13 @@ L.Handler.MultiPath = L.Handler.extend({
     },
 
     onComputedPaths: function(data) {
-        console.log("onComputedPaths: data = ", data)
-
         var self = this;
         var topology = Geotrek.TopologyHelper.buildTopologyFromComputedPath(this.idToLayer, data);
 
         this.showPathGeom(topology.layer);
 
         // Hard-coded polyline
-        L.geoJson(data.trek, {color:"red" }).addTo(self.map);
+        L.geoJson(data.trek, {color:"blue", weight: 10}).addTo(self.map);
    
         this.fire('computed_topology', {topology:topology.serialized});
 
@@ -995,8 +992,6 @@ Geotrek.PointOnPolyline.prototype.addToGraph = function(graph) {
     ;
 
     var new_node_id = Geotrek.getNextId();
-    console.log('new_node_id', new_node_id)
-
     var edge1 = {'id': Geotrek.getNextId(), 'length': dist_start_point, 'nodes_id': [first_node_id, new_node_id] };
     var edge2 = {'id': Geotrek.getNextId(), 'length': dist_end_point, 'nodes_id': [new_node_id, last_node_id]};
 
