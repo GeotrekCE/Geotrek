@@ -452,7 +452,7 @@ class TrailViewSet(GeotrekMapentityViewSet):
 
 
 class TrekGeometry(View):
-    
+
     def get_cs_graph(self):
 
         def get_edge_weight(edge_id):
@@ -500,7 +500,6 @@ class TrekGeometry(View):
 
     def compute_two_steps_line_strings(self, from_step, to_step):
         # Add the steps to the graph
-        # TODO: only add them if the step is a marker?
         from_node_info = self.add_step_to_graph(from_step)
         to_node_info = self.add_step_to_graph(to_step)
 
@@ -513,14 +512,14 @@ class TrekGeometry(View):
         self.remove_step_from_graph(from_node_info)
         self.remove_step_from_graph(to_node_info)
         return line_strings
-    
+
     def node_list_to_line_strings(self, node_list, from_node_info, to_node_info):
         line_strings = []
         # Get a LineString for each pair of adjacent nodes in the path
         for i in range(len(node_list) - 1):
 
             # If it's the first or last edge of this subpath (it can be both!),
-            # then the edge is temporary (i.e. created because of a step) 
+            # then the edge is temporary (i.e. created because of a step)
             if i == 0 or i == len(node_list) - 2:
                 # Start and end percentages of the line substring to be created
                 start_fraction = 0
@@ -551,10 +550,10 @@ class TrekGeometry(View):
                 line_strings.append(path.geom)
 
         return line_strings
-    
+
     def create_line_substring(self, geometry, start_fraction, end_fraction):
         sql = """
-        SELECT ST_AsText(ST_LineSubstring('{}'::geometry, {}, {})) 
+        SELECT ST_AsText(ST_LineSubstring('{}'::geometry, {}, {}))
         """.format(geometry, start_fraction, end_fraction)
 
         cursor = connection.cursor()
@@ -653,7 +652,7 @@ class TrekGeometry(View):
         cs_graph = self.get_cs_graph()
         matrix = csr_matrix(cs_graph)
 
-        # List of all nodes indexes -> to interprete dijkstra results
+        # List of all nodes IDs -> to interprete dijkstra results
         self.nodes_ids = list(self.nodes.keys())
 
         def get_node_idx_per_id(node_id):
@@ -672,7 +671,7 @@ class TrekGeometry(View):
         result = dijkstra(matrix, return_predecessors=True, indices=from_node_idx,
                           directed=False)
 
-        # Retrace the path index by index, from end to start
+        # Retrace the path ID by ID, from end to start
         predecessors = result[1]
         current_node_id, current_node_idx = to_node_id, to_node_idx
         path = [current_node_id]
@@ -683,7 +682,7 @@ class TrekGeometry(View):
 
         path.reverse()
         return path
-    
+
     def merge_line_strings(self, line_strings):
         rounded_line_strings = [
             self.round_line_string_coordinates(ls) for ls in line_strings
