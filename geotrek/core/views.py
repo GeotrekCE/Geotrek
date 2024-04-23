@@ -594,7 +594,7 @@ class TrekGeometry(View):
 
     def create_line_substring(self, geometry, start_fraction, end_fraction):
         sql = """
-        SELECT ST_AsText(ST_LineSubstring('{}'::geometry, {}, {}))
+        SELECT ST_AsText(ST_SmartLineSubstring('{}'::geometry, {}, {}))
         """.format(geometry, start_fraction, end_fraction)
 
         cursor = connection.cursor()
@@ -653,8 +653,14 @@ class TrekGeometry(View):
     def split_edge_in_three(self, from_point, to_point):
         # Get the length of the edges that will be created
         path_length = from_point['base_path'].length
-        dist_to_start = path_length * from_point['percent_distance']
-        dist_to_end = path_length * (1 - to_point['percent_distance'])
+        start_percent = from_point['percent_distance']
+        end_percent = to_point['percent_distance']
+
+        # If we're going backwards relative to the Path direction
+        start_percent, end_percent = end_percent, start_percent
+
+        dist_to_start = path_length * start_percent
+        dist_to_end = path_length * (1 - end_percent)
         dist_middle = path_length - dist_to_start - dist_to_end
 
         # Create the new nodes and edges
