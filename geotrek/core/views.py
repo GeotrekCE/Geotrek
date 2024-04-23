@@ -558,13 +558,26 @@ class TrekGeometry(View):
         line_strings = []
         # Get a LineString for each pair of adjacent nodes in the path
         for i in range(len(node_list) - 1):
+            # Get the id of the edge corresponding to these nodes
+            node1 = self.nodes[node_list[i]]
+            node2 = self.nodes[node_list[i + 1]]
+            edge_id = self.get_edge_id_by_nodes(node1, node2)
 
+            # If this pair of nodes requires to go backwards relative to a
+            # Path direction (i.e. the edge 2nd node is the 1st of this pair)
+            backwards = False
+            if self.edges[edge_id]['nodes_id'][1] == node_list[i]:
+                backwards = True
+            
             # If it's the first or last edge of this subpath (it can be both!),
             # then the edge is temporary (i.e. created because of a step)
             if i == 0 or i == len(node_list) - 2:
                 # Start and end percentages of the line substring to be created
                 start_fraction = 0
                 end_fraction = 1
+                if backwards:
+                    start_fraction, end_fraction = end_fraction, start_fraction
+
                 if i == 0:
                     original_path = Path.objects.get(pk=from_node_info['original_egde_id'])
                     start_fraction = from_node_info['percent_of_edge']
@@ -582,11 +595,6 @@ class TrekGeometry(View):
             # If it's a real edge (i.e. it corresponds to a whole path),
             # we use its LineString
             else:
-                # Get the id of the edge corresponding to these nodes
-                node1 = self.nodes[node_list[i]]
-                node2 = self.nodes[node_list[i + 1]]
-                edge_id = self.get_edge_id_by_nodes(node1, node2)
-
                 path = Path.objects.get(pk=edge_id)
                 line_strings.append(path.geom)
 
