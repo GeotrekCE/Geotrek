@@ -498,10 +498,51 @@ class TrekGeometry(View):
             total_line_strings += line_strings
         return total_line_strings
 
+    def add_steps_to_graph(self, from_step, to_step):
+
+        def create_point_from_coords(lat, lng):
+            point = Point(lng, lat, srid=settings.API_SRID)
+            point.transform(settings.SRID)
+            return point
+
+        def fill_point_closest_path_info(point):
+            # Path and edge info
+            point['base_path'] = base_path = Path.closest(point['geom'])
+            point['edge_id'] = edge_id = base_path.pk
+            point['edge'] = edge = self.edges[edge_id]
+
+            # Nodes linked by this edge
+            point['first_node_id'] = edge.get('nodes_id')[0]
+            point['last_node_id'] = edge.get('nodes_id')[1]
+
+            # Percentage of the Path this point is on
+            base_path_str = f"'{base_path.geom}'"
+            point_str = f"'{point['geom'].ewkt}'"
+            percent_distance = sqlfunction('SELECT ST_LineLocatePoint',
+                                           base_path_str, point_str)[0]
+            point['percent_distance'] = percent_distance
+
+        # Create a Point corresponding to each step
+        from_point, to_point = {}, {}
+        from_point['geom'] = create_point_from_coords(from_step['lat'], from_step['lng'])
+        to_point['geom'] = create_point_from_coords(to_step['lat'], to_step['lng'])
+
+        # Get the Path (and corresponding graph edge info) each Point is on
+        fill_point_closest_path_info(from_point)
+        fill_point_closest_path_info(to_point)
+
+        # If the steps are on the same edge, it's divided into 3 new edges
+        if from_point['edge_id'] == to_point['edge_id']:
+            from_node_info, to_node_info = self.split_edge_in_three(from_point,
+                                                                    to_point)
+        # If they are on different edges, both are divided into two new edges
+        else:
+            from_node_info = self.split_edge_in_two(from_point)
+            to_node_info = self.split_edge_in_two(to_point)
+        return (from_node_info, to_node_info)
+
     def compute_two_steps_line_strings(self, from_step, to_step):
-        # Add the steps to the graph
-        from_node_info = self.add_step_to_graph(from_step)
-        to_node_info = self.add_step_to_graph(to_step)
+        from_node_info, to_node_info = self.add_steps_to_graph(from_step, to_step)
 
         shortest_path = self.get_shortest_path(from_node_info['node_id'],
                                                to_node_info['node_id'])
@@ -568,81 +609,130 @@ class TrekGeometry(View):
         line_substring = LineString(arr, srid=settings.SRID)
         return line_substring
 
-    def add_step_to_graph(self, step):
-        # Create a Point corresponding to this step
-        point = Point(step['lng'], step['lat'], srid=settings.API_SRID)
-        point.transform(settings.SRID)
-
-        # Get the Path (and corresponding graph edge) this Point is on
-        base_path = Path.closest(point)
-        edge_id = base_path.pk
-        edge = self.edges[edge_id]
-
-        # Get the edge nodes
-        first_node_id = edge.get('nodes_id')[0]
-        last_node_id = edge.get('nodes_id')[1]
-
-        # Get the percentage of the Path this Point is on
-        base_path_str = "'{}'".format(base_path.geom)
-        point_str = "'{}'".format(point.ewkt)
-        percent_distance = sqlfunction('SELECT ST_LineLocatePoint',
-                                       base_path_str, point_str)[0]
-
-        path_length = base_path.length
+    def split_edge_in_two(self, point_info):
 
         # Get the length of the edges that will be created
-        dist_to_start = path_length * percent_distance
-        dist_to_end = path_length * (1 - percent_distance)
+        path_length = point_info['base_path'].length
+        dist_to_start = path_length * point_info['percent_distance']
+        dist_to_end = path_length * (1 - point_info['percent_distance'])
 
         # Create the new node and edges
         new_node_id = self.generate_id()
         edge1 = {
             'id': self.generate_id(),
             'length': dist_to_start,
-            'nodes_id': [first_node_id, new_node_id],
+            'nodes_id': [point_info['first_node_id'], new_node_id],
         }
         edge2 = {
             'id': self.generate_id(),
             'length': dist_to_end,
-            'nodes_id': [new_node_id, last_node_id],
+            'nodes_id': [new_node_id, point_info['last_node_id']],
         }
         first_node, last_node, new_node = {}, {}, {}
-        first_node[new_node_id] = new_node[first_node_id] = edge1['id']
-        last_node[new_node_id] = new_node[last_node_id] = edge2['id']
+        first_node[new_node_id] = new_node[point_info['first_node_id']] = edge1['id']
+        last_node[new_node_id] = new_node[point_info['last_node_id']] = edge2['id']
 
         # Add them to the graph
         self.edges[edge1['id']] = edge1
         self.edges[edge2['id']] = edge2
         self.nodes[new_node_id] = new_node
-        self.extend_dict(self.nodes[first_node_id], first_node)
-        self.extend_dict(self.nodes[last_node_id], last_node)
+        self.extend_dict(self.nodes[point_info['first_node_id']], first_node)
+        self.extend_dict(self.nodes[point_info['last_node_id']], last_node)
 
-        # TODO: return a 'new edges' array?
         new_node_info = {
             'node_id': new_node_id,
             'new_edge1_id': edge1['id'],
             'new_edge2_id': edge2['id'],
-            'original_egde_id': edge_id,
-            'percent_of_edge': percent_distance,
+            'prev_node_id': point_info['first_node_id'],
+            'next_node_id': point_info['last_node_id'],
+            'original_egde_id': point_info['edge_id'],
+            'percent_of_edge': point_info['percent_distance'],
         }
         return new_node_info
 
-    def remove_step_from_graph(self, node_info):
-        # Remove the 2 new edges from the graph
-        del self.edges[node_info['new_edge1_id']]
-        del self.edges[node_info['new_edge2_id']]
+    def split_edge_in_three(self, from_point, to_point):
+        # Get the length of the edges that will be created
+        path_length = from_point['base_path'].length
+        dist_to_start = path_length * from_point['percent_distance']
+        dist_to_end = path_length * (1 - to_point['percent_distance'])
+        dist_middle = path_length - dist_to_start - dist_to_end
 
-        # Get the 2 nodes of the original edge (the one the step was on)
-        original_edge = self.edges[node_info['original_egde_id']]
-        nodes_id = original_edge['nodes_id']
-        first_node = self.nodes[nodes_id[0]]
-        last_node = self.nodes[nodes_id[1]]
+        # Create the new nodes and edges
+        new_node_id_1 = self.generate_id()
+        new_node_id_2 = self.generate_id()
+        edge1 = {
+            'id': self.generate_id(),
+            'length': dist_to_start,
+            'nodes_id': [from_point['first_node_id'], new_node_id_1],
+        }
+        edge2 = {
+            'id': self.generate_id(),
+            'length': dist_middle,
+            'nodes_id': [new_node_id_1, new_node_id_2],
+        }
+        edge3 = {
+            'id': self.generate_id(),
+            'length': dist_to_end,
+            'nodes_id': [new_node_id_2, from_point['last_node_id']],
+        }
+
+        # Link them together and to the existing nodes
+        first_node, last_node, new_node_1, new_node_2 = {}, {}, {}, {}
+        first_node[new_node_id_1] = new_node_1[from_point['first_node_id']] = edge1['id']
+        new_node_1[new_node_id_2] = new_node_2[new_node_id_1] = edge2['id']
+        new_node_2[from_point['last_node_id']] = last_node[new_node_id_2] = edge3['id']
+
+        # Add them to the graph
+        self.edges[edge1['id']] = edge1
+        self.edges[edge2['id']] = edge2
+        self.edges[edge3['id']] = edge3
+        self.nodes[new_node_id_1] = new_node_1
+        self.nodes[new_node_id_2] = new_node_2
+        self.extend_dict(self.nodes[from_point['first_node_id']], first_node)
+        self.extend_dict(self.nodes[from_point['last_node_id']], last_node)
+
+        new_node_info_1 = {
+            'node_id': new_node_id_1,
+            'new_edge1_id': edge1['id'],
+            'new_edge2_id': edge2['id'],
+            'prev_node_id': from_point['first_node_id'],
+            'next_node_id': new_node_id_2,
+            'original_egde_id': from_point['edge_id'],
+            'percent_of_edge': from_point['percent_distance'],
+        }
+        new_node_info_2 = {
+            'node_id': new_node_id_2,
+            'new_edge1_id': edge2['id'],
+            'prev_node_id': new_node_id_1,
+            'next_node_id': from_point['last_node_id'],
+            'new_edge2_id': edge3['id'],
+            'original_egde_id': from_point['edge_id'],
+            'percent_of_edge': to_point['percent_distance'],
+        }
+        return new_node_info_1, new_node_info_2
+
+    def remove_step_from_graph(self, node_info):
+
+        # Remove the 2 new edges from the graph:
+        # They will have already been deleted if this is the 2nd step and
+        # both steps are on the same path
+        if self.edges.get(node_info['new_edge1_id']) is not None:
+            del self.edges[node_info['new_edge1_id']]
+        if self.edges.get(node_info['new_edge2_id']) is not None:
+            del self.edges[node_info['new_edge2_id']]
+
+        # Get the 2 nodes this temporary node is linked to
+        prev_node = self.nodes.get(node_info['prev_node_id'])
+        next_node = self.nodes.get(node_info['next_node_id'])
 
         # Remove the new node from the graph
         removed_node_id = node_info['node_id']
         del self.nodes[removed_node_id]
-        del first_node[removed_node_id]
-        del last_node[removed_node_id]
+        if prev_node is not None:
+            # It will have already been deleted if this is the 2nd step and
+            # both steps are on the same path
+            del prev_node[removed_node_id]
+        del next_node[removed_node_id]
 
     def extend_dict(self, dict, source):
         for key, value in source.items():
