@@ -533,10 +533,10 @@ L.Handler.MultiPath = L.Handler.extend({
 
                 var test_computed_path = {
                     'computed_paths': computed_paths,
-                    'geojson': data.geojson,
+                    'geojson': data,
                 }
 
-                console.log("geojson", data.geojson/* , "trek", data.trek */)
+                console.log("geojson", data/* , "trek", data.trek */)
                 // var mainmap = window.maps[0]
                 // mainmap.addLayers
                 

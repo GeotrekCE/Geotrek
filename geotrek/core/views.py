@@ -825,13 +825,5 @@ class TrekGeometry(View):
         merged_line_string = self.merge_line_strings(line_strings)
         merged_line_string.transform(settings.API_SRID)
 
-        # TODO: use GEOSGeometry.geojson (LineString?)
-        geojson = merged_line_string.geojson
-        print(geojson, type(geojson))
-
-        return JsonResponse({
-            'geojson': {
-                'type': 'LineString',
-                'coordinates': merged_line_string.coords,
-            },
-        })
+        geojson = json.loads(merged_line_string.geojson)
+        return JsonResponse(geojson)
