@@ -265,70 +265,74 @@ Geotrek.TopologyHelper = (function() {
         //         serialized: null
         //     }
         // }
-        var geojson = data['geojson']
-        var pathLayer = L.geoJson(geojson, {color:"blue", weight: 10})
-
+        
+        //var pathLayer = L.geoJson(geojson, {color:"blue", weight: 10})
+        
         var computed_paths = data['computed_paths']
-          , edges = data['new_edges']
-          , offset = 0.0  // TODO: input for offset
-          , data = []
-          , layer = L.featureGroup();
-          console.log("computed_paths", computed_paths)
+        , edges = data['new_edges']
+        , offset = 0.0  // TODO: input for offset
+        //, data = []
+        console.log("computed_paths", computed_paths)
 
         console.debug('----');
         console.debug('Topology has ' + computed_paths.length + ' sub-topologies.');
-
+        
         // for (var i = 0; i < computed_paths.length; i++ ) {
-        //     var cpath = computed_paths[i],
-        //         paths = $.map(edges[i], function(edge) { return edge.id; }),
-        //         polylines = $.map(edges[i], function(edge) { return idToLayer(edge.id); });
+            //     var cpath = computed_paths[i],
+            //         paths = $.map(edges[i], function(edge) { return edge.id; }),
+            //         polylines = $.map(edges[i], function(edge) { return idToLayer(edge.id); });
+            
+            //     var topo = buildSubTopology(paths,
+            //                                 polylines,
+            //                                 cpath.from_pop.ll,
+            //                                 cpath.to_pop.ll,
+            //                                 offset);
+            //     if (topo === null) break;
+            
+            //     data.push(topo);
+            //     console.debug('subtopo[' + i + '] : ' + JSON.stringify(topo));
+            
+            //     // Geometry for each sub-topology
+            //     var group_layer = buildGeometryFromTopology(topo, idToLayer);
+            //     // group_layer.from_pop = cpath.from_pop;
+            //     // group_layer.to_pop = cpath.to_pop;
+            //     // group_layer.step_idx = i;
+            //     layer.addLayer(group_layer);
+            // }
 
-        //     var topo = buildSubTopology(paths,
-        //                                 polylines,
-        //                                 cpath.from_pop.ll,
-        //                                 cpath.to_pop.ll,
-        //                                 offset);
-        //     if (topo === null) break;
-
-        //     data.push(topo);
-        //     console.debug('subtopo[' + i + '] : ' + JSON.stringify(topo));
-
-        //     // Geometry for each sub-topology
-        //     var group_layer = buildGeometryFromTopology(topo, idToLayer);
-        //     // group_layer.from_pop = cpath.from_pop;
-        //     // group_layer.to_pop = cpath.to_pop;
-        //     // group_layer.step_idx = i;
-        //     layer.addLayer(group_layer);
-        // }
-
-        var latlngs = []
-        for (var i = 0; i < geojson.coordinates.length - 1; i++) {
-            var currentCoords = geojson.coordinates[i]
-            var nextCoords = geojson.coordinates[i + 1]
-            var newCoords = [
-                {
-                    lat: currentCoords[1],
-                    lng: currentCoords[0],
-                },
-                {
-                    lat: nextCoords[1],
-                    lng: nextCoords[0],
-                },
-            ]
-            latlngs.push(newCoords)
+        var geojson = [data.geojson]
+        var layer = L.featureGroup();
+        for (var i = 0; i < geojson.length; i++) {
+            var latlngs = []
+            var lineString = geojson[i]
+            for (var j = 0; j < lineString.coordinates.length - 1; j++) {
+                var currentCoords = lineString.coordinates[j]
+                var nextCoords = lineString.coordinates[j + 1]
+                var newCoords = [
+                    {
+                        lat: currentCoords[1],
+                        lng: currentCoords[0],
+                    },
+                    {
+                        lat: nextCoords[1],
+                        lng: nextCoords[0],
+                    },
+                ]
+                latlngs.push(newCoords)
+            }
+            console.log("latlngs", latlngs)
+            var group_layer = L.multiPolyline(latlngs);
+            group_layer.step_idx = i
+            layer.addLayer(group_layer);
         }
-        console.log("latlngs", latlngs)
 
-        var group_layer = L.multiPolyline(latlngs);
-        group_layer.step_idx = 0
-        layer.addLayer(group_layer);
-
-        console.log(pathLayer)
+        //console.log(pathLayer)
         console.debug('----');
 
         return {
             layer: layer,
-            serialized: data
+            serialized: null
+            //serialized: data
         };
     }
 
