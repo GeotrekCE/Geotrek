@@ -335,7 +335,7 @@ L.Handler.MultiPath = L.Handler.extend({
 
         // reset state
         this.steps = [];
-        this.computed_paths = [];
+        //this.computed_paths = [];
         this.all_edges = [];
 
         this.marker_source = this.marker_dest = null;
@@ -508,18 +508,6 @@ L.Handler.MultiPath = L.Handler.extend({
             
             var computed_paths = Geotrek.shortestPath(this.graph, this.steps);
             
-            let csrftoken = this.getCookie('csrftoken');
-            
-            // var sent_steps_old = []
-            // this.steps.forEach((step) => {
-            //     var sent_step = {
-            //         path_length: step.path_length,
-            //         percent_distance: step.percent_distance,
-            //         edge_id: step.polyline.properties.id,
-            //     }
-            //     sent_steps_old.push(sent_step)
-            // })
-            
             var sent_steps = []
             this.steps.forEach((step) => {
                 var sent_step = {
@@ -529,12 +517,10 @@ L.Handler.MultiPath = L.Handler.extend({
                 sent_steps.push(sent_step)
             })
             
-            console.log('computePaths:', 'graph', this.graph, 'steps', this.steps)
-            
             fetch(window.SETTINGS.urls['trek_geometry'], {
                 method: 'POST',
                 headers: {
-                    "X-CSRFToken": csrftoken, 
+                    "X-CSRFToken": this.getCookie('csrftoken'), 
                     content_type: "application/json"
                 },
                 body: JSON.stringify({
@@ -545,15 +531,9 @@ L.Handler.MultiPath = L.Handler.extend({
             .then(data => {
                 console.log('response:', data)
 
-                var refacto_computed_path = {
-                    'from_pop': this.steps[0],
-                    'to_pop': this.steps[1],
-                }
-
                 var test_computed_path = {
                     'computed_paths': computed_paths,
                     'geojson': data.geojson,
-                    'trek': data.geojson,
                 }
 
                 console.log("geojson", data.geojson/* , "trek", data.trek */)
@@ -609,7 +589,7 @@ L.Handler.MultiPath = L.Handler.extend({
     _onComputedPaths: function(new_computed_paths) {
         // var self = this;
         // var old_computed_paths = this.computed_paths;
-        this.computed_paths = new_computed_paths['computed_paths'];
+        //this.computed_paths = new_computed_paths['computed_paths'];
 
         // compute and store all edges of the new paths (usefull for further computation)
         this.all_edges = this._extractAllEdges(new_computed_paths['computed_paths']);
@@ -617,7 +597,7 @@ L.Handler.MultiPath = L.Handler.extend({
         this.fire('computed_paths', {
             'computed_paths': new_computed_paths['computed_paths'],
             'new_edges': this.all_edges,
-            'trek': new_computed_paths['trek'],
+            'geojson': new_computed_paths['geojson'],
             // 'old': old_computed_paths,
             // 'marker_source': this.marker_source,
             // 'marker_dest': this.marker_dest
@@ -839,7 +819,7 @@ L.Handler.MultiPath = L.Handler.extend({
         this.showPathGeom(topology.layer);
 
         // Hard-coded polyline
-        L.geoJson(data.trek, {color:"blue", weight: 10}).addTo(self.map);
+        //L.geoJson(data.geojson, {color:"blue", weight: 10}).addTo(self.map);
    
         this.fire('computed_topology', {topology:topology.serialized});
 
