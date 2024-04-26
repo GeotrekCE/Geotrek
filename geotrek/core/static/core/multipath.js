@@ -281,9 +281,8 @@ L.Handler.MultiPath = L.Handler.extend({
             init();
         })();
 
-        this.on('computed_paths', this.onComputedPaths, this);
+        this.on('fetched_route', this.onFetchedRoute, this);
     },
-
 
     setState: function(state, autocompute) {
         autocompute = autocompute === undefined ? true : autocompute;
@@ -322,8 +321,6 @@ L.Handler.MultiPath = L.Handler.extend({
 
         // reset state
         this.steps = [];
-        //this.computed_paths = [];
-        this.all_edges = [];
 
         this.marker_source = this.marker_dest = null;
     },
@@ -413,7 +410,7 @@ L.Handler.MultiPath = L.Handler.extend({
         this.steps.splice(idx, 0, pop);  // Insert pop at position idx
 
         pop.events.on('valid', function() {
-            self.computePaths();
+            self.fetchRoute();
         });
 
         return pop;
@@ -434,7 +431,7 @@ L.Handler.MultiPath = L.Handler.extend({
         function removeViaStep() {
             self.steps.splice(self.getStepIdx(pop), 1);
             self.map.removeLayer(marker);
-            self.computePaths();
+            self.fetchRoute();
         }
 
         function removeOnClick() { marker.on('click', removeViaStep); }
@@ -446,7 +443,7 @@ L.Handler.MultiPath = L.Handler.extend({
         pop.toggleActivate();
     },
 
-    canCompute: function() {
+    canFetchRoute: function() {
         if (this.steps.length < 2)
             return false;
 
@@ -486,9 +483,9 @@ L.Handler.MultiPath = L.Handler.extend({
         return cookieValue;
     },
 
-    computePaths: function() {
+    fetchRoute: function() {
 
-        if (this.canCompute()) {
+        if (this.canFetchRoute()) {
             
             var sent_steps = []
             this.steps.forEach((step) => {
@@ -512,68 +509,13 @@ L.Handler.MultiPath = L.Handler.extend({
             .then(response => response.json())
             .then(data => {
                 console.log('response:', data)
-
-                var test_computed_path = {
-                    'computed_paths': null,
-                    'geojson': data,
-                }
-
-                console.log("geojson", data/* , "trek", data.trek */)
-                // var mainmap = window.maps[0]
-                // mainmap.addLayers
-                
-                this._onComputedPaths(test_computed_path);
+                var route = {'geojson': data}
+                this.fire('fetched_route', route);
             })
             // .catch(e => {
-            //     console.log("computePaths", e)
+            //     console.log("fetchRoute", e)
             // })
         }
-    },
-
-
-    // Extract the complete edges list from the first to the last one
-    _eachInnerComputedPathsEdges: function(computed_paths, f) {
-        if (computed_paths) {
-            computed_paths.forEach(function(cpath) {
-                cpath.path.forEach(function(path_component) {
-                    f(path_component.edge);
-                });
-            });
-        }
-    },
-
-    // Extract the complete edges list from the first to the last one
-    _extractAllEdges: function(computed_paths) {
-        if (! computed_paths)
-            return [];
-
-        var edges = $.map(computed_paths, function(cpath) {
-
-            var dups = $.map(cpath.path, function(path_component) {
-                return path_component.real_edge || path_component.edge;
-            });
-
-            // Remove adjacent duplicates
-            var dedup = [];
-            for (var i=0; i<dups.length; i++) {
-                var e = dups[i];
-                if (i === 0)
-                    dedup.push(e);
-                else if (dups[i-1].id != e.id)
-                    dedup.push(e);
-            }
-            return [dedup];
-        });
-
-        return edges;
-    },
-
-    _onComputedPaths: function(new_computed_paths) {
-
-        this.fire('computed_paths', {
-            'geojson': new_computed_paths['geojson'],
-
-        });
     },
 
     restoreTopology: function (topo) {
@@ -784,9 +726,24 @@ L.Handler.MultiPath = L.Handler.extend({
         return markersFactory;
     },
 
-    onComputedPaths: function(data) {
+    buildRouteLayers: function(route) {
+        var layer = L.featureGroup();
+        route.geojson.geometries.forEach((geom, i) => {
+            var sub_layer = L.geoJson(geom);
+            sub_layer.step_idx = i
+            layer.addLayer(sub_layer);
+        })
+
+        return {
+            layer: layer,
+            serialized: null
+            // TODO serialized: data
+        };
+    },
+
+    onFetchedRoute: function(data) {
         var self = this;
-        var topology = Geotrek.TopologyHelper.buildTopologyFromComputedPath(this.idToLayer, data);
+        var topology = this.buildRouteLayers(data);
         this.showPathGeom(topology.layer);
         this.fire('computed_topology', {topology:topology.serialized});
 
