@@ -6,7 +6,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 from django.contrib.gis.db.models.functions import Transform
-from django.contrib.gis.geos import Point, LineString, MultiLineString
+from django.contrib.gis.geos import Point, LineString, MultiLineString, GeometryCollection
 from django.core.cache import caches
 from django.db import connection
 from django.db.models import Sum, Prefetch
@@ -824,18 +824,15 @@ class TrekGeometry(View):
 
         line_strings = self.compute_list_of_paths()
 
-        # merged_line_string = self.merge_line_strings(line_strings)
-        # merged_line_string.transform(settings.API_SRID)
-        # geojson = json.loads(merged_line_string.geojson)
+        multi_line_string = GeometryCollection(line_strings, srid=settings.SRID)
+        multi_line_string.transform(settings.API_SRID)
+        geojson = json.loads(multi_line_string.geojson)
+        return JsonResponse(geojson)
 
-        # multi_line_string = MultiLineString(line_strings, srid=settings.SRID)
-        # multi_line_string.transform(settings.API_SRID)
-        # geojson = json.loads(multi_line_string.geojson)
+        # geojsons = []
+        # for ls in line_strings:
+        #     ls.transform(settings.API_SRID)
+        #     geojson = json.loads(ls.geojson)
+        #     geojsons.append(geojson)
 
-        geojsons = []
-        for ls in line_strings:
-            ls.transform(settings.API_SRID)
-            geojson = json.loads(ls.geojson)
-            geojsons.append(geojson)
-
-        return JsonResponse(geojsons, safe=False)
+        # return JsonResponse(geojsons, safe=False)
