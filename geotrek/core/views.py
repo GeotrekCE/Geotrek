@@ -828,11 +828,3 @@ class TrekGeometry(View):
         multi_line_string.transform(settings.API_SRID)
         geojson = json.loads(multi_line_string.geojson)
         return JsonResponse(geojson)
-
-        # geojsons = []
-        # for ls in line_strings:
-        #     ls.transform(settings.API_SRID)
-        #     geojson = json.loads(ls.geojson)
-        #     geojsons.append(geojson)
-
-        # return JsonResponse(geojsons, safe=False)

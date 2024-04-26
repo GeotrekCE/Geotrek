@@ -260,50 +260,18 @@ Geotrek.TopologyHelper = (function() {
      */
     function buildTopologyFromComputedPath(idToLayer, data) {
 
-        // var geojson = data.geojson
-        // var layer = L.featureGroup();
-        // for (var i = 0; i < geojson.length; i++) {
-        //     var latlngs = []
-        //     var lineString = geojson[i]
-        //     for (var j = 0; j < lineString.coordinates.length - 1; j++) {
-        //         var currentCoords = lineString.coordinates[j]
-        //         var nextCoords = lineString.coordinates[j + 1]
-        //         var newCoords = [
-        //             {
-        //                 lat: currentCoords[1],
-        //                 lng: currentCoords[0],
-        //             },
-        //             {
-        //                 lat: nextCoords[1],
-        //                 lng: nextCoords[0],
-        //             },
-        //         ]
-        //         latlngs.push(newCoords)
-        //     }
-        //     var group_layer = L.multiPolyline(latlngs);
-        //     group_layer.step_idx = i
-        //     layer.addLayer(group_layer);
-        // }
-        // console.log("layer", layer)
-
-        var layer_test = L.geoJson(data.geojson)
-        for (var i = 0; i < layer_test.__layerArray.length; i++) {
-            l = layer_test.__layerArray[i]
-            l.step_idx = i
-        }
-        console.log("layer_test", layer_test)
+        var layer = L.featureGroup();
+        data.geojson.geometries.forEach((geom, i) => {
+            var sub_layer = L.geoJson(geom);
+            sub_layer.step_idx = i
+            layer.addLayer(sub_layer);
+        })
 
         return {
-            layer: layer_test,
+            layer: layer,
             serialized: null
-            //serialized: data
+            // serialized: data
         };
-
-        // return {
-        //     layer: layer,
-        //     serialized: null
-        //     // serialized: data
-        // };
     }
 
     return {
