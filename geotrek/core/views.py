@@ -489,14 +489,15 @@ class TrekGeometry(View):
         return None
 
     def compute_list_of_paths(self):
-        total_line_strings = []
+        all_line_strings = []
         # Compute the shortest path for each pair of adjacent steps
         for i in range(len(self.steps) - 1):
             from_step = self.steps[i]
             to_step = self.steps[i + 1]
             line_strings = self.compute_two_steps_line_strings(from_step, to_step)
-            total_line_strings += line_strings
-        return total_line_strings
+            merged_line_string = self.merge_line_strings(line_strings)
+            all_line_strings.append(merged_line_string)
+        return all_line_strings
 
     def add_steps_to_graph(self, from_step, to_step):
 
@@ -568,7 +569,7 @@ class TrekGeometry(View):
             backwards = False
             if self.edges[edge_id]['nodes_id'][1] == node_list[i]:
                 backwards = True
-            
+
             # If it's the first or last edge of this subpath (it can be both!),
             # then the edge is temporary (i.e. created because of a step)
             if i == 0 or i == len(node_list) - 2:
@@ -822,8 +823,19 @@ class TrekGeometry(View):
         self.edges = graph['edges']
 
         line_strings = self.compute_list_of_paths()
-        merged_line_string = self.merge_line_strings(line_strings)
-        merged_line_string.transform(settings.API_SRID)
 
-        geojson = json.loads(merged_line_string.geojson)
-        return JsonResponse(geojson)
+        # merged_line_string = self.merge_line_strings(line_strings)
+        # merged_line_string.transform(settings.API_SRID)
+        # geojson = json.loads(merged_line_string.geojson)
+
+        # multi_line_string = MultiLineString(line_strings, srid=settings.SRID)
+        # multi_line_string.transform(settings.API_SRID)
+        # geojson = json.loads(multi_line_string.geojson)
+
+        geojsons = []
+        for ls in line_strings:
+            ls.transform(settings.API_SRID)
+            geojson = json.loads(ls.geojson)
+            geojsons.append(geojson)
+
+        return JsonResponse(geojsons, safe=False)

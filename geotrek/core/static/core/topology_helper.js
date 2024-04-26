@@ -300,7 +300,7 @@ Geotrek.TopologyHelper = (function() {
             //     layer.addLayer(group_layer);
             // }
 
-        var geojson = [data.geojson]
+        var geojson = data.geojson
         var layer = L.featureGroup();
         for (var i = 0; i < geojson.length; i++) {
             var latlngs = []
