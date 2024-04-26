@@ -173,14 +173,6 @@ L.Control.LineTopology = L.Control.extend({
         this.handler = new L.Handler.MultiPath(map, guidesLayer, options);
     },
 
-    setGraph: function (graph) {
-        /**
-         * Set the Dikjstra graph
-         */
-        this.handler.setGraph(graph);
-        this.activable(true);
-    },
-
     onAdd: function (map) {
         this._container = L.DomUtil.create('div', 'leaflet-draw leaflet-control leaflet-bar leaflet-control-zoom');
         var link = L.DomUtil.create('a', 'leaflet-control-zoom-out linetopology-control', this._container);
@@ -191,7 +183,7 @@ L.Control.LineTopology = L.Control.extend({
                   .addListener(link, 'click', L.DomEvent.preventDefault)
                   .addListener(link, 'click', this.toggle, this);
 
-        // Control is not activable until paths and graph are loaded
+        // Control is not activable until paths are loaded
         this.activable(false);
 
         return this._container;
@@ -241,8 +233,6 @@ L.Handler.MultiPath = L.Handler.extend({
         this._container = map._container;
         this._guidesLayer = guidesLayer;
         this.options = options;
-
-        this.graph = null;
 
         // markers
         this.markersFactory = this.getMarkers();
@@ -294,9 +284,6 @@ L.Handler.MultiPath = L.Handler.extend({
         this.on('computed_paths', this.onComputedPaths, this);
     },
 
-    setGraph: function (graph) {
-        this.graph = graph;
-    },
 
     setState: function(state, autocompute) {
         autocompute = autocompute === undefined ? true : autocompute;
@@ -460,9 +447,6 @@ L.Handler.MultiPath = L.Handler.extend({
     },
 
     canCompute: function() {
-        if (!this.graph)
-            return false;
-
         if (this.steps.length < 2)
             return false;
 
@@ -506,8 +490,6 @@ L.Handler.MultiPath = L.Handler.extend({
 
         if (this.canCompute()) {
             
-            var computed_paths = Geotrek.shortestPath(this.graph, this.steps);
-            
             var sent_steps = []
             this.steps.forEach((step) => {
                 var sent_step = {
@@ -532,7 +514,7 @@ L.Handler.MultiPath = L.Handler.extend({
                 console.log('response:', data)
 
                 var test_computed_path = {
-                    'computed_paths': computed_paths,
+                    'computed_paths': null,
                     'geojson': data,
                 }
 
@@ -587,20 +569,10 @@ L.Handler.MultiPath = L.Handler.extend({
     },
 
     _onComputedPaths: function(new_computed_paths) {
-        // var self = this;
-        // var old_computed_paths = this.computed_paths;
-        //this.computed_paths = new_computed_paths['computed_paths'];
-
-        // compute and store all edges of the new paths (usefull for further computation)
-        this.all_edges = this._extractAllEdges(new_computed_paths['computed_paths']);
 
         this.fire('computed_paths', {
-            'computed_paths': new_computed_paths['computed_paths'],
-            'new_edges': this.all_edges,
             'geojson': new_computed_paths['geojson'],
-            // 'old': old_computed_paths,
-            // 'marker_source': this.marker_source,
-            // 'marker_dest': this.marker_dest
+
         });
     },
 
@@ -815,12 +787,7 @@ L.Handler.MultiPath = L.Handler.extend({
     onComputedPaths: function(data) {
         var self = this;
         var topology = Geotrek.TopologyHelper.buildTopologyFromComputedPath(this.idToLayer, data);
-
         this.showPathGeom(topology.layer);
-
-        // Hard-coded polyline
-        //L.geoJson(data.geojson, {color:"blue", weight: 10}).addTo(self.map);
-   
         this.fire('computed_topology', {topology:topology.serialized});
 
         // ## ONCE ##
@@ -839,7 +806,6 @@ L.Handler.MultiPath = L.Handler.extend({
             }
 
             dragTimer = date;
-
 
             for (var i = 0; i < self.steps.length; i++) {
                 // Compare point rather than ll
@@ -951,66 +917,3 @@ Geotrek.PointOnPolyline.prototype.toggleActivate = function(activate) {
 Geotrek.PointOnPolyline.prototype.isValid = function(graph) {
     return (this.ll && this.polyline);
 };
-
-// Alter the graph: adding two edges and one node (the polyline gets break in two parts by the point)
-// The polyline MUST be an edge of the graph.
-Geotrek.PointOnPolyline.prototype.addToGraph = function(graph) {
-    if (! this.isValid())
-        return null;
-
-    var self = this;
-
-    // Getting the corresponding edge and its nodes
-    var edge = graph.edges[this.polyline.properties.id]
-      , first_node_id = edge.nodes_id[0]
-      , last_node_id = edge.nodes_id[1];
-
-    // To which nodes dist start_point/end_point corresponds ?
-    // The edge.nodes_id are ordered, it corresponds to polylines: coords[0] and coords[coords.length - 1]
-    var dist_start_point = this.percent_distance * this.path_length
-      , dist_end_point = (1 - this.percent_distance) * this.path_length
-    ;
-
-    var new_node_id = Geotrek.getNextId();
-    var edge1 = {'id': Geotrek.getNextId(), 'length': dist_start_point, 'nodes_id': [first_node_id, new_node_id] };
-    var edge2 = {'id': Geotrek.getNextId(), 'length': dist_end_point, 'nodes_id': [new_node_id, last_node_id]};
-
-    var first_node = {}, last_node = {}, new_node = {};
-    first_node[new_node_id] = new_node[first_node_id] = edge1.id;
-    last_node[new_node_id] = new_node[last_node_id] = edge2.id;
-
-    // <Alter Graph>
-    var new_edges = {};
-    new_edges[edge1.id] = graph.edges[edge1.id] = edge1;
-    new_edges[edge2.id] = graph.edges[edge2.id] = edge2;
-
-    graph.nodes[new_node_id] = new_node;
-    $.extend(graph.nodes[first_node_id], first_node);
-    $.extend(graph.nodes[last_node_id], last_node);
-    // </Alter Graph>
-    
-    // console.log('Temp graph.nodes[new_node_id]', graph.nodes[new_node_id])
-    // console.log('Temp graph.nodes', graph.nodes)
-    // console.log('Temp graph', graph)
-
-    function rmFromGraph() {
-        delete graph.edges[edge1.id];
-        delete graph.edges[edge2.id];
-
-        delete graph.nodes[new_node_id];
-        delete graph.nodes[first_node_id][new_node_id];
-        delete graph.nodes[last_node_id][new_node_id];
-    }
-
-
-    return {
-        self: self,
-        new_node_id: new_node_id,
-        new_edges: new_edges,
-        dist_start_point: dist_start_point,
-        dist_end_point: dist_end_point,
-        initial_edge: edge,
-        rmFromGraph: rmFromGraph
-    };
-};
-

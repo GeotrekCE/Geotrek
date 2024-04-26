@@ -123,27 +123,6 @@ MapEntity.GeometryField.TopologyField = MapEntity.GeometryField.extend({
             this.load();
             return;
         }
-
-        // Path layer is ready, load graph !
-        this._pathsLayer.fire('data:loading');
-        var url = window.SETTINGS.urls.path_graph;
-        $.getJSON(url, this._onGraphLoaded.bind(this))
-         .error(graphError.bind(this));
-
-        function graphError(jqXHR, textStatus, errorThrown) {
-            this._pathsLayer.fire('data:loaded');
-            $(this._map._container).addClass('map-error');
-            console.error("Could not load url '" + window.SETTINGS.urls.path_graph + "': " + textStatus);
-            console.error(errorThrown);
-        }
-    },
-
-    _onGraphLoaded: function (graph) {
-        // Load graph
-        this._lineControl.setGraph(graph);
-        this.load();
-        // Stop spinning !
-        this._pathsLayer.fire('data:loaded');
     },
 
     load: function () {
