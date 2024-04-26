@@ -244,7 +244,6 @@ L.Handler.MultiPath = L.Handler.extend({
             return guidesLayer.getLayer(id);
         };
 
-
         /*
          * Draggable via steps
          *
@@ -258,7 +257,6 @@ L.Handler.MultiPath = L.Handler.extend({
         }, this);
 
         // Draggable marker initialisation and step creation
-        var draggable_marker = null;
         var self = this;
         (function() {
             function dragstart(e) {
@@ -737,7 +735,7 @@ L.Handler.MultiPath = L.Handler.extend({
         return {
             layer: layer,
             serialized: null
-            // TODO serialized: data
+            // TODO: set serialized to something
         };
     },
 
@@ -808,14 +806,6 @@ L.Handler.MultiPath = L.Handler.extend({
     }
 
 });
-
-
-Geotrek.getNextId = (function() {
-    var next_id = 90000000;
-    return function() {
-        return next_id++;
-    };
-})();
 
 // pol: point on polyline
 Geotrek.PointOnPolyline = function (marker) {
