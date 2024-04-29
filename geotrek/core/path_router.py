@@ -207,8 +207,8 @@ class PathRouter:
         self.edges[edge1['id']] = edge1
         self.edges[edge2['id']] = edge2
         self.nodes[new_node_id] = new_node
-        self.extend_dict(self.nodes[point_info['first_node_id']], first_node)
-        self.extend_dict(self.nodes[point_info['last_node_id']], last_node)
+        self.nodes[point_info['first_node_id']].update(first_node)
+        self.nodes[point_info['last_node_id']].update(last_node)
 
         new_node_info = {
             'node_id': new_node_id,
@@ -265,8 +265,8 @@ class PathRouter:
         self.edges[edge3['id']] = edge3
         self.nodes[new_node_id_1] = new_node_1
         self.nodes[new_node_id_2] = new_node_2
-        self.extend_dict(self.nodes[from_point['first_node_id']], first_node)
-        self.extend_dict(self.nodes[from_point['last_node_id']], last_node)
+        self.nodes[from_point['first_node_id']].update(first_node)
+        self.nodes[from_point['last_node_id']].update(last_node)
 
         new_node_info_1 = {
             'node_id': new_node_id_1,
@@ -287,10 +287,6 @@ class PathRouter:
             'percent_of_edge': to_point['percent_distance'],
         }
         return new_node_info_1, new_node_info_2
-
-    def extend_dict(self, dict, source):  # TODO: use dict.update?
-        for key, value in source.items():
-            dict[key] = value
 
     def get_shortest_path(self, from_node_id, to_node_id):
         cs_graph = self.get_cs_graph()
