@@ -465,7 +465,6 @@ L.Handler.MultiPath = L.Handler.extend({
         return -1;
     },
 
-
     getCookie: function(name) {
         var cookieValue = null;
         if (document.cookie && document.cookie !== '') {
@@ -494,11 +493,11 @@ L.Handler.MultiPath = L.Handler.extend({
                 sent_steps.push(sent_step)
             })
             
-            fetch(window.SETTINGS.urls['trek_geometry'], {
+            fetch(window.SETTINGS.urls['route_geometry'], {
                 method: 'POST',
                 headers: {
-                    "X-CSRFToken": this.getCookie('csrftoken'), 
-                    content_type: "application/json"
+                    "X-CSRFToken": this.getCookie('csrftoken'),
+                    'Content-Type': 'application/json; charset=UTF-8',
                 },
                 body: JSON.stringify({
                     steps: sent_steps,

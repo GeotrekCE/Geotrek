@@ -7,7 +7,7 @@ from geotrek.common.urls import LangConverter
 from .models import Path, Trail
 from .views import (
     PathGPXDetail, PathKMLDetail, TrailGPXDetail, TrailKMLDetail,
-    MultiplePathDelete, TrekGeometry
+    MultiplePathDelete
 )
 
 register_converter(LangConverter, 'lang')
@@ -24,7 +24,6 @@ urlpatterns = [
          name="trail_gpx_detail"),
     path('api/<lang:lang>/trails/<int:pk>/trail_<slug:slug>.kml', TrailKMLDetail.as_view(),
          name="trail_kml_detail"),
-    path('api/treks/geometry', TrekGeometry.as_view(), name="trek_geometry"),
 ]
 
 urlpatterns += registry.register(Path, AltimetryEntityOptions, menu=(settings.PATH_MODEL_ENABLED and settings.TREKKING_TOPOLOGY_ENABLED))
