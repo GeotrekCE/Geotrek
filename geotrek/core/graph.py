@@ -78,6 +78,11 @@ class PathRouter:
         self.nodes = graph['nodes']
         self.edges = graph['edges']
 
+    def generate_id(self):
+        new_id = self.id_count
+        self.id_count += 1
+        return new_id
+
     def get_route(self, steps):
         self.steps = steps
         line_strings = self.compute_list_of_paths()
@@ -87,41 +92,6 @@ class PathRouter:
         geojson = json.loads(multi_line_string.geojson)
 
         return geojson
-
-    def get_cs_graph(self):
-
-        def get_edge_weight(edge_id):
-            edge = self.edges.get(edge_id)
-            if edge is None:
-                return None
-            return edge.get('length')
-
-        array = []
-        for key1, value1 in self.nodes.items():
-            row = []
-            for key2, value2 in self.nodes.items():
-                if key1 == key2:
-                    # If it's the same node, the weight is 0
-                    row.append(0)
-                elif key2 in value1.keys():
-                    # If the nodes are linked by a single edge, the weight is
-                    # the edge length
-                    edge_id = self.get_edge_id_by_nodes(value1, value2)
-                    edge_weight = get_edge_weight(edge_id)
-                    if edge_weight is not None:
-                        row.append(edge_weight)
-                else:
-                    # If the nodes are not directly linked, the weight is 0
-                    row.append(0)
-            array.append(row)
-
-        return np.array(array)
-
-    def get_edge_id_by_nodes(self, node1, node2):
-        for value in node1.values():
-            if value in node2.values():
-                return value
-        return None
 
     def compute_list_of_paths(self):
         all_line_strings = []
@@ -133,6 +103,19 @@ class PathRouter:
             merged_line_string = self.merge_line_strings(line_strings)
             all_line_strings.append(merged_line_string)
         return all_line_strings
+
+    def compute_two_steps_line_strings(self, from_step, to_step):
+        from_node_info, to_node_info = self.add_steps_to_graph(from_step, to_step)
+
+        shortest_path = self.get_shortest_path(from_node_info['node_id'],
+                                               to_node_info['node_id'])
+        line_strings = self.node_list_to_line_strings(shortest_path,
+                                                      from_node_info, to_node_info)
+
+        # Restore the graph (remove the steps)
+        self.remove_step_from_graph(from_node_info)
+        self.remove_step_from_graph(to_node_info)
+        return line_strings
 
     def add_steps_to_graph(self, from_step, to_step):
 
@@ -177,81 +160,28 @@ class PathRouter:
             to_node_info = self.split_edge_in_two(to_point)
         return (from_node_info, to_node_info)
 
-    def compute_two_steps_line_strings(self, from_step, to_step):
-        from_node_info, to_node_info = self.add_steps_to_graph(from_step, to_step)
+    def remove_step_from_graph(self, node_info):
 
-        shortest_path = self.get_shortest_path(from_node_info['node_id'],
-                                               to_node_info['node_id'])
-        line_strings = self.node_list_to_line_strings(shortest_path,
-                                                      from_node_info, to_node_info)
+        # Remove the 2 new edges from the graph:
+        # They will have already been deleted if this is the 2nd step and
+        # both steps are on the same path
+        if self.edges.get(node_info['new_edge1_id']) is not None:
+            del self.edges[node_info['new_edge1_id']]
+        if self.edges.get(node_info['new_edge2_id']) is not None:
+            del self.edges[node_info['new_edge2_id']]
 
-        # Restore the graph (remove the steps)
-        self.remove_step_from_graph(from_node_info)
-        self.remove_step_from_graph(to_node_info)
-        return line_strings
+        # Get the 2 nodes this temporary node is linked to
+        prev_node = self.nodes.get(node_info['prev_node_id'])
+        next_node = self.nodes.get(node_info['next_node_id'])
 
-    def node_list_to_line_strings(self, node_list, from_node_info, to_node_info):
-        line_strings = []
-        # Get a LineString for each pair of adjacent nodes in the path
-        for i in range(len(node_list) - 1):
-            # Get the id of the edge corresponding to these nodes
-            node1 = self.nodes[node_list[i]]
-            node2 = self.nodes[node_list[i + 1]]
-            edge_id = self.get_edge_id_by_nodes(node1, node2)
-
-            # If this pair of nodes requires to go backwards relative to a
-            # Path direction (i.e. the edge 2nd node is the 1st of this pair)
-            backwards = False
-            if self.edges[edge_id]['nodes_id'][1] == node_list[i]:
-                backwards = True
-
-            # If it's the first or last edge of this subpath (it can be both!),
-            # then the edge is temporary (i.e. created because of a step)
-            if i == 0 or i == len(node_list) - 2:
-                # Start and end percentages of the line substring to be created
-                start_fraction = 0
-                end_fraction = 1
-                if backwards:
-                    start_fraction, end_fraction = end_fraction, start_fraction
-
-                if i == 0:
-                    original_path = Path.objects.get(pk=from_node_info['original_egde_id'])
-                    start_fraction = from_node_info['percent_of_edge']
-                if i == len(node_list) - 2:
-                    original_path = Path.objects.get(pk=to_node_info['original_egde_id'])
-                    end_fraction = to_node_info['percent_of_edge']
-
-                line_substring = self.create_line_substring(
-                    original_path.geom,
-                    start_fraction,
-                    end_fraction
-                )
-                line_strings.append(line_substring)
-
-            # If it's a real edge (i.e. it corresponds to a whole path),
-            # we use its LineString
-            else:
-                path = Path.objects.get(pk=edge_id)
-                line_strings.append(path.geom)
-
-        return line_strings
-
-    def create_line_substring(self, geometry, start_fraction, end_fraction):
-        sql = """
-        SELECT ST_AsText(ST_SmartLineSubstring('{}'::geometry, {}, {}))
-        """.format(geometry, start_fraction, end_fraction)
-
-        cursor = connection.cursor()
-        cursor.execute(sql)
-        result = cursor.fetchone()[0]
-
-        # Convert the string into an array of arrays of floats
-        coords_str = result.split('(')[1].split(')')[0]
-        str_points_array = [elem.split(' ') for elem in coords_str.split(',')]
-        arr = [[float(nb) for nb in sub_array] for sub_array in str_points_array]
-
-        line_substring = LineString(arr, srid=settings.SRID)
-        return line_substring
+        # Remove the new node from the graph
+        removed_node_id = node_info['node_id']
+        del self.nodes[removed_node_id]
+        if prev_node is not None:
+            # It will have already been deleted if this is the 2nd step and
+            # both steps are on the same path
+            del prev_node[removed_node_id]
+        del next_node[removed_node_id]
 
     def split_edge_in_two(self, point_info):
 
@@ -361,30 +291,7 @@ class PathRouter:
         }
         return new_node_info_1, new_node_info_2
 
-    def remove_step_from_graph(self, node_info):
-
-        # Remove the 2 new edges from the graph:
-        # They will have already been deleted if this is the 2nd step and
-        # both steps are on the same path
-        if self.edges.get(node_info['new_edge1_id']) is not None:
-            del self.edges[node_info['new_edge1_id']]
-        if self.edges.get(node_info['new_edge2_id']) is not None:
-            del self.edges[node_info['new_edge2_id']]
-
-        # Get the 2 nodes this temporary node is linked to
-        prev_node = self.nodes.get(node_info['prev_node_id'])
-        next_node = self.nodes.get(node_info['next_node_id'])
-
-        # Remove the new node from the graph
-        removed_node_id = node_info['node_id']
-        del self.nodes[removed_node_id]
-        if prev_node is not None:
-            # It will have already been deleted if this is the 2nd step and
-            # both steps are on the same path
-            del prev_node[removed_node_id]
-        del next_node[removed_node_id]
-
-    def extend_dict(self, dict, source):
+    def extend_dict(self, dict, source):  # TODO: use dict.update?
         for key, value in source.items():
             dict[key] = value
 
@@ -423,6 +330,104 @@ class PathRouter:
         path.reverse()
         return path
 
+    def get_cs_graph(self):
+
+        def get_edge_weight(edge_id):
+            edge = self.edges.get(edge_id)
+            if edge is None:
+                return None
+            return edge.get('length')
+
+        array = []
+        for key1, value1 in self.nodes.items():
+            row = []
+            for key2, value2 in self.nodes.items():
+                if key1 == key2:
+                    # If it's the same node, the weight is 0
+                    row.append(0)
+                elif key2 in value1.keys():
+                    # If the nodes are linked by a single edge, the weight is
+                    # the edge length
+                    edge_id = self.get_edge_id_by_nodes(value1, value2)
+                    edge_weight = get_edge_weight(edge_id)
+                    if edge_weight is not None:
+                        row.append(edge_weight)
+                else:
+                    # If the nodes are not directly linked, the weight is 0
+                    row.append(0)
+            array.append(row)
+
+        return np.array(array)
+
+    def node_list_to_line_strings(self, node_list, from_node_info, to_node_info):
+        line_strings = []
+        # Get a LineString for each pair of adjacent nodes in the path
+        for i in range(len(node_list) - 1):
+            # Get the id of the edge corresponding to these nodes
+            node1 = self.nodes[node_list[i]]
+            node2 = self.nodes[node_list[i + 1]]
+            edge_id = self.get_edge_id_by_nodes(node1, node2)
+
+            # If this pair of nodes requires to go backwards relative to a
+            # Path direction (i.e. the edge 2nd node is the 1st of this pair)
+            backwards = False
+            if self.edges[edge_id]['nodes_id'][1] == node_list[i]:
+                backwards = True
+
+            # If it's the first or last edge of this subpath (it can be both!),
+            # then the edge is temporary (i.e. created because of a step)
+            if i == 0 or i == len(node_list) - 2:
+                # Start and end percentages of the line substring to be created
+                start_fraction = 0
+                end_fraction = 1
+                if backwards:
+                    start_fraction, end_fraction = end_fraction, start_fraction
+
+                if i == 0:
+                    original_path = Path.objects.get(pk=from_node_info['original_egde_id'])
+                    start_fraction = from_node_info['percent_of_edge']
+                if i == len(node_list) - 2:
+                    original_path = Path.objects.get(pk=to_node_info['original_egde_id'])
+                    end_fraction = to_node_info['percent_of_edge']
+
+                line_substring = self.create_line_substring(
+                    original_path.geom,
+                    start_fraction,
+                    end_fraction
+                )
+                line_strings.append(line_substring)
+
+            # If it's a real edge (i.e. it corresponds to a whole path),
+            # we use its LineString
+            else:
+                path = Path.objects.get(pk=edge_id)
+                line_strings.append(path.geom)
+
+        return line_strings
+
+    def get_edge_id_by_nodes(self, node1, node2):
+        for value in node1.values():
+            if value in node2.values():
+                return value
+        return None
+
+    def create_line_substring(self, geometry, start_fraction, end_fraction):
+        sql = """
+        SELECT ST_AsText(ST_SmartLineSubstring('{}'::geometry, {}, {}))
+        """.format(geometry, start_fraction, end_fraction)
+
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        result = cursor.fetchone()[0]
+
+        # Convert the string into an array of arrays of floats
+        coords_str = result.split('(')[1].split(')')[0]
+        str_points_array = [elem.split(' ') for elem in coords_str.split(',')]
+        arr = [[float(nb) for nb in sub_array] for sub_array in str_points_array]
+
+        line_substring = LineString(arr, srid=settings.SRID)
+        return line_substring
+
     def merge_line_strings(self, line_strings):
         rounded_line_strings = [
             self.round_line_string_coordinates(ls) for ls in line_strings
@@ -436,8 +441,3 @@ class PathRouter:
         new_coords = [[round(nb, 4) for nb in pt_coord] for pt_coord in coords]
         new_line_string = LineString(new_coords, srid=line_string.srid)
         return new_line_string
-
-    def generate_id(self):
-        new_id = self.id_count
-        self.id_count += 1
-        return new_id
