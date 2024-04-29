@@ -278,29 +278,6 @@ class PathViewSet(GeotrekMapentityViewSet):
         data = super().get_filter_count_infos(qs)
         return f"{data} ({round(qs.aggregate(sumPath=Sum(Length('geom') / 1000)).get('sumPath') or 0, 1)} km)"
 
-    @method_decorator(cache_control(max_age=0, must_revalidate=True))
-    @method_decorator(cache_last_modified(lambda x: Path.no_draft_latest_updated()))
-    @action(methods=['GET'], detail=False, url_path='graph.json', renderer_classes=[JSONRenderer, BrowsableAPIRenderer])
-    def graph(self, request, *args, **kwargs):
-        """ Return a graph of the path. """
-        cache = caches['fat']
-        key = 'path_graph_json'
-
-        result = cache.get(key)
-        latest = Path.no_draft_latest_updated()
-
-        if result and latest:
-            cache_latest, graph = result
-            # Not empty and still valid
-            if cache_latest and cache_latest >= latest:
-                return Response(graph)
-
-        # cache does not exist or is not up-to-date, rebuild the graph and cache it
-        graph = graph_lib.graph_edges_nodes_of_qs(Path.objects.exclude(draft=True))
-
-        cache.set(key, (latest, graph))
-        return Response(graph)
-
     @method_decorator(permission_required('core.change_path'))
     @action(methods=['POST'], detail=False, renderer_classes=[JSONRenderer])
     def merge_path(self, request, *args, **kwargs):
