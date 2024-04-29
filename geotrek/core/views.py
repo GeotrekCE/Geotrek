@@ -1,12 +1,10 @@
 import logging
 from collections import defaultdict
-import json
 
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 from django.contrib.gis.db.models.functions import Transform
-from django.core.cache import caches
 from django.db.models import Sum, Prefetch
 from django.http import HttpResponseRedirect
 from django.http.response import HttpResponse
@@ -14,15 +12,13 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext as _
-from django.views.decorators.cache import cache_control
-from django.views.decorators.http import last_modified as cache_last_modified
 from django.views.generic import TemplateView
 from django.views.generic.detail import BaseDetailView
 from mapentity.serializers import GPXSerializer
 from mapentity.views import (MapEntityList, MapEntityDetail, MapEntityDocument, MapEntityCreate, MapEntityUpdate,
                              MapEntityDelete, MapEntityFormat, LastModifiedMixin)
 from rest_framework.decorators import action
-from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
+from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 
 from geotrek.authent.decorators import same_structure_required
