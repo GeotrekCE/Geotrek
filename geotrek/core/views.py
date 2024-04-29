@@ -27,7 +27,7 @@ from geotrek.common.mixins.views import CustomColumnsMixin
 from geotrek.common.mixins.forms import FormsetMixin
 from geotrek.common.permissions import PublicOrReadPermMixin
 from geotrek.common.viewsets import GeotrekMapentityViewSet
-from . import graph as graph_lib
+from .path_router import PathRouter
 from .filters import PathFilterSet, TrailFilterSet
 from .forms import PathForm, TrailForm, CertificationTrailFormSet
 from .models import AltimetryMixin, Path, Trail, Topology, CertificationTrail
@@ -314,7 +314,7 @@ class PathViewSet(GeotrekMapentityViewSet):
         try:
             params = request.data
             steps = params['steps']
-            path_router = graph_lib.PathRouter()
+            path_router = PathRouter()
             response = path_router.get_route(steps)  # TODO check params
         except KeyError:
             response = {'error': 'TODO'}  # TODO

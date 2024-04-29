@@ -6,7 +6,7 @@ from django.test import TestCase
 from django.urls import reverse
 from mapentity.tests.factories import UserFactory
 
-from geotrek.core.graph import graph_edges_nodes_of_qs
+from geotrek.core.path_router import graph_edges_nodes_of_qs
 from geotrek.core.models import Path
 from geotrek.core.tests.factories import PathFactory
 
