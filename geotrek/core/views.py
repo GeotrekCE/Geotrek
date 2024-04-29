@@ -313,11 +313,23 @@ class PathViewSet(GeotrekMapentityViewSet):
     def route_geometry(self, request, *args, **kwargs):
         try:
             params = request.data
-            steps = params['steps']
+            steps = params.get('steps')
+
+            if steps is None:
+                raise Exception("Request parameters should contain a 'steps' array")
+
+            if len(steps) < 2:
+                raise Exception("There must be at least 2 steps")
+
+            for step in steps:
+                if step.get('lat') is None or step.get('lng') is None:
+                    raise Exception("Each step should contain a latitude and a longitude")
+
             path_router = PathRouter()
-            response = path_router.get_route(steps)  # TODO check params
-        except KeyError:
-            response = {'error': 'TODO'}  # TODO
+            response = path_router.get_route(steps)
+
+        except Exception as exc:
+            response = {'error': '%s' % exc, }
         return Response(response)
 
 
