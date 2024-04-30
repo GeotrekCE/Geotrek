@@ -314,23 +314,22 @@ class PathViewSet(GeotrekMapentityViewSet):
         try:
             params = request.data
             steps = params.get('steps')
-
             if steps is None:
                 raise Exception("Request parameters should contain a 'steps' array")
-
             if len(steps) < 2:
                 raise Exception("There must be at least 2 steps")
-
             for step in steps:
                 if step.get('lat') is None or step.get('lng') is None:
                     raise Exception("Each step should contain a latitude and a longitude")
-
-            path_router = PathRouter()
-            response = path_router.get_route(steps)
-
         except Exception as exc:
-            response = {'error': '%s' % exc, }
-        return Response(response)
+            return Response({'error': '%s' % exc, }, 400)
+
+        try:
+            path_router = PathRouter()
+            response, status = path_router.get_route(steps), 200
+        except Exception as exc:
+            response, status = {'error': '%s' % exc, }, 500
+        return Response(response, status)
 
 
 class CertificationTrailMixin(FormsetMixin):
