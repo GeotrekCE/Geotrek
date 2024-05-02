@@ -88,8 +88,8 @@ class PathRouter:
 
         nodes_list = list(self.nodes.items())
         for i, (key1, value1) in enumerate(nodes_list[:-1]):
-            # The last row is left blank and j starts at i + 1 because only the
-            # upper triangle is filled and the main diagonal is all zeros (the
+            # i ends at len - 1 and j starts at i + 1 because the
+            # matrix is symmetric and the main diagonal is all zeros (the
             # weight from a node to itself is 0)
             for j, (key2, value2) in enumerate(nodes_list[i + 1:]):
                 if key2 in value1.keys():
@@ -99,12 +99,7 @@ class PathRouter:
                     edge_weight = self.get_edge_weight(edge_id)
                     if edge_weight is not None:
                         matrix[i][j + i + 1] = edge_weight
-                        # TODO: add matrix[j + i + 1][i] = edge_weight
-                        # instead of using triangles
-
-        # Fill the lower triangle of the matrix symmetrically to the upper one
-        lower_triangle = np.triu(matrix, 1).T
-        matrix += lower_triangle
+                        matrix[j + i + 1][i] = edge_weight
 
         return matrix
 
