@@ -22,6 +22,12 @@ class PathRouter:
         graph = self.graph_edges_nodes_of_qs(Path.objects.exclude(draft=True))
         self.nodes = graph['nodes']
         self.edges = graph['edges']
+        self.dijk_matrix = self.get_cs_graph()
+
+    def generate_id(self):
+        new_id = self.id_count
+        self.id_count += 1
+        return new_id
 
     def graph_edges_nodes_of_qs(self, qs):
         """
@@ -75,10 +81,38 @@ class PathRouter:
             'nodes': dict(nodes),
         }
 
-    def generate_id(self):
-        new_id = self.id_count
-        self.id_count += 1
-        return new_id
+    def get_cs_graph(self):
+
+        nb_of_nodes = len(self.nodes)
+        matrix = np.zeros((nb_of_nodes, nb_of_nodes))
+
+        nodes_list = list(self.nodes.items())
+        for i, (key1, value1) in enumerate(nodes_list[:-1]):
+            # The last row is left blank and j starts at i + 1 because only the
+            # upper triangle is filled and the main diagonal is all zeros (the
+            # weight from a node to itself is 0)
+            for j, (key2, value2) in enumerate(nodes_list[i + 1:]):
+                if key2 in value1.keys():
+                    # If the nodes are linked by a single edge, the weight is
+                    # the edge length ; if not, the weight is 0
+                    edge_id = self.get_edge_id_by_nodes(value1, value2)
+                    edge_weight = self.get_edge_weight(edge_id)
+                    if edge_weight is not None:
+                        matrix[i][j + i + 1] = edge_weight
+                        # TODO: add matrix[j + i + 1][i] = edge_weight
+                        # instead of using triangles
+
+        # Fill the lower triangle of the matrix symmetrically to the upper one
+        lower_triangle = np.triu(matrix, 1).T
+        matrix += lower_triangle
+
+        return matrix
+
+    def get_edge_weight(self, edge_id):
+        edge = self.edges.get(edge_id)
+        if edge is None:
+            return None
+        return edge.get('length')
 
     def get_route(self, steps):
         self.steps = steps
@@ -103,6 +137,7 @@ class PathRouter:
 
     def compute_two_steps_line_strings(self, from_step, to_step):
         from_node_info, to_node_info = self.add_steps_to_graph(from_step, to_step)
+        self.add_steps_to_matrix(from_node_info, to_node_info)
 
         shortest_path = self.get_shortest_path(from_node_info['node_id'],
                                                to_node_info['node_id'])
@@ -112,6 +147,7 @@ class PathRouter:
         # Restore the graph (remove the steps)
         self.remove_step_from_graph(from_node_info)
         self.remove_step_from_graph(to_node_info)
+        self.remove_steps_from_matrix()
         return line_strings
 
     def add_steps_to_graph(self, from_step, to_step):
@@ -288,9 +324,37 @@ class PathRouter:
         }
         return new_node_info_1, new_node_info_2
 
+    def add_steps_to_matrix(self, from_node_info, to_node_info):
+        length = len(self.dijk_matrix)
+        # Add the last two rows
+        new_rows = [np.zeros(length) for i in range(2)]
+        self.dijk_matrix = np.vstack((self.dijk_matrix, new_rows))
+        # add the last two columns
+        new_columns = np.zeros((length + 2, 2))
+        self.dijk_matrix = np.hstack((self.dijk_matrix, new_columns))
+
+        # Add the weights
+        # TODO: this is duplicate code -> create a method
+        from_node = self.nodes[from_node_info['node_id']]
+        to_node = self.nodes[to_node_info['node_id']]
+        for i, (key, value) in enumerate(list(self.nodes.items())):
+            for j, step in enumerate([from_node, to_node]):
+                if key in step.keys():
+                    edge_id = self.get_edge_id_by_nodes(step, value)
+                    edge_weight = self.get_edge_weight(edge_id)
+                    if edge_weight is not None:
+                        self.dijk_matrix[i][length + j] = edge_weight
+                        self.dijk_matrix[length + j][i] = edge_weight
+
+    def remove_steps_from_matrix(self):
+        length = len(self.dijk_matrix)
+        # Remove the last two rows
+        self.dijk_matrix = np.delete(self.dijk_matrix, [length - 1, length - 2], 0)
+        # Remove the last two columns
+        self.dijk_matrix = np.delete(self.dijk_matrix, [length - 1, length - 2], 1)
+
     def get_shortest_path(self, from_node_id, to_node_id):
-        cs_graph = self.get_cs_graph()
-        matrix = csr_matrix(cs_graph)
+        matrix = csr_matrix(self.dijk_matrix)
 
         # List of all nodes IDs -> to interprete dijkstra results
         self.nodes_ids = list(self.nodes.keys())
@@ -302,7 +366,7 @@ class PathRouter:
                 return None
 
         def get_node_id_per_idx(node_idx):
-            if node_idx >= len(self.nodes_ids):
+            if node_idx < 0 or node_idx >= len(self.nodes_ids):
                 return None
             return self.nodes_ids[node_idx]
 
@@ -322,37 +386,6 @@ class PathRouter:
 
         path.reverse()
         return path
-
-    def get_cs_graph(self):
-
-        def get_edge_weight(edge_id):
-            edge = self.edges.get(edge_id)
-            if edge is None:
-                return None
-            return edge.get('length')
-
-        nb_of_nodes = len(self.nodes)
-        matrix = np.zeros((nb_of_nodes, nb_of_nodes))
-
-        nodes_list = list(self.nodes.items())
-        for i, (key1, value1) in enumerate(nodes_list[:-1]):
-            # The last row is left blank and j starts at i + 1 because only the
-            # upper triangle is filled and the main diagonal is all zeros (the
-            # weight from a node to itself is 0)
-            for j, (key2, value2) in enumerate(nodes_list[i + 1:]):
-                if key2 in value1.keys():
-                    # If the nodes are linked by a single edge, the weight is
-                    # the edge length ; if not, the weight is 0
-                    edge_id = self.get_edge_id_by_nodes(value1, value2)
-                    edge_weight = get_edge_weight(edge_id)
-                    if edge_weight is not None:
-                        matrix[i][j + i + 1] = edge_weight
-
-        # Fill the lower triangle of the matrix symmetrically to the upper one
-        lower_triangle = np.triu(matrix, 1).T
-        matrix += lower_triangle
-
-        return matrix
 
     def node_list_to_line_strings(self, node_list, from_node_info, to_node_info):
         line_strings = []
