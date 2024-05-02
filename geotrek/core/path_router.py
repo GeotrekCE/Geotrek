@@ -331,26 +331,28 @@ class PathRouter:
                 return None
             return edge.get('length')
 
-        array = []
-        for key1, value1 in self.nodes.items():
-            row = []
-            for key2, value2 in self.nodes.items():
-                if key1 == key2:
-                    # If it's the same node, the weight is 0
-                    row.append(0)
-                elif key2 in value1.keys():
+        nb_of_nodes = len(self.nodes)
+        matrix = np.zeros((nb_of_nodes, nb_of_nodes))
+
+        nodes_list = list(self.nodes.items())
+        for i, (key1, value1) in enumerate(nodes_list[:-1]):
+            # The last row is left blank and j starts at i + 1 because only the
+            # upper triangle is filled and the main diagonal is all zeros (the
+            # weight from a node to itself is 0)
+            for j, (key2, value2) in enumerate(nodes_list[i + 1:]):
+                if key2 in value1.keys():
                     # If the nodes are linked by a single edge, the weight is
-                    # the edge length
+                    # the edge length ; if not, the weight is 0
                     edge_id = self.get_edge_id_by_nodes(value1, value2)
                     edge_weight = get_edge_weight(edge_id)
                     if edge_weight is not None:
-                        row.append(edge_weight)
-                else:
-                    # If the nodes are not directly linked, the weight is 0
-                    row.append(0)
-            array.append(row)
+                        matrix[i][j + i + 1] = edge_weight
 
-        return np.array(array)
+        # Fill the lower triangle of the matrix symmetrically to the upper one
+        lower_triangle = np.triu(matrix, 1).T
+        matrix += lower_triangle
+
+        return matrix
 
     def node_list_to_line_strings(self, node_list, from_node_info, to_node_info):
         line_strings = []
