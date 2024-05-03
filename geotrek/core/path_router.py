@@ -22,7 +22,7 @@ class PathRouter:
         graph = self.graph_edges_nodes_of_qs(Path.objects.exclude(draft=True))
         self.nodes = graph['nodes']
         self.edges = graph['edges']
-        self.dijk_matrix = self.get_cs_graph()
+        self.set_cs_graph()
 
     def generate_id(self):
         new_id = self.id_count
@@ -81,10 +81,10 @@ class PathRouter:
             'nodes': dict(nodes),
         }
 
-    def get_cs_graph(self):
+    def set_cs_graph(self):
 
         nb_of_nodes = len(self.nodes)
-        matrix = np.zeros((nb_of_nodes, nb_of_nodes))
+        self.dijk_matrix = np.zeros((nb_of_nodes, nb_of_nodes))
 
         nodes_list = list(self.nodes.items())
         for i, (key1, value1) in enumerate(nodes_list[:-1]):
@@ -92,16 +92,25 @@ class PathRouter:
             # matrix is symmetric and the main diagonal is all zeros (the
             # weight from a node to itself is 0)
             for j, (key2, value2) in enumerate(nodes_list[i + 1:]):
-                if key2 in value1.keys():
-                    # If the nodes are linked by a single edge, the weight is
-                    # the edge length ; if not, the weight is 0
-                    edge_id = self.get_edge_id_by_nodes(value1, value2)
-                    edge_weight = self.get_edge_weight(edge_id)
-                    if edge_weight is not None:
-                        matrix[i][j + i + 1] = edge_weight
-                        matrix[j + i + 1][i] = edge_weight
+                row_idx = i
+                col_idx = j + i + 1
+                self.set_edge_weight(value1, key2, row_idx, col_idx)
 
-        return matrix
+    def set_edge_weight(self, node1, node2_key, row_idx, col_idx):
+        """
+            node1: dict {neighbor_node_key: edge_id, ...}
+            node2_key: int
+            row_idx: int
+            col_idx: int
+        """
+        edge_id = node1.get(node2_key)
+        if edge_id is not None:
+            # If the nodes are linked by an edge, the weight is its length ;
+            # if not, the weight stays at 0
+            edge_weight = self.get_edge_weight(edge_id)
+            if edge_weight is not None:
+                self.dijk_matrix[row_idx][col_idx] = edge_weight
+                self.dijk_matrix[col_idx][row_idx] = edge_weight
 
     def get_edge_weight(self, edge_id):
         edge = self.edges.get(edge_id)
@@ -329,17 +338,13 @@ class PathRouter:
         self.dijk_matrix = np.hstack((self.dijk_matrix, new_columns))
 
         # Add the weights
-        # TODO: this is duplicate code -> create a method
-        from_node = self.nodes[from_node_info['node_id']]
-        to_node = self.nodes[to_node_info['node_id']]
-        for i, (key, value) in enumerate(list(self.nodes.items())):
-            for j, step in enumerate([from_node, to_node]):
-                if key in step.keys():
-                    edge_id = self.get_edge_id_by_nodes(step, value)
-                    edge_weight = self.get_edge_weight(edge_id)
-                    if edge_weight is not None:
-                        self.dijk_matrix[i][length + j] = edge_weight
-                        self.dijk_matrix[length + j][i] = edge_weight
+        from_node_key = from_node_info['node_id']
+        to_node_key = to_node_info['node_id']
+        for i, node1 in enumerate(list(self.nodes.values())):
+            for j, node2_key in enumerate([from_node_key, to_node_key]):
+                row_idx = i
+                col_idx = length + j
+                self.set_edge_weight(node1, node2_key, row_idx, col_idx)
 
     def remove_steps_from_matrix(self):
         length = len(self.dijk_matrix)
