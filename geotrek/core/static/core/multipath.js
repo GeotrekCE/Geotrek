@@ -394,6 +394,8 @@ L.Handler.MultiPath = L.Handler.extend({
 
         // If this was clicked, the marker should be close enough, snap it.
         self.forceMarkerToLayer(marker, layer);
+
+        pop.events.fire('placed');
     },
 
     forceMarkerToLayer: function(marker, layer) {
@@ -407,7 +409,7 @@ L.Handler.MultiPath = L.Handler.extend({
         var pop = new Geotrek.PointOnPolyline(marker);
         this.steps.splice(idx, 0, pop);  // Insert pop at position idx
 
-        pop.events.on('valid', function() {
+        pop.events.on('placed', function() {
             self.fetchRoute();
         });
 
@@ -834,6 +836,9 @@ Geotrek.PointOnPolyline = function (marker) {
             this.ll = null;
             this.polyline = null;
             this.events.fire('invalid');
+        },
+        'dragend': function onDragEnd(e) {
+            this.events.fire('placed');
         }
     };
 };
@@ -858,6 +863,7 @@ Geotrek.PointOnPolyline.prototype.toggleActivate = function(activate) {
     marker[method]('move', markerEvents.move, this);
     marker[method]('snap', markerEvents.snap, this);
     marker[method]('unsnap', markerEvents.unsnap, this);
+    marker[method]('dragend', markerEvents.dragend, this);
 };
 
 Geotrek.PointOnPolyline.prototype.isValid = function(graph) {
