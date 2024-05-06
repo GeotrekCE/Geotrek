@@ -506,17 +506,21 @@ L.Handler.MultiPath = L.Handler.extend({
                 })
             })
             .then(response => {
-                // console.log("response", response)
                 if (response.status == 200)
                     return response.json()
+                return Promise.reject(response)
             })
-            .then(data => {
-                // console.log('response data:', data)
-                if (data) {
-                    var route = {'geojson': data}
-                    this.fire('fetched_route', route);
-                }
-            })
+            .then(
+                data => {  // Status code 200:
+                    console.log('response data:', data)
+                    if (data) {
+                        var route = {'geojson': data}
+                        this.fire('fetched_route', route);
+                    }
+                },
+                // If the promise was rejected:
+                response => console.log("fetchRoute:", response)
+            )
             // .catch(e => {
             //     console.log("fetchRoute", e)
             // })
