@@ -30,6 +30,15 @@ class PathRouter:
         self.id_count += 1
         return new_id
 
+    def get_from_cache_with_latest_paths(self, cache, key):
+        cached_data = cache.get(key)
+        latest_paths_date = Path.no_draft_latest_updated()
+        if cached_data and latest_paths_date:
+            cache_latest, data = cached_data
+            if cache_latest and cache_latest >= latest_paths_date:
+                return latest_paths_date, data
+        return (latest_paths_date, None)
+
     def graph_edges_nodes_of_qs(self, qs):
         """
         return a graph on the form:
@@ -61,12 +70,9 @@ class PathRouter:
         # Try to retrieve the graph from the cache
         cache = caches['fat']
         key = 'path_graph'
-        cached_data = cache.get(key)
-        latest_paths_date = Path.no_draft_latest_updated()
-        if cached_data and latest_paths_date:
-            cache_latest, graph = cached_data
-            if cache_latest and cache_latest >= latest_paths_date:
-                return graph
+        latest_paths_date, graph = self.get_from_cache_with_latest_paths(cache, key)
+        if graph is not None:
+            return graph
 
         key_modifier = get_key_optimizer()
         value_modifier = path_modifier
@@ -99,13 +105,10 @@ class PathRouter:
         # Try to retrieve the matrix from the cache
         cache = caches['fat']
         key = 'dijkstra_matrix'
-        cached_data = cache.get(key)
-        latest_paths_date = Path.no_draft_latest_updated()
-        if cached_data and latest_paths_date:
-            cache_latest, matrix = cached_data
-            if cache_latest and cache_latest >= latest_paths_date:
-                self.dijk_matrix = matrix
-                return
+        latest_paths_date, matrix = self.get_from_cache_with_latest_paths(cache, key)
+        if matrix is not None:
+            self.dijk_matrix = matrix
+            return
 
         nb_of_nodes = len(self.nodes)
         self.dijk_matrix = np.zeros((nb_of_nodes, nb_of_nodes))
