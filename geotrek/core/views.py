@@ -326,7 +326,9 @@ class PathViewSet(GeotrekMapentityViewSet):
 
         try:
             path_router = PathRouter()
-            response, status = path_router.get_route(steps), 200
+            response = path_router.get_route(steps)
+            status = 200 if response is not None else 204
+
         except Exception as exc:
             response, status = {'error': '%s' % exc, }, 500
         return Response(response, status)

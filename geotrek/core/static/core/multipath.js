@@ -505,11 +505,17 @@ L.Handler.MultiPath = L.Handler.extend({
                     steps: sent_steps,
                 })
             })
-            .then(response => response.json())
+            .then(response => {
+                // console.log("response", response)
+                if (response.status == 200)
+                    return response.json()
+            })
             .then(data => {
-                console.log('response:', data)
-                var route = {'geojson': data}
-                this.fire('fetched_route', route);
+                // console.log('response data:', data)
+                if (data) {
+                    var route = {'geojson': data}
+                    this.fire('fetched_route', route);
+                }
             })
             // .catch(e => {
             //     console.log("fetchRoute", e)

@@ -150,6 +150,8 @@ class PathRouter:
     def get_route(self, steps):
         self.steps = steps
         line_strings = self.compute_list_of_paths()
+        if line_strings is None:
+            return None
 
         multi_line_string = GeometryCollection(line_strings, srid=settings.SRID)
         multi_line_string.transform(settings.API_SRID)
@@ -164,6 +166,8 @@ class PathRouter:
             from_step = self.steps[i]
             to_step = self.steps[i + 1]
             line_strings = self.compute_two_steps_line_strings(from_step, to_step)
+            if line_strings is None:
+                return None
             merged_line_string = self.merge_line_strings(line_strings)
             all_line_strings.append(merged_line_string)
         return all_line_strings
@@ -174,6 +178,8 @@ class PathRouter:
 
         shortest_path = self.get_shortest_path(from_node_info['node_id'],
                                                to_node_info['node_id'])
+        if shortest_path is None:
+            return None
         line_strings = self.node_list_to_line_strings(shortest_path,
                                                       from_node_info, to_node_info)
 
@@ -409,6 +415,9 @@ class PathRouter:
         current_node_id, current_node_idx = to_node_id, to_node_idx
         path = [current_node_id]
         while current_node_id != from_node_id:
+            if current_node_idx < 0:
+                # The path ends here but this node is not the destination
+                return None
             current_node_idx = predecessors[current_node_idx]
             current_node_id = get_node_id_per_idx(current_node_idx)
             path.append(current_node_id)
