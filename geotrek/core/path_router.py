@@ -58,6 +58,16 @@ class PathRouter:
             mapping = defaultdict(next_id)
             return lambda x: mapping[x]
 
+        # Try to retrieve the graph from the cache
+        cache = caches['fat']
+        key = 'path_graph'
+        cached_data = cache.get(key)
+        latest_paths_date = Path.no_draft_latest_updated()
+        if cached_data and latest_paths_date:
+            cache_latest, graph = cached_data
+            if cache_latest and cache_latest >= latest_paths_date:
+                return graph
+
         key_modifier = get_key_optimizer()
         value_modifier = path_modifier
 
@@ -77,10 +87,12 @@ class PathRouter:
             nodes[k_end_point][k_start_point] = edge_id
             edges[edge_id] = v_path
 
-        return {
+        graph = {
             'edges': dict(edges),
             'nodes': dict(nodes),
         }
+        cache.set(key, (latest_paths_date, graph))
+        return graph
 
     def set_cs_graph(self):
 
