@@ -5,6 +5,7 @@ import json
 from django.db import connection
 from django.conf import settings
 from django.contrib.gis.geos import Point, LineString, MultiLineString, GeometryCollection
+from django.core.cache import caches
 
 import numpy as np
 from scipy.sparse.csgraph import dijkstra
@@ -83,6 +84,17 @@ class PathRouter:
 
     def set_cs_graph(self):
 
+        # Try to retrieve the matrix from the cache
+        cache = caches['fat']
+        key = 'dijkstra_matrix'
+        cached_data = cache.get(key)
+        latest_paths_date = Path.no_draft_latest_updated()
+        if cached_data and latest_paths_date:
+            cache_latest, matrix = cached_data
+            if cache_latest and cache_latest >= latest_paths_date:
+                self.dijk_matrix = matrix
+                return
+
         nb_of_nodes = len(self.nodes)
         self.dijk_matrix = np.zeros((nb_of_nodes, nb_of_nodes))
 
@@ -95,6 +107,8 @@ class PathRouter:
                 row_idx = i
                 col_idx = j + i + 1
                 self.set_edge_weight(value1, key2, row_idx, col_idx)
+
+        cache.set(key, (latest_paths_date, self.dijk_matrix))
 
     def set_edge_weight(self, node1, node2_key, row_idx, col_idx):
         """
