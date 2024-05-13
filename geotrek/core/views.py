@@ -327,8 +327,11 @@ class PathViewSet(GeotrekMapentityViewSet):
         try:
             path_router = PathRouter()
             response = path_router.get_route(steps)
-            status = 200 if response is not None else 204
-
+            if response is not None:
+                status = 200
+            else:
+                response = {'error': 'No path between the given points'}
+                status = 400
         except Exception as exc:
             response, status = {'error': '%s' % exc, }, 500
         return Response(response, status)
