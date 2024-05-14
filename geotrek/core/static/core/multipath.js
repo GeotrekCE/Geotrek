@@ -410,8 +410,17 @@ L.Handler.MultiPath = L.Handler.extend({
         var pop = new Geotrek.PointOnPolyline(marker);
         this.steps.splice(idx, 0, pop);  // Insert pop at position idx
 
-        pop.events.on('placed', function() {
-            self.fetchRoute();
+        pop.events.on('placed', () => {
+            var current_step_idx = self.getStepIdx(pop)
+
+            var steps_indexes = []
+            if (current_step_idx > 0)
+                steps_indexes.push(current_step_idx - 1)
+            steps_indexes.push(current_step_idx)
+            if (current_step_idx < self.steps.length - 1)
+                steps_indexes.push(current_step_idx + 1)
+
+            self.fetchRoute(steps_indexes)
         });
 
         return pop;
@@ -430,9 +439,10 @@ L.Handler.MultiPath = L.Handler.extend({
 
         // remove marker on click
         function removeViaStep() {
-            self.steps.splice(self.getStepIdx(pop), 1);
+            var step_idx = self.getStepIdx(pop)
+            self.steps.splice(step_idx, 1);
             self.map.removeLayer(marker);
-            self.fetchRoute();
+            self.fetchRoute([step_idx - 1, step_idx]);
         }
 
         function removeOnClick() { marker.on('click', removeViaStep); }
@@ -442,18 +452,6 @@ L.Handler.MultiPath = L.Handler.extend({
         // marker is already activated, trigger manually removeOnClick
         removeOnClick();
         pop.toggleActivate();
-    },
-
-    canFetchRoute: function() {
-        if (this.steps.length < 2)
-            return false;
-
-        for (var i = 0; i < this.steps.length; i++) {
-            if (! this.steps[i].isValid())
-                return false;
-        }
-
-        return true;
     },
 
     getStepIdx: function(step) {
@@ -483,9 +481,33 @@ L.Handler.MultiPath = L.Handler.extend({
         return cookieValue;
     },
 
-    fetchRoute: function() {
+    fetchRoute: function(steps_indexes) {
+        /*
+          steps_indexes (optional):
+            list containing the indexes of the steps for which to update the route ;
+            if not given, the whole route is fetched
+        */
 
-        if (this.canFetchRoute()) {
+        console.log("steps_indexes", steps_indexes)
+
+        var steps_to_route = []
+        steps_indexes.forEach(idx => {
+            steps_to_route.push(this.steps[idx])
+        })
+
+        function canFetchRoute() {
+            if (steps_to_route.length < 2)
+                return false;
+    
+            for (var i = 0; i < steps_to_route.length; i++) {
+                if (!steps_to_route[i].isValid())
+                    return false;
+            }
+    
+            return true;
+        }
+
+        if (canFetchRoute()) {
             this.spinner.spin(this._container);
 
             var sent_steps = []
