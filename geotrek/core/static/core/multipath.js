@@ -233,6 +233,7 @@ L.Handler.MultiPath = L.Handler.extend({
         this._container = map._container;
         this._guidesLayer = guidesLayer;
         this.options = options;
+        this.spinner = new Spinner()
 
         // markers
         this.markersFactory = this.getMarkers();
@@ -485,7 +486,8 @@ L.Handler.MultiPath = L.Handler.extend({
     fetchRoute: function() {
 
         if (this.canFetchRoute()) {
-            
+            this.spinner.spin(this._container);
+
             var sent_steps = []
             this.steps.forEach((step) => {
                 var sent_step = {
@@ -517,13 +519,18 @@ L.Handler.MultiPath = L.Handler.extend({
                         var route = {'geojson': data}
                         this.fire('fetched_route', route);
                     }
+                    this.spinner.stop()
                 },
                 // If the promise was rejected:
-                response => console.log("fetchRoute:", response)
+                response => {
+                    console.log("fetchRoute:", response)
+                    this.spinner.stop()
+                }
             )
-            // .catch(e => {
-            //     console.log("fetchRoute", e)
-            // })
+            .catch(e => {
+                console.log("fetchRoute", e)
+                this.spinner.stop()
+            })
         }
     },
 
