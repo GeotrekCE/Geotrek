@@ -511,7 +511,7 @@ L.Handler.MultiPath = L.Handler.extend({
             this.spinner.spin(this._container);
 
             var sent_steps = []
-            this.steps.forEach((step) => {
+            steps_to_route.forEach((step) => {
                 var sent_step = {
                     lat: step.ll.lat,
                     lng: step.ll.lng,
@@ -538,7 +538,10 @@ L.Handler.MultiPath = L.Handler.extend({
                 data => {  // Status code 200:
                     console.log('response data:', data)
                     if (data) {
-                        var route = {'geojson': data}
+                        var route = {
+                            'geojson': data,
+                            'modified_indexes': steps_indexes,
+                        }
                         this.fire('fetched_route', route);
                     }
                     this.spinner.stop()
@@ -764,9 +767,9 @@ L.Handler.MultiPath = L.Handler.extend({
         return markersFactory;
     },
 
-    buildRouteLayers: function(route) {
+    buildRouteLayers: function(geojson) {
         var layer = L.featureGroup();
-        route.geojson.geometries.forEach((geom, i) => {
+        geojson.geometries.forEach((geom, i) => {
             var sub_layer = L.geoJson(geom);
             sub_layer.step_idx = i
             layer.addLayer(sub_layer);
@@ -781,7 +784,11 @@ L.Handler.MultiPath = L.Handler.extend({
 
     onFetchedRoute: function(data) {
         var self = this;
-        var topology = this.buildRouteLayers(data);
+
+        // TODO: update the layers -> use data.modified_indexes
+        // Option 1: update the existing sublayers of the layer in buildRouteLayers
+        // Option 2: create a whole new layer in buildRouteLayers
+        var topology = this.buildRouteLayers(data.geojson);
         this.showPathGeom(topology.layer);
         this.fire('computed_topology', {topology:topology.serialized});
 
