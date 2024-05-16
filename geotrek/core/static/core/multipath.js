@@ -233,6 +233,7 @@ L.Handler.MultiPath = L.Handler.extend({
         this._container = map._container;
         this._guidesLayer = guidesLayer;
         this._routeLayer = null
+        this.currentStepsNb = 0
         this.options = options;
         this.spinner = new Spinner()
 
@@ -416,6 +417,7 @@ L.Handler.MultiPath = L.Handler.extend({
         // If this was clicked, the marker should be close enough, snap it.
         self.forceMarkerToLayer(marker, layer);
 
+        console.log('onclick')
         pop.events.fire('placed');
     },
 
@@ -433,9 +435,6 @@ L.Handler.MultiPath = L.Handler.extend({
         pop.events.on('placed', () => {
             var currentStepIdx = self.getStepIdx(pop)
 
-            // Create the array of step indexes before the route is updated 
-            var oldStepsIndexes = []
-            // TODO
             console.log("placed")
 
             // Create the array of new step indexes after the route is updated
@@ -446,7 +445,25 @@ L.Handler.MultiPath = L.Handler.extend({
             if (currentStepIdx < self.steps.length - 1)
                 newStepsIndexes.push(currentStepIdx + 1)
 
-            // TODO: send the right params
+            // Create the array of step indexes before the route is updated 
+            var oldStepsIndexes
+            if (this.currentStepsNb == this.steps.length)  // If a marker is being moved
+                oldStepsIndexes = [...newStepsIndexes]
+            else {  // If a marker is being added
+                if (this.currentStepsNb == 1)  // If it's the destination
+                    oldStepsIndexes = []
+                else
+                    oldStepsIndexes = newStepsIndexes.slice(0, -1)
+            }
+            // TODO
+            // If mod: same OK
+            // If add middle: [1, 2] -> [1, 2, 3]
+            // If add 1st: [] -> [1, 2] OK
+            // If add 2nd: [0, 1] -> [0, 1, 2]
+            // If add 2nd to last: [2, 3] -> [2, 3, 4]
+
+            this.currentStepsNb = this.steps.length
+
             self.fetchRoute(oldStepsIndexes, newStepsIndexes)
         });
 
@@ -469,7 +486,8 @@ L.Handler.MultiPath = L.Handler.extend({
             var step_idx = self.getStepIdx(pop)
             self.steps.splice(step_idx, 1);
             self.map.removeLayer(marker);
-            // TODO: send the right params
+
+            this.currentStepsNb = this.steps.length
             self.fetchRoute(
                 [step_idx - 1, step_idx, step_idx + 1],
                 [step_idx - 1, step_idx]
@@ -975,6 +993,7 @@ Geotrek.PointOnPolyline = function (marker) {
             this.events.fire('invalid');
         },
         'dragend': function onDragEnd(e) {
+            console.log('dragend')
             this.events.fire('placed');
         }
     };
