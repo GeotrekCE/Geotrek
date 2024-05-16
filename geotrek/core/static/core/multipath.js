@@ -247,18 +247,18 @@ L.Handler.MultiPath = L.Handler.extend({
             return guidesLayer.getLayer(id);
         };
 
-        this.stepIndexToLayer = function(idx) {
-            if (!this._routeLayer)
+        this.stepIndexToLayer = function(idx, layerArray) {
+            if (!layerArray)
                 return null
-            for (var i = 0; i < this._routeLayer.length; i++) {
-                var layer = this._routeLayer[i]
+            for (var i = 0; i < layerArray.length; i++) {
+                var layer = layerArray[i]
                 if (layer.step_idx == idx)
                     return layer
             }
             return null;
         };
 
-        this.layersOrderdByIdx = function() {
+        this.layersOrderedByIdx = function() {
             var layers = this._routeLayer ? this._routeLayer.__layerArray : []
             var sortedLayers = layers.toSorted((first, second) => {
                 return first.step_idx - second.step_idx     
@@ -456,9 +456,9 @@ L.Handler.MultiPath = L.Handler.extend({
                     oldStepsIndexes = newStepsIndexes.slice(0, -1)
             }
             // TODO
-            // If mod: same OK
+            // If mod: same
             // If add middle: [1, 2] -> [1, 2, 3]
-            // If add 1st: [] -> [1, 2] OK
+            // If add 1st: [] -> [1, 2]
             // If add 2nd: [0, 1] -> [0, 1, 2]
             // If add 2nd to last: [2, 3] -> [2, 3, 4]
 
@@ -487,7 +487,7 @@ L.Handler.MultiPath = L.Handler.extend({
             self.steps.splice(step_idx, 1);
             self.map.removeLayer(marker);
 
-            this.currentStepsNb = this.steps.length
+            this.currentStepsNb = self.steps.length
             self.fetchRoute(
                 [step_idx - 1, step_idx, step_idx + 1],
                 [step_idx - 1, step_idx]
@@ -828,7 +828,7 @@ L.Handler.MultiPath = L.Handler.extend({
         var newIndexOfPreviousLayer = -1
         
         // The layers before the modified portion are added as-is
-        var oldLayers = this.layersOrderdByIdx()
+        var oldLayers = this.layersOrderedByIdx()
         console.log("oldLayers", oldLayers)
         for (var i = 0; i < oldLayers.length && i < new_steps_indexes[0]; i++) {
             newRouteLayer.addLayer(oldLayers[i])
@@ -845,7 +845,8 @@ L.Handler.MultiPath = L.Handler.extend({
         // The last element of old_steps_indexes is where we start reusing the
         // previous layers again
         var old_steps_last_index = old_steps_indexes.at(-1)
-        var layer = this.stepIndexToLayer(old_steps_last_index)
+        var layer = this.stepIndexToLayer(old_steps_last_index, oldLayers)
+        console.log('layer', layer)
         if (layer) {
             layer.step_idx = ++newIndexOfPreviousLayer
             newRouteLayer.addLayer(layer)
@@ -886,6 +887,7 @@ L.Handler.MultiPath = L.Handler.extend({
         //     }
             
         // })
+        console.log("newRouteLayer", newRouteLayer.__layerArray)
 
         this._routeLayer = newRouteLayer
         return {
