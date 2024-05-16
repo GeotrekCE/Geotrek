@@ -233,7 +233,7 @@ L.Handler.MultiPath = L.Handler.extend({
         this._container = map._container;
         this._guidesLayer = guidesLayer;
         this._routeLayer = null
-        this.currentStepsNb = 0
+        this._currentStepsNb = 0
         this.options = options;
         this.spinner = new Spinner()
 
@@ -417,7 +417,6 @@ L.Handler.MultiPath = L.Handler.extend({
         // If this was clicked, the marker should be close enough, snap it.
         self.forceMarkerToLayer(marker, layer);
 
-        console.log('onclick')
         pop.events.fire('placed');
     },
 
@@ -435,8 +434,6 @@ L.Handler.MultiPath = L.Handler.extend({
         pop.events.on('placed', () => {
             var currentStepIdx = self.getStepIdx(pop)
 
-            console.log("placed")
-
             // Create the array of new step indexes after the route is updated
             var newStepsIndexes = []
             if (currentStepIdx > 0)
@@ -447,22 +444,16 @@ L.Handler.MultiPath = L.Handler.extend({
 
             // Create the array of step indexes before the route is updated 
             var oldStepsIndexes
-            if (this.currentStepsNb == this.steps.length)  // If a marker is being moved
+            if (this._currentStepsNb == this.steps.length)  // If a marker is being moved
                 oldStepsIndexes = [...newStepsIndexes]
             else {  // If a marker is being added
-                if (this.currentStepsNb == 1)  // If it's the destination
+                if (this._currentStepsNb == 1)  // If it's the destination
                     oldStepsIndexes = []
                 else
                     oldStepsIndexes = newStepsIndexes.slice(0, -1)
             }
-            // TODO
-            // If mod: same
-            // If add middle: [1, 2] -> [1, 2, 3]
-            // If add 1st: [] -> [1, 2]
-            // If add 2nd: [0, 1] -> [0, 1, 2]
-            // If add 2nd to last: [2, 3] -> [2, 3, 4]
 
-            this.currentStepsNb = this.steps.length
+            this._currentStepsNb = this.steps.length
 
             self.fetchRoute(oldStepsIndexes, newStepsIndexes)
         });
@@ -487,7 +478,7 @@ L.Handler.MultiPath = L.Handler.extend({
             self.steps.splice(step_idx, 1);
             self.map.removeLayer(marker);
 
-            this.currentStepsNb = self.steps.length
+            self._currentStepsNb = self.steps.length
             self.fetchRoute(
                 [step_idx - 1, step_idx, step_idx + 1],
                 [step_idx - 1, step_idx]
@@ -601,10 +592,10 @@ L.Handler.MultiPath = L.Handler.extend({
                     this.spinner.stop()
                 }
             )
-            // .catch(e => {
-            //     console.log("fetchRoute", e)
-            //     this.spinner.stop()
-            // })
+            .catch(e => {
+                console.log("fetchRoute", e)
+                this.spinner.stop()
+            })
         }
     },
 
@@ -732,7 +723,7 @@ L.Handler.MultiPath = L.Handler.extend({
                     'updateGeom': function(new_path_layer) {
                         var prev_path_layer = current_path_layer;
                         current_path_layer = new_path_layer;
-
+                        
                         if (prev_path_layer) {
                             self.map.removeLayer(prev_path_layer);
                         }
@@ -821,15 +812,11 @@ L.Handler.MultiPath = L.Handler.extend({
         old_steps_indexes = data.old_steps_indexes
         new_steps_indexes = data.new_steps_indexes
 
-        console.log("old_steps_indexes", old_steps_indexes)
-        console.log("new_steps_indexes", new_steps_indexes)
-
         var newRouteLayer = L.featureGroup()
         var newIndexOfPreviousLayer = -1
         
         // The layers before the modified portion are added as-is
         var oldLayers = this.layersOrderedByIdx()
-        console.log("oldLayers", oldLayers)
         for (var i = 0; i < oldLayers.length && i < new_steps_indexes[0]; i++) {
             newRouteLayer.addLayer(oldLayers[i])
             newIndexOfPreviousLayer = oldLayers[i].step_idx
@@ -846,7 +833,6 @@ L.Handler.MultiPath = L.Handler.extend({
         // previous layers again
         var old_steps_last_index = old_steps_indexes.at(-1)
         var layer = this.stepIndexToLayer(old_steps_last_index, oldLayers)
-        console.log('layer', layer)
         if (layer) {
             layer.step_idx = ++newIndexOfPreviousLayer
             newRouteLayer.addLayer(layer)
@@ -858,37 +844,6 @@ L.Handler.MultiPath = L.Handler.extend({
             oldLayers[i].step_idx = ++newIndexOfPreviousLayer
         }
 
-        // this._routeLayer && this._routeLayer.eachLayer((oldLayer) => {
-        //     var oldIndex = oldLayer.step_idx
-        //     var newLayer = null
-            
-        //     // If the layer is before the modified portion
-        //     if (oldIndex < new_steps_indexes[0]) {
-        //         newRouteLayer.addLayer(oldLayer);
-        //         newIndexOfPreviousLayer = oldLayer.step_idx
-        //     }
-
-        //     // The modified portion is reached: the new layers are added
-        //     else if (oldIndex == new_steps_indexes[0]) {
-        //         new_steps_indexes.slice(0, -1).forEach(markerIndex => {
-        //             newLayer = L.geoJson(geom)
-        //             newLayer.step_idx = newIndexOfPreviousLayer + 1
-        //             newRouteLayer.addLayer(newLayer);
-        //             newIndexOfPreviousLayer = newLayer.step_idx
-    
-        //         })
-        //     }
-
-        //     // After the modified portion
-        //     else {
-        //         oldLayer.step_idx = newIndexOfPreviousLayer + 1
-        //         newRouteLayer.addLayer(oldLayer)
-        //         newIndexOfPreviousLayer = oldLayer.step_idx
-        //     }
-            
-        // })
-        console.log("newRouteLayer", newRouteLayer.__layerArray)
-
         this._routeLayer = newRouteLayer
         return {
             layer: newRouteLayer,
@@ -899,6 +854,8 @@ L.Handler.MultiPath = L.Handler.extend({
     onFetchedRoute: function(data) {
         var self = this;
 
+        if (this._routeLayer)
+            self.map.removeLayer(this._routeLayer)
         var topology = this.buildRouteLayers(data);
         this.showPathGeom(topology.layer);
         this.fire('computed_topology', {topology: topology.serialized});
@@ -916,7 +873,7 @@ L.Handler.MultiPath = L.Handler.extend({
             }
             if (self.markersFactory.isDragging()) {
                 return;
-            }
+            }            
 
             dragTimer = date;
 
@@ -995,7 +952,6 @@ Geotrek.PointOnPolyline = function (marker) {
             this.events.fire('invalid');
         },
         'dragend': function onDragEnd(e) {
-            console.log('dragend')
             this.events.fire('placed');
         }
     };
