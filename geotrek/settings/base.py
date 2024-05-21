@@ -478,7 +478,7 @@ LEAFLET_CONFIG = {
     'SPATIAL_EXTENT': api_bbox(SPATIAL_EXTENT, VIEWPORT_MARGIN),
     'NO_GLOBALS': False,
     'PLUGINS': {
-        'geotrek': {'js': ['vendor/leaflet.lineextremities.js',
+        'geotrek': {'js': ['vendor/leaflet.lineextremities.v0.1.1.js',
                            'vendor/leaflet.textpath.v1.1.0.js',
                            'common/points_reference.js',
                            'trekking/parking_location.js']},
