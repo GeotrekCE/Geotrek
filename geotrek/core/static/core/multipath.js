@@ -237,6 +237,9 @@ L.Handler.MultiPath = L.Handler.extend({
         this.options = options;
         this.spinner = new Spinner()
 
+        // Is the currently displayed path valid? i.e are all its markers linkable? 
+        this._pathIsValid = null
+
         // markers
         this.markersFactory = this.getMarkers();
 
@@ -250,6 +253,7 @@ L.Handler.MultiPath = L.Handler.extend({
         this.stepIndexToLayer = function(idx, layerArray) {
             if (!layerArray)
                 return null
+
             for (var i = 0; i < layerArray.length; i++) {
                 var layer = layerArray[i]
                 if (layer.step_idx == idx)
@@ -589,6 +593,7 @@ L.Handler.MultiPath = L.Handler.extend({
                 // If the promise was rejected:
                 response => {
                     console.log("fetchRoute:", response)
+                    this._pathIsValid = false
                     this.spinner.stop()
                 }
             )
@@ -817,6 +822,11 @@ L.Handler.MultiPath = L.Handler.extend({
         
         // The layers before the modified portion are added as-is
         var oldLayers = this.layersOrderedByIdx()
+
+        console.log("oldLayers", oldLayers)
+        console.log("old_steps_indexes", old_steps_indexes)
+        console.log("new_steps_indexes", new_steps_indexes)
+
         for (var i = 0; i < oldLayers.length && i < new_steps_indexes[0]; i++) {
             newRouteLayer.addLayer(oldLayers[i])
             newIndexOfPreviousLayer = oldLayers[i].step_idx
@@ -832,7 +842,16 @@ L.Handler.MultiPath = L.Handler.extend({
         // The last element of old_steps_indexes is where we start reusing the
         // previous layers again
         var old_steps_last_index = old_steps_indexes.at(-1)
+        console.log("this._currentStepsNb", this._currentStepsNb)
+        if (this._pathIsValid == false && old_steps_indexes.length > new_steps_indexes.length) {
+            // If an unlinkable via marker is being removed, the invalid part of
+            // the path was not displayed. So at this point, there is one more
+            // marker (being removed now), but there isn't one more layer.
+            // Hence, all following layer indexes must be left-shifted by 1
+            old_steps_last_index--
+        }
         var layer = this.stepIndexToLayer(old_steps_last_index, oldLayers)
+        console.log("layer", layer)
         if (layer) {
             layer.step_idx = ++newIndexOfPreviousLayer
             newRouteLayer.addLayer(layer)
@@ -845,6 +864,7 @@ L.Handler.MultiPath = L.Handler.extend({
         }
 
         this._routeLayer = newRouteLayer
+        console.log("newRouteLayer end", newRouteLayer.__layerArray)
         return {
             layer: newRouteLayer,
             serialized: null, // TODO: set serialized to something
@@ -858,6 +878,7 @@ L.Handler.MultiPath = L.Handler.extend({
             self.map.removeLayer(this._routeLayer)
         var topology = this.buildRouteLayers(data);
         this.showPathGeom(topology.layer);
+        this._pathIsValid = true
         this.fire('computed_topology', {topology: topology.serialized});
 
         // ## ONCE ##
