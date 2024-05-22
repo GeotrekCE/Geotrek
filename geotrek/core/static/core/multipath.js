@@ -237,8 +237,8 @@ L.Handler.MultiPath = L.Handler.extend({
         this.options = options;
         this.spinner = new Spinner()
 
-        // Is the currently displayed path valid? i.e are all its markers linkable? 
-        this._pathIsValid = null
+        // Is the currently displayed route valid? i.e are all its markers linkable?
+        this._routeIsValid = null
 
         // markers
         this.markersFactory = this.getMarkers();
@@ -306,6 +306,7 @@ L.Handler.MultiPath = L.Handler.extend({
         })();
 
         this.on('fetched_route', this.onFetchedRoute, this);
+        this.on('invalid_route', this.onInvalidRoute, this);
     },
 
     setState: function(state, autocompute) {
@@ -459,7 +460,7 @@ L.Handler.MultiPath = L.Handler.extend({
 
             this._currentStepsNb = this.steps.length
 
-            self.fetchRoute(oldStepsIndexes, newStepsIndexes)
+            self.fetchRoute(oldStepsIndexes, newStepsIndexes, pop)
         });
 
         return pop;
@@ -485,7 +486,8 @@ L.Handler.MultiPath = L.Handler.extend({
             self._currentStepsNb = self.steps.length
             self.fetchRoute(
                 [step_idx - 1, step_idx, step_idx + 1],
-                [step_idx - 1, step_idx]
+                [step_idx - 1, step_idx],
+                pop
             );
         }
 
@@ -525,10 +527,11 @@ L.Handler.MultiPath = L.Handler.extend({
         return cookieValue;
     },
 
-    fetchRoute: function(old_steps_indexes, new_steps_indexes) {
+    fetchRoute: function(old_steps_indexes, new_steps_indexes, pop) {
         /*
             old_steps_indexes: indexes of the steps for which to update the route
             new_steps_indexes: indexes of these steps after the route is updated
+            pop (PointOnPolyline): step that is being added/modified/deleted
         */
 
         var steps_to_route = []
@@ -588,12 +591,12 @@ L.Handler.MultiPath = L.Handler.extend({
                         }
                         this.fire('fetched_route', route);
                     }
-                    this.spinner.stop()
+                    this.spinner.stop() // TODO: put this in a .finally()
                 },
                 // If the promise was rejected:
                 response => {
                     console.log("fetchRoute:", response)
-                    this._pathIsValid = false
+                    this.fire('invalid_route', pop)
                     this.spinner.stop()
                 }
             )
@@ -838,7 +841,7 @@ L.Handler.MultiPath = L.Handler.extend({
         // The last element of old_steps_indexes is where we start reusing the
         // previous layers again
         var old_steps_last_index = old_steps_indexes.at(-1)
-        if (this._pathIsValid == false && old_steps_indexes.length > new_steps_indexes.length) {
+        if (this._routeIsValid == false && old_steps_indexes.length > new_steps_indexes.length) {
             // If an unlinkable via marker is being removed, the invalid part of
             // the path was not displayed. So at this point, there is one more
             // marker (being removed now), but there isn't one more layer.
@@ -871,7 +874,7 @@ L.Handler.MultiPath = L.Handler.extend({
             self.map.removeLayer(this._routeLayer)
         var topology = this.buildRouteLayers(data);
         this.showPathGeom(topology.layer);
-        this._pathIsValid = true
+        this._routeIsValid = true
         this.fire('computed_topology', {topology: topology.serialized});
 
         // ## ONCE ##
@@ -932,6 +935,26 @@ L.Handler.MultiPath = L.Handler.extend({
         };
 
         this.map.on('mousemove', this.drawOnMouseMove);
+    },
+
+    onInvalidRoute: function(pop) {
+        this._routeIsValid = false
+
+        if (this.steps.length <= 2)
+            return
+
+        // Highlight the invalid marker
+        L.DomUtil.removeClass(pop.marker._icon, 'marker-snapped');
+        L.DomUtil.addClass(pop.marker._icon, 'marker-highlighted');
+
+        // Set the other markers to grey
+        this.steps.forEach(step => {
+            console.log(step, pop)
+            if (step._leaflet_id != pop._leaflet_id) {
+                L.DomUtil.removeClass(step.marker._icon, 'marker-snapped');
+                L.DomUtil.addClass(step.marker._icon, 'marker-disabled');
+            }
+        })
     }
 
 });
