@@ -870,6 +870,13 @@ L.Handler.MultiPath = L.Handler.extend({
     onFetchedRoute: function(data) {
         var self = this;
 
+        // Reset all the markers to 'snapped' appearance
+        this.steps.forEach(step => {
+            L.DomUtil.removeClass(step.marker._icon, 'marker-highlighted');
+            L.DomUtil.removeClass(step.marker._icon, 'marker-disabled');
+            L.DomUtil.addClass(step.marker._icon, 'marker-snapped');
+        })
+
         if (this._routeLayer)
             self.map.removeLayer(this._routeLayer)
         var topology = this.buildRouteLayers(data);
