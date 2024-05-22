@@ -875,6 +875,7 @@ L.Handler.MultiPath = L.Handler.extend({
             L.DomUtil.removeClass(step.marker._icon, 'marker-highlighted');
             L.DomUtil.removeClass(step.marker._icon, 'marker-disabled');
             L.DomUtil.addClass(step.marker._icon, 'marker-snapped');
+            step.marker.dragging.enable();
         })
 
         if (this._routeLayer)
@@ -954,12 +955,12 @@ L.Handler.MultiPath = L.Handler.extend({
         L.DomUtil.removeClass(pop.marker._icon, 'marker-snapped');
         L.DomUtil.addClass(pop.marker._icon, 'marker-highlighted');
 
-        // Set the other markers to grey
+        // Set the other markers to grey and disable them
         this.steps.forEach(step => {
-            console.log(step, pop)
             if (step._leaflet_id != pop._leaflet_id) {
                 L.DomUtil.removeClass(step.marker._icon, 'marker-snapped');
                 L.DomUtil.addClass(step.marker._icon, 'marker-disabled');
+                step.marker.dragging.disable();
             }
         })
     }
