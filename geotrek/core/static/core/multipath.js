@@ -591,19 +591,15 @@ L.Handler.MultiPath = L.Handler.extend({
                         }
                         this.fire('fetched_route', route);
                     }
-                    this.spinner.stop() // TODO: put this in a .finally()
                 },
                 // If the promise was rejected:
                 response => {
                     console.log("fetchRoute:", response)
                     this.fire('invalid_route', pop)
-                    this.spinner.stop()
                 }
             )
-            .catch(e => {
-                console.log("fetchRoute", e)
-                this.spinner.stop()
-            })
+            .catch(e => console.log("fetchRoute", e))
+            .finally(() => this.spinner.stop())
         }
     },
 
