@@ -963,6 +963,9 @@ L.Handler.MultiPath = L.Handler.extend({
                 step.marker.deactivate();
             }
         })
+        // Prevent from creating new via-steps
+        this.map.off('mousemove', this.drawOnMouseMove);
+        this.map.removeLayer(this.draggable_marker);
     }
 
 });
