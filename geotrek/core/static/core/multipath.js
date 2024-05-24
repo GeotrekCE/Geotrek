@@ -492,7 +492,7 @@ L.Handler.MultiPath = L.Handler.extend({
 
         var pop = this.createStep(marker, step_idx);
 
-        var removeOnClick = () => this.removeViaStepFromRoute(pop, step_idx)
+        var removeOnClick = () => this.removeViaStepFromRoute(pop)
 
         pop.marker.activate_cbs.push(() => marker.on('click', removeOnClick));
         pop.marker.deactivate_cbs.push(() => marker.off('click', removeOnClick));
@@ -503,8 +503,9 @@ L.Handler.MultiPath = L.Handler.extend({
     },
 
     // Remove an existing step by clicking on it
-    removeViaStepFromRoute: function(pop, step_idx) {
-        this.removeViaStep(pop)
+    removeViaStepFromRoute: function(pop) {
+        var step_idx = this.getStepIdx(pop)
+        this.removeViaStep(pop, step_idx)
         this._previousStepsNb = this._currentStepsNb
         this._currentStepsNb = this.steps.length
         this.fetchRoute(
@@ -515,8 +516,7 @@ L.Handler.MultiPath = L.Handler.extend({
     },
 
     // Remove a step from the steps list
-    removeViaStep: function(pop) {
-        var step_idx = this.getStepIdx(pop)
+    removeViaStep: function(pop, step_idx) {
         this.steps.splice(step_idx, 1)
         this.map.removeLayer(pop.marker)
     },
