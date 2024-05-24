@@ -402,17 +402,11 @@ L.Handler.MultiPath = L.Handler.extend({
             L.DomUtil.removeClass(this._container, 'cursor-topo-start');
             L.DomUtil.addClass(this._container, 'cursor-topo-end');
             marker = this.markersFactory.source(latlng);
-            marker.on('unsnap', function () {
-                this.showPathGeom(null);
-            }, this);
             this.marker_source = marker;
         } else {
             L.DomUtil.removeClass(this._container, 'cursor-topo-start');
             L.DomUtil.removeClass(this._container, 'cursor-topo-end');
             marker = this.markersFactory.dest(latlng)
-            marker.on('unsnap', function () {
-                this.showPathGeom(null);
-            }, this);
             this.marker_dest = marker;
         }
 
