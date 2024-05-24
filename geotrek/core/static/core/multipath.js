@@ -901,8 +901,6 @@ L.Handler.MultiPath = L.Handler.extend({
             step.marker.activate();
         })
 
-        if (this._routeLayer)
-            self.map.removeLayer(this._routeLayer)
         var topology = this.buildRouteLayers(data);
         this.showPathGeom(topology.layer);
         this._routeIsValid = true
