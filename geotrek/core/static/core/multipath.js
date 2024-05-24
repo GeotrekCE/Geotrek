@@ -438,6 +438,12 @@ L.Handler.MultiPath = L.Handler.extend({
         this.steps.splice(idx, 0, pop);  // Insert pop at position idx
 
         pop.events.on('placed', () => {
+
+            if (!pop.isValid()) {
+                self.removeViaStep(pop)
+                return
+            }
+
             var currentStepIdx = self.getStepIdx(pop)
 
             // Create the array of new step indexes after the route is updated
@@ -479,28 +485,33 @@ L.Handler.MultiPath = L.Handler.extend({
 
         var pop = this.createStep(marker, step_idx);
 
-        // remove marker on click
-        function removeViaStep() {
-            var step_idx = self.getStepIdx(pop)
-            self.steps.splice(step_idx, 1);
-            self.map.removeLayer(marker);
+        var removeOnClick = () => this.removeViaStepFromRoute(pop, step_idx)
 
-            self._previousStepsNb = self._currentStepsNb
-            self._currentStepsNb = self.steps.length
-            self.fetchRoute(
-                [step_idx - 1, step_idx, step_idx + 1],
-                [step_idx - 1, step_idx],
-                pop
-            );
-        }
+        pop.marker.activate_cbs.push(() => marker.on('click', removeOnClick));
+        pop.marker.deactivate_cbs.push(() => marker.off('click', removeOnClick));
 
-        function removeOnClick() { marker.on('click', removeViaStep); }
-        pop.marker.activate_cbs.push(removeOnClick);
-        pop.marker.deactivate_cbs.push(function() { marker.off('click', removeViaStep); });
-
-        // marker is already activated, trigger manually removeOnClick
-        removeOnClick();
+        // marker is already activated, enable removeOnClick manually
+        marker.on('click', removeOnClick)
         pop.toggleActivate();
+    },
+
+    // Remove an existing step by clicking on it
+    removeViaStepFromRoute: function(pop, step_idx) {
+        this.removeViaStep(pop)
+        this._previousStepsNb = this._currentStepsNb
+        this._currentStepsNb = this.steps.length
+        this.fetchRoute(
+            [step_idx - 1, step_idx, step_idx + 1],
+            [step_idx - 1, step_idx],
+            pop
+        );
+    },
+
+    // Remove a step from the steps list
+    removeViaStep: function(pop) {
+        var step_idx = this.getStepIdx(pop)
+        this.steps.splice(step_idx, 1)
+        this.map.removeLayer(pop.marker)
     },
 
     getStepIdx: function(step) {
