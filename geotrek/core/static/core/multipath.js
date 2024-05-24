@@ -439,11 +439,17 @@ L.Handler.MultiPath = L.Handler.extend({
 
         pop.events.on('placed', () => {
 
-            if (!pop.isValid()) {
+            if (!pop.isValid()) { // If the pop was not dropped on a path
                 if (pop.previousPosition) {
+                    // If the pop was on a path before, set it to its previous position
                     pop.marker.setLatLng(pop.previousPosition.ll)
                     self.forceMarkerToLayer(pop.marker, pop.previousPosition.polyline);
+                    if (!this._routeIsValid) {
+                        // If the route is not valid, the marker must stay highlighted
+                        L.DomUtil.removeClass(pop.marker._icon, 'marker-snapped');
+                    }
                 } else {
+                    // If not, then it is a new pop: remove it
                     self.removeViaStep(pop)
                 }
                 return
