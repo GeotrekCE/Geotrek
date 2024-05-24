@@ -234,6 +234,7 @@ L.Handler.MultiPath = L.Handler.extend({
         this._guidesLayer = guidesLayer;
         this._routeLayer = null
         this._currentStepsNb = 0
+        this._previousStepsNb = 0
         this.options = options;
         this.spinner = new Spinner()
 
@@ -458,6 +459,7 @@ L.Handler.MultiPath = L.Handler.extend({
                     oldStepsIndexes = newStepsIndexes.slice(0, -1)
             }
 
+            this._previousStepsNb = this._currentStepsNb
             this._currentStepsNb = this.steps.length
 
             self.fetchRoute(oldStepsIndexes, newStepsIndexes, pop)
@@ -483,6 +485,7 @@ L.Handler.MultiPath = L.Handler.extend({
             self.steps.splice(step_idx, 1);
             self.map.removeLayer(marker);
 
+            self._previousStepsNb = self._currentStepsNb
             self._currentStepsNb = self.steps.length
             self.fetchRoute(
                 [step_idx - 1, step_idx, step_idx + 1],
@@ -837,11 +840,11 @@ L.Handler.MultiPath = L.Handler.extend({
         // The last element of old_steps_indexes is where we start reusing the
         // previous layers again
         var old_steps_last_index = old_steps_indexes.at(-1)
-        if (this._routeIsValid == false && old_steps_indexes.length > new_steps_indexes.length) {
-            // If an unlinkable via marker is being removed, the invalid part of
-            // the path was not displayed. So at this point, there is one more
-            // marker (being removed now), but there isn't one more layer.
-            // Hence, all following layer indexes must be left-shifted by 1
+        if (this._routeIsValid == false && this._previousStepsNb > this._routeLayer.__layerArray.length + 1) {
+            // If a new via marker is isolated and is now being removed or modified,
+            // the invalid part of the path was not displayed. So at this point,
+            // there is one more step, but there isn't one more layer.
+            // Hence, all following layer indexes must be left-shifted by 1.
             old_steps_last_index--
         }
         var layer = this.stepIndexToLayer(old_steps_last_index, oldLayers)
