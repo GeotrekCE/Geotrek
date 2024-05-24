@@ -440,9 +440,16 @@ L.Handler.MultiPath = L.Handler.extend({
         pop.events.on('placed', () => {
 
             if (!pop.isValid()) {
-                self.removeViaStep(pop)
+                if (pop.previousPosition) {
+                    pop.marker.setLatLng(pop.previousPosition.ll)
+                    self.forceMarkerToLayer(pop.marker, pop.previousPosition.polyline);
+                } else {
+                    self.removeViaStep(pop)
+                }
                 return
             }
+
+            pop.previousPosition = {ll: pop.ll, polyline: pop.polyline}
 
             var currentStepIdx = self.getStepIdx(pop)
 
@@ -983,9 +990,14 @@ L.Handler.MultiPath = L.Handler.extend({
 // pol: point on polyline
 Geotrek.PointOnPolyline = function (marker) {
     this.marker = marker;
-    // if valid
+
+    // If valid:
     this.ll = null;
     this.polyline = null;
+
+    // To reset the pop to its previous valid position when not dropped on a path:
+    this.previousPosition = null;
+
     this.path_length = null;
     this.percent_distance = null;
     this._activated = false;
