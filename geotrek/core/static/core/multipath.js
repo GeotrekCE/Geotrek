@@ -236,7 +236,19 @@ L.Handler.MultiPath = L.Handler.extend({
         this._currentStepsNb = 0
         this._previousStepsNb = 0
         this.options = options;
+
         this.spinner = new Spinner()
+
+        // Toast displayed when a marker was not dropped on a path:
+        this._unsnappedMarkerToast = new bootstrap.Toast(
+            document.getElementById("routing-unsnapped-marker-error-toast"),
+            {delay: 5000}
+        )
+        // Toast displayed when there is no route due to a marker on an unreachable path:
+        this._isolatedMarkerToast = new bootstrap.Toast(
+            document.getElementById("routing-isolated-marker-error-toast"),
+            {delay: 5000}
+        )
 
         // Is the currently displayed route valid? i.e are all its markers linkable?
         this._routeIsValid = null
@@ -434,6 +446,9 @@ L.Handler.MultiPath = L.Handler.extend({
         pop.events.on('placed', () => {
 
             if (!pop.isValid()) { // If the pop was not dropped on a path
+                // Display an alert message
+                this._unsnappedMarkerToast.show()
+                
                 if (pop.previousPosition) {
                     // If the pop was on a path before, set it to its previous position
                     pop.marker.setLatLng(pop.previousPosition.ll)
@@ -962,6 +977,9 @@ L.Handler.MultiPath = L.Handler.extend({
 
     onInvalidRoute: function(pop) {
         this._routeIsValid = false
+
+        // Display an alert message
+        this._isolatedMarkerToast.show()
 
         if (this.steps.length <= 2)
             return

@@ -110,3 +110,29 @@ span.aggregation {
     background-image: none;
     background-color: yellow;
 }
+
+.toast-stack {
+    position: absolute;
+    right: 1.5rem;
+    bottom: 1.5rem;
+}
+
+.toast-no-path {
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
+}
+
+.toast-header-no-path {
+    justify-content: space-between;
+    color: #842029;
+    background-color: #f8d7da;
+}
+
+.toast-button-no-path {
+    color: #842029;
+}
+
+.toast-body-no-path {
+    background-color: #f8d7da;
+    color: #842029;
+}
