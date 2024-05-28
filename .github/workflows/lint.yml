@@ -36,3 +36,35 @@ jobs:
       - name: Flake8
         run: |
           flake8 geotrek
+
+  translations:
+    name: Checking .po files are up-to-date
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: ./.github/actions/python-cache-requirements
+        with:
+          requirements: requirements.txt
+
+      - name: Prepare test env
+        run: |
+          sudo apt-get update -q
+          sudo apt-get -qq -y install gettext
+
+      - name: Generate translation files
+        run: |
+          python3 ./manage.py makemessages -a --no-location --no-obsolete
+
+      - uses: tj-actions/verify-changed-files@v18
+        id: verify-changed-files
+        with:
+          files: |
+            **/*.po
+
+      - name: Verify translation files changed
+        if: steps.verify-changed-files.outputs.files_changed == 'true'
+        run: |
+          echo "Translation file(s) changed: ${{ steps.verify-changed-files.outputs.changed_files }}"
+          git diff
+          core.setFailed('Please fix your translation files with ./manage.py makemessages -a --no-location --no-obsolete')
