@@ -149,7 +149,7 @@ class PathRouter:
 
     def get_route(self, steps):
         self.steps = steps
-        line_strings = self.compute_list_of_paths()
+        line_strings, serialized_topology = self.compute_all_steps_paths()
         if line_strings == []:
             return None
 
@@ -157,37 +157,41 @@ class PathRouter:
         multi_line_string.transform(settings.API_SRID)
         geojson = json.loads(multi_line_string.geojson)
 
-        return geojson
+        return {'geojson': geojson, 'serialized': serialized_topology}
 
-    def compute_list_of_paths(self):
-        all_line_strings = []
+    def compute_all_steps_paths(self):
+        all_line_strings = []  # Each elem is a linestring from one step to another
+        serialized_topology = []  # Each elem is the topology from one step to another
         # Compute the shortest path for each pair of adjacent steps
         for i in range(len(self.steps) - 1):
             from_step = self.steps[i]
             to_step = self.steps[i + 1]
-            line_strings = self.compute_two_steps_line_strings(from_step, to_step)
+            # Get the linestrings (segments of paths) between those two steps,
+            # then merge them into one
+            line_strings, serialized = self.compute_two_steps_path(from_step, to_step)
+            serialized_topology.append(serialized)
             if line_strings == []:
-                return []
+                return [], []
             merged_line_string = self.merge_line_strings(line_strings)
             all_line_strings.append(merged_line_string)
-        return all_line_strings
+        return all_line_strings, serialized_topology
 
-    def compute_two_steps_line_strings(self, from_step, to_step):
+    def compute_two_steps_path(self, from_step, to_step):
         from_node_info, to_node_info = self.add_steps_to_graph(from_step, to_step)
         self.add_steps_to_matrix(from_node_info, to_node_info)
 
         shortest_path = self.get_shortest_path(from_node_info['node_id'],
                                                to_node_info['node_id'])
         if shortest_path == []:
-            return []
-        line_strings = self.node_list_to_line_strings(shortest_path,
-                                                      from_node_info, to_node_info)
+            return [], []
+        ls, topo = self.get_line_strings_and_topology(shortest_path, from_node_info,
+                                                      to_node_info)
 
         # Restore the graph (remove the steps)
         self.remove_step_from_graph(from_node_info)
         self.remove_step_from_graph(to_node_info)
         self.remove_steps_from_matrix()
-        return line_strings
+        return ls, topo
 
     def add_steps_to_graph(self, from_step, to_step):
 
@@ -425,8 +429,12 @@ class PathRouter:
         path.reverse()
         return path
 
-    def node_list_to_line_strings(self, node_list, from_node_info, to_node_info):
+    def get_line_strings_and_topology(self, node_list, from_node_info, to_node_info):
         line_strings = []
+        topology = {
+            'positions': {},
+            'paths': [],
+        }
         # Get a LineString for each pair of adjacent nodes in the path
         for i in range(len(node_list) - 1):
             # Get the id of the edge corresponding to these nodes
@@ -434,21 +442,17 @@ class PathRouter:
             node2 = self.nodes[node_list[i + 1]]
             edge_id = self.get_edge_id_by_nodes(node1, node2)
 
+            # Start and end percentages of the line substring
+            start_fraction = 0
+            end_fraction = 1
             # If this pair of nodes requires to go backwards relative to a
             # Path direction (i.e. the edge 2nd node is the 1st of this pair)
-            backwards = False
             if self.edges[edge_id]['nodes_id'][1] == node_list[i]:
-                backwards = True
+                start_fraction, end_fraction = end_fraction, start_fraction
 
             # If it's the first or last edge of this subpath (it can be both!),
             # then the edge is temporary (i.e. created because of a step)
             if i == 0 or i == len(node_list) - 2:
-                # Start and end percentages of the line substring to be created
-                start_fraction = 0
-                end_fraction = 1
-                if backwards:
-                    start_fraction, end_fraction = end_fraction, start_fraction
-
                 if i == 0:
                     original_path = Path.objects.get(pk=from_node_info['original_egde_id'])
                     start_fraction = from_node_info['percent_of_edge']
@@ -466,10 +470,13 @@ class PathRouter:
             # If it's a real edge (i.e. it corresponds to a whole path),
             # we use its LineString
             else:
-                path = Path.objects.get(pk=edge_id)
-                line_strings.append(path.geom)
+                original_path = Path.objects.get(pk=edge_id)
+                line_strings.append(original_path.geom)
 
-        return line_strings
+            topology['positions'][i] = [start_fraction, end_fraction]
+            topology['paths'].append(original_path.pk)
+
+        return line_strings, topology
 
     def get_edge_id_by_nodes(self, node1, node2):
         for value in node1.values():

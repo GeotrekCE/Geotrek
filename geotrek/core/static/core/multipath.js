@@ -233,6 +233,7 @@ L.Handler.MultiPath = L.Handler.extend({
         this._container = map._container;
         this._guidesLayer = guidesLayer;
         this._routeLayer = null
+        this._routeTopology = []
         this._currentStepsNb = 0
         this._previousStepsNb = 0
         this.options = options;
@@ -359,8 +360,9 @@ L.Handler.MultiPath = L.Handler.extend({
 
         // reset state
         this.steps = [];
-
         this.marker_source = this.marker_dest = null;
+        this._routeTopology = []
+        this.fire('computed_topology', null);
     },
 
     // Activate/Deactivate existing steps and markers - mostly about (un)bindings listeners
@@ -624,7 +626,8 @@ L.Handler.MultiPath = L.Handler.extend({
                     console.log('response data:', data)
                     if (data) {
                         var route = {
-                            'geojson': data,
+                            'geojson': data.geojson,
+                            'serialized': data.serialized,
                             'old_steps_indexes': old_steps_indexes,
                             'new_steps_indexes': new_steps_indexes,
                         }
@@ -921,10 +924,7 @@ L.Handler.MultiPath = L.Handler.extend({
         }
 
         this._routeLayer = newRouteLayer
-        return {
-            layer: newRouteLayer,
-            serialized: null, // TODO: set serialized to something
-        }
+        return newRouteLayer
     },
 
     onFetchedRoute: function(data) {
@@ -938,10 +938,18 @@ L.Handler.MultiPath = L.Handler.extend({
             step.marker.activate();
         })
 
-        var topology = this.buildRouteLayers(data);
-        this.showPathGeom(topology.layer);
+        var routeLayers = this.buildRouteLayers(data);
+        this.showPathGeom(routeLayers);
         this._routeIsValid = true
-        this.fire('computed_topology', {topology: topology.serialized});
+
+        // Store the new topology
+        var nbSubToposToRemove = 0
+        if (old_steps_indexes.length > 0)
+            // If it's not the first time displaying a layer
+            nbSubToposToRemove = old_steps_indexes.length - 1
+        var spliceArgs = [new_steps_indexes[0], nbSubToposToRemove].concat(data.serialized)
+        this._routeTopology.splice.apply(this._routeTopology, spliceArgs)
+        this.fire('computed_topology', {topology: this._routeTopology});
 
         // ## ONCE ##
         if (this.drawOnMouseMove) {
@@ -978,7 +986,7 @@ L.Handler.MultiPath = L.Handler.extend({
               , closest_point = null
               , matching_group_layer = null;
 
-            topology.layer && topology.layer.eachLayer(function(group_layer) {
+            routeLayers && routeLayers.eachLayer(function(group_layer) {
                 group_layer.eachLayer(function(layer) {
                     var p = layer.closestLayerPoint(layerPoint);
                     if (p && p.distance < min_dist && p.distance < MIN_DIST) {
@@ -1005,6 +1013,7 @@ L.Handler.MultiPath = L.Handler.extend({
 
     onInvalidRoute: function(pop) {
         this._routeIsValid = false
+        this.fire('computed_topology', {topology: null});
 
         // Display an alert message
         this._isolatedMarkerToast.show()
