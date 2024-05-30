@@ -591,7 +591,9 @@ L.Handler.MultiPath = L.Handler.extend({
         }
 
         if (canFetchRoute()) {
+            // Prevent from modifying steps while the route is fetched
             this.spinner.spin(this._container);
+            this.disableMarkers()
 
             var sent_steps = []
             steps_to_route.forEach((step) => {
@@ -601,7 +603,7 @@ L.Handler.MultiPath = L.Handler.extend({
                 }
                 sent_steps.push(sent_step)
             })
-            
+
             fetch(window.SETTINGS.urls['route_geometry'], {
                 method: 'POST',
                 headers: {
@@ -636,7 +638,13 @@ L.Handler.MultiPath = L.Handler.extend({
                 }
             )
             .catch(e => console.log("fetchRoute", e))
-            .finally(() => this.spinner.stop())
+            .finally(() => {
+                this.spinner.stop()
+                // If the route is invalid, don't reenable the markers: some have
+                // been disabled to guide the user through correcting the route.
+                if (this._routeIsValid)
+                    this.enableMarkers()
+            })
         }
     },
 
@@ -848,6 +856,25 @@ L.Handler.MultiPath = L.Handler.extend({
         return markersFactory;
     },
 
+    disableMarkers: function() {
+        // Disable all markers on the map
+        this.steps.forEach(step => {
+            step.marker.deactivate();
+        })
+        // Prevent from creating new markers
+        this.map.off('mousemove', this.drawOnMouseMove);
+        this.map.removeLayer(this.draggable_marker);
+    },
+
+    enableMarkers: function() {
+        // Enable all markers on the map
+        this.steps.forEach(step => {
+            step.marker.activate();
+        })
+        // Allow creating new markers again
+        this.map.on('mousemove', this.drawOnMouseMove);
+    },
+
     buildRouteLayers: function(data) {
         geojson = data.geojson
         old_steps_indexes = data.old_steps_indexes
@@ -982,12 +1009,16 @@ L.Handler.MultiPath = L.Handler.extend({
         // Display an alert message
         this._isolatedMarkerToast.show()
 
-        if (this.steps.length <= 2)
+        // If there are only two steps, both should be movable: enable them
+        if (this.steps.length <= 2) {
+            this.enableMarkers()
             return
+        }
 
-        // Highlight the invalid marker
+        // Highlight the invalid marker and enable it
         L.DomUtil.removeClass(pop.marker._icon, 'marker-snapped');
         L.DomUtil.addClass(pop.marker._icon, 'marker-highlighted');
+        pop.marker.activate()
 
         // Set the other markers to grey and disable them
         this.steps.forEach(step => {
