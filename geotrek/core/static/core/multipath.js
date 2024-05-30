@@ -874,7 +874,7 @@ L.Handler.MultiPath = L.Handler.extend({
         // The last element of old_steps_indexes is where we start reusing the
         // previous layers again
         var old_steps_last_index = old_steps_indexes.at(-1)
-        if (this._routeIsValid == false && this._previousStepsNb > this._routeLayer.__layerArray.length + 1) {
+        if (this._routeIsValid == false && this._previousStepsNb > this._routeLayer?.__layerArray.length + 1) {
             // If a new via marker is isolated and is now being removed or modified,
             // the invalid part of the path was not displayed. So at this point,
             // there is one more step, but there isn't one more layer.
