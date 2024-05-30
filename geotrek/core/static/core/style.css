@@ -120,6 +120,7 @@ span.aggregation {
 .toast-error {
     background-color: #f8d7da;
     border-color: #f5c2c7;
+    display: none;
 }
 
 .toast-error-header {
