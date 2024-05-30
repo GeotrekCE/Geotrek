@@ -520,7 +520,7 @@ L.Handler.MultiPath = L.Handler.extend({
     // Remove an existing step by clicking on it
     removeViaStepFromRoute: function(pop) {
         var step_idx = this.getStepIdx(pop)
-        this.removeViaStep(pop, step_idx)
+        this.removeViaStep(pop)
         this._previousStepsNb = this._currentStepsNb
         this._currentStepsNb = this.steps.length
         this.fetchRoute(
@@ -531,7 +531,8 @@ L.Handler.MultiPath = L.Handler.extend({
     },
 
     // Remove a step from the steps list
-    removeViaStep: function(pop, step_idx) {
+    removeViaStep: function(pop) {
+        var step_idx = this.getStepIdx(pop)
         this.steps.splice(step_idx, 1)
         this.map.removeLayer(pop.marker)
     },
