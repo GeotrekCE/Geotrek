@@ -117,22 +117,22 @@ span.aggregation {
     bottom: 1.5rem;
 }
 
-.toast-no-path {
+.toast-error {
     background-color: #f8d7da;
     border-color: #f5c2c7;
 }
 
-.toast-header-no-path {
+.toast-error-header {
     justify-content: space-between;
     color: #842029;
     background-color: #f8d7da;
 }
 
-.toast-button-no-path {
+.toast-error-button {
     color: #842029;
 }
 
-.toast-body-no-path {
+.toast-error-body {
     background-color: #f8d7da;
     color: #842029;
 }
