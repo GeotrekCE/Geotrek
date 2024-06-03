@@ -362,6 +362,9 @@ L.Handler.MultiPath = L.Handler.extend({
         this.steps = [];
         this.marker_source = this.marker_dest = null;
         this._routeTopology = []
+        this._routeLayer = null
+        this._currentStepsNb = 0
+        this._previousStepsNb = 0
         this.fire('computed_topology', null);
     },
 
@@ -401,17 +404,20 @@ L.Handler.MultiPath = L.Handler.extend({
 
     // On click on a layer with the graph
     _onClick: function(e) {
-        if (this.steps.length >= 2) return;
-        var self = this;
-
         var layer = e.layer
           , latlng = e.latlng
-          , len = this.steps.length;
 
+        var pop = this.addStartOrEndStep(layer, latlng)
+        pop.events.fire('placed');
+    },
+
+    addStartOrEndStep: function(layer, latlng) {
+        if (this.steps.length >= 2) return;
+
+        var self = this;
         var next_step_idx = this.steps.length;
-
-        // 1. Click - you are adding a new marker
         var marker;
+
         if (next_step_idx == 0) {
             L.DomUtil.removeClass(this._container, 'cursor-topo-start');
             L.DomUtil.addClass(this._container, 'cursor-topo-end');
@@ -425,13 +431,9 @@ L.Handler.MultiPath = L.Handler.extend({
         }
 
         var pop = self.createStep(marker, next_step_idx);
-
         pop.toggleActivate();
-
-        // If this was clicked, the marker should be close enough, snap it.
         self.forceMarkerToLayer(marker, layer);
-
-        pop.events.fire('placed');
+        return pop
     },
 
     forceMarkerToLayer: function(marker, layer) {
@@ -500,8 +502,6 @@ L.Handler.MultiPath = L.Handler.extend({
 
     // add an in between step
     addViaStep: function(marker, step_idx) {
-        var self = this;
-
         // A via step idx must be inserted between first and last...
         if (! (step_idx >= 1 && step_idx <= this.steps.length - 1)) {
             throw "StepIndexError";
@@ -517,6 +517,7 @@ L.Handler.MultiPath = L.Handler.extend({
         // marker is already activated, enable removeOnClick manually
         marker.on('click', removeOnClick)
         pop.toggleActivate();
+        return pop
     },
 
     // Remove an existing step by clicking on it
@@ -652,6 +653,7 @@ L.Handler.MultiPath = L.Handler.extend({
     },
 
     restoreTopology: function (topo) {
+        // TODO: check if this is still used
 
         /*
          * Topo is a list of sub-topologies.
@@ -695,26 +697,26 @@ L.Handler.MultiPath = L.Handler.extend({
               , end_layer_ll = {}
               , via_markers = [];
 
-            var pos2latlng = function (pos, layer) {
-                var used_pos = pos;
-                if (pos instanceof Array) {
-                    used_pos = pos[1];  // Default is second position (think of last path of topology)
-                    if (pos[0] == 0.0 && pos[1] != 1.0)
-                        used_pos = pos[1];
-                    if (pos[0] == 1.0 && pos[1] != 0.0)
-                        used_pos = pos[1];
-                    if (pos[0] != 1.0 && pos[1] == 0.0)
-                        used_pos = pos[0];
-                    if (pos[0] != 0.0 && pos[1] == 1.0)
-                        used_pos = pos[0];
-                    console.log("Chose " + used_pos + " for " + pos);
-                }
-                var interpolated = L.GeometryUtil.interpolateOnLine(self.map, layer, used_pos);
-                if (!interpolated) {
-                    throw ('Could not interpolate ' + used_pos + ' on layer ' + layer.properties.id);
-                }
-                return interpolated.latLng;
-            };
+            // var pos2latlng = function (pos, layer) {
+            //     var used_pos = pos;
+            //     if (pos instanceof Array) {
+            //         used_pos = pos[1];  // Default is second position (think of last path of topology)
+            //         if (pos[0] == 0.0 && pos[1] != 1.0)
+            //             used_pos = pos[1];
+            //         if (pos[0] == 1.0 && pos[1] != 0.0)
+            //             used_pos = pos[1];
+            //         if (pos[0] != 1.0 && pos[1] == 0.0)
+            //             used_pos = pos[0];
+            //         if (pos[0] != 0.0 && pos[1] == 1.0)
+            //             used_pos = pos[0];
+            //         console.log("Chose " + used_pos + " for " + pos);
+            //     }
+            //     var interpolated = L.GeometryUtil.interpolateOnLine(self.map, layer, used_pos);
+            //     if (!interpolated) {
+            //         throw ('Could not interpolate ' + used_pos + ' on layer ' + layer.properties.id);
+            //     }
+            //     return interpolated.latLng;
+            // };
 
             for (var i=0; i<topo.length; i++) {
                 var subtopo = topo[i]
@@ -762,6 +764,100 @@ L.Handler.MultiPath = L.Handler.extend({
             // Restore state as if a user clicks.
             this.setState(state);
         }
+    },
+
+    restoreGeometry: function (serializedTopology) {
+        var self = this;
+
+        function pos2latlng(pos, layer) {
+            var used_pos = pos;
+            if (pos instanceof Array) {
+                used_pos = pos[1];  // Default is second position (think of last path of topology)
+                if (pos[0] == 0.0 && pos[1] != 1.0)
+                    used_pos = pos[1];
+                if (pos[0] == 1.0 && pos[1] != 0.0)
+                    used_pos = pos[1];
+                if (pos[0] != 1.0 && pos[1] == 0.0)
+                    used_pos = pos[0];
+                if (pos[0] != 0.0 && pos[1] == 1.0)
+                    used_pos = pos[0];
+            }
+            var interpolated = L.GeometryUtil.interpolateOnLine(self.map, layer, used_pos);
+            if (!interpolated) {
+                throw ('Could not interpolate ' + used_pos + ' on layer ' + layer.properties.id);
+            }
+            return interpolated.latLng;
+        };
+        
+        // Create and show the route geometry
+        var restoredRouteLayer = L.featureGroup()
+        serializedTopology.forEach((topology, idx) => {
+            var groupLayer = this.buildGeometryFromTopology(topology);
+            groupLayer.step_idx = idx
+            restoredRouteLayer.addLayer(groupLayer)
+        })
+        this._routeLayer = restoredRouteLayer
+        this.showPathGeom(restoredRouteLayer);
+
+        this.setupNewRouteDragging(restoredRouteLayer)
+
+        // Add the start marker
+        var topology = serializedTopology[0]
+        var pathLayer = this.idToLayer(topology.paths[0])
+        var latlng = pos2latlng(topology.positions[0][0], pathLayer)
+        var popStart = this.addStartOrEndStep(pathLayer, latlng)
+        popStart.previousPosition = {ll: popStart.ll, polyline: popStart.polyline}
+
+        // Add the end marker
+        topology = serializedTopology[serializedTopology.length - 1]
+        var lastPosIdx = topology.paths.length - 1
+        pathLayer = this.idToLayer(topology.paths[lastPosIdx])
+        latlng = pos2latlng(topology.positions[lastPosIdx][1], pathLayer)
+        var popEnd = this.addStartOrEndStep(pathLayer, latlng)
+        popEnd.previousPosition = {ll: popEnd.ll, polyline: popEnd.polyline}
+
+        // Add the via markers: for each topology, use its first position,
+        // except for the first topology (it would be the start marker)
+        serializedTopology.forEach((topo, idx) => {
+            if (idx == 0)
+                return
+            pathLayer = this.idToLayer(topo.paths[0])
+            latlng = pos2latlng(topo.positions[0][0], pathLayer)
+            var viaMarker = {
+                layer: pathLayer,
+                marker: self.markersFactory.drag(latlng, null, true)
+            }
+            var pop = self.addViaStep(viaMarker.marker, idx);
+            self.forceMarkerToLayer(viaMarker.marker, viaMarker.layer);
+            pop.previousPosition = {ll: pop.ll, polyline: pop.polyline}
+        })
+
+        // Set the state
+        serializedTopology.forEach(topo => {
+            this._routeTopology.push({
+                positions: topo.positions,
+                paths: topo.paths,
+            })
+        })
+        this._currentStepsNb = this.steps.length
+        this._previousStepsNb = this.steps.length
+        this._routeIsValid = true
+    },
+
+    buildGeometryFromTopology: function (topology) {
+        var latlngs = [];
+        for (var i = 0; i < topology.paths.length; i++) {
+            var path = topology.paths[i],
+                positions = topology.positions[i],
+                polyline = this.idToLayer(path);
+            if (positions) {
+                latlngs.push(L.GeometryUtil.extract(polyline._map, polyline, positions[0], positions[1]));
+            }
+            else {
+                console.warn('Topology problem: ' + i + ' not in ' + JSON.stringify(topology.positions));
+            }
+        }
+        return L.multiPolyline(latlngs);
     },
 
     showPathGeom: function (layer) {
@@ -928,8 +1024,6 @@ L.Handler.MultiPath = L.Handler.extend({
     },
 
     onFetchedRoute: function(data) {
-        var self = this;
-
         // Reset all the markers to 'snapped' appearance
         this.steps.forEach(step => {
             L.DomUtil.removeClass(step.marker._icon, 'marker-highlighted');
@@ -951,6 +1045,12 @@ L.Handler.MultiPath = L.Handler.extend({
         this._routeTopology.splice.apply(this._routeTopology, spliceArgs)
         this.fire('computed_topology', {topology: this._routeTopology});
 
+        this.setupNewRouteDragging(routeLayers)
+    },
+
+    setupNewRouteDragging: function(routeLayer) {
+        var self = this;
+
         // ## ONCE ##
         if (this.drawOnMouseMove) {
             this.map.off('mousemove', this.drawOnMouseMove);
@@ -964,7 +1064,7 @@ L.Handler.MultiPath = L.Handler.extend({
             }
             if (self.markersFactory.isDragging()) {
                 return;
-            }            
+            }
 
             dragTimer = date;
 
@@ -986,7 +1086,7 @@ L.Handler.MultiPath = L.Handler.extend({
               , closest_point = null
               , matching_group_layer = null;
 
-            routeLayers && routeLayers.eachLayer(function(group_layer) {
+            routeLayer && routeLayer.eachLayer(function(group_layer) {
                 group_layer.eachLayer(function(layer) {
                     var p = layer.closestLayerPoint(layerPoint);
                     if (p && p.distance < min_dist && p.distance < MIN_DIST) {

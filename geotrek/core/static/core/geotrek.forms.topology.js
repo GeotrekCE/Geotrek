@@ -123,6 +123,11 @@ MapEntity.GeometryField.TopologyField = MapEntity.GeometryField.extend({
             this.load();
             return;
         }
+
+        // Path layer is ready, display the route
+        this._pathsLayer.fire('data:loading');
+        this.load();
+        this._pathsLayer.fire('data:loaded');
     },
 
     load: function () {
@@ -138,7 +143,7 @@ MapEntity.GeometryField.TopologyField = MapEntity.GeometryField.extend({
             this.store.lock();
             console.debug("Deserialize topology: " + JSON.stringify(topo));
             if (this._lineControl && !topo.lat && !topo.lng) {
-                this._lineControl.handler.restoreTopology(topo);
+                this._lineControl.handler.restoreGeometry(topo)
             }
             if (this._pointControl && topo.lat && topo.lng) {
                 this._pointControl.handler.restoreTopology(topo);
