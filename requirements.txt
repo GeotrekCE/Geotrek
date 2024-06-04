@@ -78,13 +78,10 @@ click-repl==0.3.0
 cligj==0.7.2
     # via fiona
 coreapi==2.3.3
-    # via
-    #   drf-yasg
-    #   geotrek (setup.py)
+    # via geotrek (setup.py)
 coreschema==0.0.4
     # via
     #   coreapi
-    #   drf-yasg
     #   geotrek (setup.py)
 cssselect2==0.7.0
     # via
@@ -176,7 +173,7 @@ drf-dynamic-fields==0.4.0
     # via geotrek (setup.py)
 drf-extensions==0.7.1
     # via geotrek (setup.py)
-drf-yasg==1.21.5
+drf-yasg==1.21.7
     # via
     #   django-large-image
     #   geotrek (setup.py)
@@ -301,6 +298,8 @@ pytz==2023.3.post1
     #   drf-yasg
 pyvips==2.2.3
     # via large-image-source-vips
+pyyaml==6.0.1
+    # via drf-yasg
 rcssmin==1.1.1
     # via django-compressor
 redis==4.5.4
@@ -317,10 +316,6 @@ requests==2.32.0
     #   mapentity
 rjsmin==1.2.1
     # via django-compressor
-ruamel-yaml==0.17.35
-    # via drf-yasg
-ruamel-yaml-clib==0.2.7
-    # via ruamel-yaml
 sentry-sdk==1.30.0
     # via geotrek (setup.py)
 shapely==2.0.4
