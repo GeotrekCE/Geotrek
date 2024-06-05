@@ -60,12 +60,11 @@ jobs:
       - name: Install python deps
         run: |
           python3.8 -m venv venv
-          source venv/bin/activate
-          pip install django -c requirements.txt
+          ./venv/bin/pip install django -c requirements.txt
 
       - name: Generate translation files
         run: |
-          ENV=dev ./manage.py makemessages -a --no-location --no-obsolete
+          ENV=dev ./venv/bin/python ./manage.py makemessages -a --no-location --no-obsolete
 
       - uses: tj-actions/verify-changed-files@v20
         id: verify-changed-files
