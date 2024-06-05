@@ -40,6 +40,21 @@ jobs:
   translations:
     name: Checking .po files are up-to-date
     runs-on: ubuntu-latest
+    envenv:
+      DEBIAN_FRONTEND: noninteractive
+      POSTGRES_DB: ci_test
+      POSTGRES_PASSWORD: ci_test
+      POSTGRES_USER: ci_test
+      POSTGRES_HOST: 127.0.0.1
+      SERVER_NAME: geotrek.local
+      SECRET_KEY: test-test-test
+      CONVERSION_HOST: localhost
+      CAPTURE_HOST: localhost
+      REDIS_HOST: 127.0.0.1
+      VAR_DIR: /home/runner/work/Geotrek-admin/Geotrek-admin/var
+      LANG: C.UTF-8
+      LANGUAGES: en fr
+      LANGUAGE_CODE: en
     strategy:
       matrix:
         os: ['focal-3.8']
