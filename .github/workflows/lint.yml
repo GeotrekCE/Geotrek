@@ -57,8 +57,10 @@ jobs:
               pip-${{ matrix.python-version }}-${{ matrix.os }}-${{ hashFiles('./requirements.txt', './dev-requirements.txt', './docs/requirements.txt') }}
               pip-${{ matrix.python-version }}-${{ matrix.os }}
 
-      - name: Install python deps
+      - name: Install deps
         run: |
+          sudo apt-get -qq update
+          sudo apt-get -yqq install libcairo2
           python3.8 -m venv venv
           ./venv/bin/pip install django -c requirements.txt
 
