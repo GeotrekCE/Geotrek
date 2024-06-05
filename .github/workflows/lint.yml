@@ -59,8 +59,8 @@ jobs:
 
       - name: Install deps
         run: |
-          sudo apt-get -qq update
-          sudo apt-get -yqq install libcairo2
+          apt-get -qq update
+          apt-get -yqq install libcairo2
           python3.8 -m venv venv
           ./venv/bin/pip install django -c requirements.txt
 
