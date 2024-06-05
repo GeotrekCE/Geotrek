@@ -50,7 +50,7 @@ jobs:
       - name: Prepare test env
         run: |
           sudo apt-get update -q
-          sudo apt-get -qq -y install gettext
+          sudo apt-get -qq -y install gettext gdal-bin
 
       - name: Generate translation files
         run: |
