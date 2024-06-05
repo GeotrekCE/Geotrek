@@ -40,7 +40,7 @@ jobs:
   translations:
     name: Checking .po files are up-to-date
     runs-on: ubuntu-latest
-    envenv:
+    env:
       DEBIAN_FRONTEND: noninteractive
       POSTGRES_DB: ci_test
       POSTGRES_PASSWORD: ci_test
