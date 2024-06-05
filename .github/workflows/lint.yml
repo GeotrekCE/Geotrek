@@ -64,6 +64,7 @@ jobs:
 
       - name: Generate translation files
         run: |
+          mkdir -p /opt/geotrek-admin/var/log
           ENV=dev ./venv/bin/python ./manage.py makemessages -a --no-location --no-obsolete
 
       - uses: tj-actions/verify-changed-files@v20
