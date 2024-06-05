@@ -59,7 +59,7 @@ jobs:
 
       - name: Install python deps
         run: |
-          python -m venv venv
+          python3.8 -m venv venv
           source venv/bin/activate
           pip install django -c requirements.txt
 
