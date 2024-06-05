@@ -79,5 +79,5 @@ jobs:
         if: steps.verify-changed-files.outputs.files_changed == 'true'
         run: |
           echo "Translation file(s) changed: ${{ steps.verify-changed-files.outputs.changed_files }}"
-          git diff
+          git diff --no-inde
           core.setFailed('Please fix your translation files with ./manage.py makemessages -a --no-location --no-obsolete')
