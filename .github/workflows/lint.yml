@@ -40,23 +40,32 @@ jobs:
   translations:
     name: Checking .po files are up-to-date
     runs-on: ubuntu-latest
+    container: makinacorpus/geodjango:${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ['focal-3.8']
+        python-version: ['3.8']
+
     steps:
       - uses: actions/checkout@v3
-
-      - uses: ./.github/actions/python-cache-requirements
+      - uses: actions/cache@v3
         with:
-          requirements: requirements.txt
+            path: |
+                ./venv
+            key: pip-${{ matrix.python-version }}-${{ matrix.os }}-${{ hashFiles('./requirements.txt', './dev-requirements.txt', './docs/requirements.txt') }}
+            restore-keys: |
+              pip-${{ matrix.python-version }}-${{ matrix.os }}-${{ hashFiles('./requirements.txt', './dev-requirements.txt', './docs/requirements.txt') }}
+              pip-${{ matrix.python-version }}-${{ matrix.os }}
 
-      - name: Prepare test env
+      - nme: Install python deps
         run: |
-          sudo apt-get update -q
-          sudo apt-get -qq -y install gettext gdal-bin
+          python -m venv venv
+          source venv/bin/activate
+          pip install django -c requirements.txt
 
       - name: Generate translation files
         run: |
-          ENV=dev ./manage.py
-          ENV=dev django-admin makemessages -a --no-location --no-obsolete
-
+          ENV=dev ./manage.py makemessages -a --no-location --no-obsolete
 
       - uses: tj-actions/verify-changed-files@v20
         id: verify-changed-files
