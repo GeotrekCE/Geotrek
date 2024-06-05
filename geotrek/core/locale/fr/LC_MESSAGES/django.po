@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 4.1.1\n"
 
-msgid "Core"
+msgid "Coree"
 msgstr "Cœur"
 
 msgid "Topology is empty."

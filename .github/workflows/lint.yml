@@ -54,9 +54,9 @@ jobs:
 
       - name: Generate translation files
         run: |
-          python3 ./manage.py makemessages -a --no-location --no-obsolete
+          django-admin makemessages -a --no-location --no-obsolete
 
-      - uses: tj-actions/verify-changed-files@v18
+      - uses: tj-actions/verify-changed-files@v20
         id: verify-changed-files
         with:
           files: |
