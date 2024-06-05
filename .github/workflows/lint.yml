@@ -68,9 +68,9 @@ jobs:
       - name: Install deps
         run: |
           sudo apt-get -qq update
-          sudo apt-get -yqq install gettext libcairo2
+          sudo apt-get -yqq install gettext libcairo2 libpq-dev
           python3.8 -m venv venv
-          ./venv/bin/pip install django -c requirements.txt
+          ./venv/bin/pip install -r requirements.txt
 
       - name: Generate translation files
         run: |
