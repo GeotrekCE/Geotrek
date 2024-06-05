@@ -47,9 +47,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: setup-python@v5
+      - uses: actions/setup-python@v5
         with:
-          python-version: "3.8.18"
+            cache: 'pip'
+            python-version: '3.8.18'
+            cache-dependency-path: |
+                requirements.txt
+                dev-requirements.txt
+                docs/requirements.txt
+
       - uses: actions/cache@v3
         with:
             path: |
