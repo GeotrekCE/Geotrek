@@ -40,7 +40,6 @@ jobs:
   translations:
     name: Checking .po files are up-to-date
     runs-on: ubuntu-latest
-    container: makinacorpus/geodjango:${{ matrix.os }}
     strategy:
       matrix:
         os: ['focal-3.8']
@@ -48,6 +47,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - uses: setup-python@v5
+          python-version: "3.8.18"
       - uses: actions/cache@v3
         with:
             path: |
@@ -60,7 +61,7 @@ jobs:
       - name: Install deps
         run: |
           apt-get -qq update
-          apt-get -yqq install libcairo2
+          apt-get -yqq install gettext libcairo2
           python3.8 -m venv venv
           ./venv/bin/pip install django -c requirements.txt
 
