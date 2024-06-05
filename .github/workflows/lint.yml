@@ -41,6 +41,7 @@ jobs:
     name: Checking .po files are up-to-date
     runs-on: ubuntu-latest
     env:
+      ENV: dev
       DEBIAN_FRONTEND: noninteractive
       POSTGRES_DB: ci_test
       POSTGRES_PASSWORD: ci_test
