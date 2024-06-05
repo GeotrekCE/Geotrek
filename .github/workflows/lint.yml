@@ -57,7 +57,7 @@ jobs:
               pip-${{ matrix.python-version }}-${{ matrix.os }}-${{ hashFiles('./requirements.txt', './dev-requirements.txt', './docs/requirements.txt') }}
               pip-${{ matrix.python-version }}-${{ matrix.os }}
 
-      - nme: Install python deps
+      - name: Install python deps
         run: |
           python -m venv venv
           source venv/bin/activate
