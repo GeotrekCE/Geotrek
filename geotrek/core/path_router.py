@@ -9,7 +9,7 @@ from django.core.cache import caches
 
 import numpy as np
 from scipy.sparse.csgraph import dijkstra
-from scipy.sparse import csr_matrix
+from scipy.sparse import csr_array
 
 from geotrek.common.utils import sqlfunction
 from .models import Path
@@ -111,7 +111,7 @@ class PathRouter:
             return
 
         nb_of_nodes = len(self.nodes)
-        self.dijk_matrix = np.zeros((nb_of_nodes, nb_of_nodes))
+        self.dijk_matrix = csr_array((nb_of_nodes, nb_of_nodes), dtype=np.float32)
 
         nodes_list = list(self.nodes.items())
         for i, (key1, value1) in enumerate(nodes_list[:-1]):
@@ -138,8 +138,8 @@ class PathRouter:
             # if not, the weight stays at 0
             edge_weight = self.get_edge_weight(edge_id)
             if edge_weight is not None:
-                self.dijk_matrix[row_idx][col_idx] = edge_weight
-                self.dijk_matrix[col_idx][row_idx] = edge_weight
+                self.dijk_matrix[row_idx, col_idx] = edge_weight
+                self.dijk_matrix[col_idx, row_idx] = edge_weight
 
     def get_edge_weight(self, edge_id):
         edge = self.edges.get(edge_id)
@@ -368,13 +368,9 @@ class PathRouter:
         return new_node_info_1, new_node_info_2
 
     def add_steps_to_matrix(self, from_node_info, to_node_info):
-        length = len(self.dijk_matrix)
-        # Add the last two rows
-        new_rows = [np.zeros(length) for i in range(2)]
-        self.dijk_matrix = np.vstack((self.dijk_matrix, new_rows))
-        # add the last two columns
-        new_columns = np.zeros((length + 2, 2))
-        self.dijk_matrix = np.hstack((self.dijk_matrix, new_columns))
+        # Add two rows and two columns
+        length = self.dijk_matrix.get_shape()[0]
+        self.dijk_matrix.resize((length + 2, length + 2))
 
         # Add the weights
         from_node_key = from_node_info['node_id']
@@ -386,15 +382,10 @@ class PathRouter:
                 self.set_edge_weight(node1, node2_key, row_idx, col_idx)
 
     def remove_steps_from_matrix(self):
-        length = len(self.dijk_matrix)
-        # Remove the last two rows
-        self.dijk_matrix = np.delete(self.dijk_matrix, [length - 1, length - 2], 0)
-        # Remove the last two columns
-        self.dijk_matrix = np.delete(self.dijk_matrix, [length - 1, length - 2], 1)
+        length = self.dijk_matrix.get_shape()[0]
+        self.dijk_matrix.resize((length - 2, length - 2))
 
     def get_shortest_path(self, from_node_id, to_node_id):
-        matrix = csr_matrix(self.dijk_matrix)
-
         # List of all nodes IDs -> to interprete dijkstra results
         self.nodes_ids = list(self.nodes.keys())
 
@@ -411,7 +402,7 @@ class PathRouter:
 
         from_node_idx = get_node_idx_per_id(from_node_id)
         to_node_idx = get_node_idx_per_id(to_node_id)
-        result = dijkstra(matrix, return_predecessors=True, indices=from_node_idx,
+        result = dijkstra(self.dijk_matrix, return_predecessors=True, indices=from_node_idx,
                           directed=False)
 
         # Retrace the path ID by ID, from end to start
