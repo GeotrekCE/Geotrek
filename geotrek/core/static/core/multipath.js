@@ -1,3 +1,5 @@
+var Geotrek = Geotrek || {};
+
 L.Mixin.ActivableControl = {
     activable: function (activable) {
         /**
