@@ -9,7 +9,7 @@ from django.core.cache import caches
 
 import numpy as np
 from scipy.sparse.csgraph import dijkstra
-from scipy.sparse import csr_array
+from scipy.sparse import lil_array
 
 from geotrek.common.utils import sqlfunction
 from .models import Path
@@ -111,7 +111,7 @@ class PathRouter:
             return
 
         nb_of_nodes = len(self.nodes)
-        self.dijk_matrix = csr_array((nb_of_nodes, nb_of_nodes), dtype=np.float32)
+        self.dijk_matrix = lil_array((nb_of_nodes, nb_of_nodes), dtype=np.float32)
 
         nodes_list = list(self.nodes.items())
         for i, (key1, value1) in enumerate(nodes_list[:-1]):
