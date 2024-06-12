@@ -111,17 +111,26 @@ class PathRouter:
             return
 
         nb_of_nodes = len(self.nodes)
+        nodes_ids = list(self.nodes.keys())
         self.dijk_matrix = lil_array((nb_of_nodes, nb_of_nodes), dtype=np.float32)
 
-        nodes_list = list(self.nodes.items())
-        for i, (key1, value1) in enumerate(nodes_list[:-1]):
-            # i ends at len - 1 and j starts at i + 1 because the
-            # matrix is symmetric and the main diagonal is all zeros (the
-            # weight from a node to itself is 0)
-            for j, (key2, value2) in enumerate(nodes_list[i + 1:]):
-                row_idx = i
-                col_idx = j + i + 1
-                self.set_edge_weight(value1, key2, row_idx, col_idx)
+        node_links_list = list(self.nodes.values())
+        for i, node_links in enumerate(node_links_list):
+            for (linked_node_id, edge_id) in list(node_links.items()):
+                # Get the linked node index amongst the still unprocessed nodes:
+                try:
+                    col_idx = nodes_ids[i + 1:].index(linked_node_id)
+                except ValueError:
+                    col_idx = None
+                else:
+                    col_idx += i + 1  # because the index was searched from i+1
+
+                # Set the weight of this link
+                if col_idx is not None:  # else, the weight has already been set
+                    row_idx = i
+                    edge_weight = self.get_edge_weight(edge_id)
+                    self.dijk_matrix[row_idx, col_idx] = edge_weight
+                    self.dijk_matrix[col_idx, row_idx] = edge_weight
 
         cache.set(key, (latest_paths_date, self.dijk_matrix))
 
@@ -500,7 +509,6 @@ class PathRouter:
         return multi_line_string.merged
 
     def round_line_string_coordinates(self, line_string):
-        # TODO: see which precision level is best
         coords = line_string.coords
         new_coords = [[round(nb, 4) for nb in pt_coord] for pt_coord in coords]
         new_line_string = LineString(new_coords, srid=line_string.srid)
