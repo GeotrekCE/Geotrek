@@ -38,6 +38,8 @@ from .serializers import PathSerializer, PathGeojsonSerializer, TrailSerializer,
 
 logger = logging.getLogger(__name__)
 
+import time
+
 
 class CreateFromTopologyMixin:
     def on_topology(self):
@@ -282,6 +284,7 @@ class PathViewSet(GeotrekMapentityViewSet):
     @action(methods=['GET'], detail=False, url_path='graph.json', renderer_classes=[JSONRenderer, BrowsableAPIRenderer])
     def graph(self, request, *args, **kwargs):
         """ Return a graph of the path. """
+        start = time.time()
         cache = caches['fat']
         key = 'path_graph_json'
 
@@ -298,6 +301,8 @@ class PathViewSet(GeotrekMapentityViewSet):
         graph = graph_lib.graph_edges_nodes_of_qs(Path.objects.exclude(draft=True))
 
         cache.set(key, (latest, graph))
+        end = time.time()
+        print('\n\n\n\n\n\n', end - start, '\n\n\n\n\n\n')
         return Response(graph)
 
     @method_decorator(permission_required('core.change_path'))

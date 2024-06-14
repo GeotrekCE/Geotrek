@@ -377,6 +377,7 @@ L.Handler.MultiPath = L.Handler.extend({
 
     // On click on a layer with the graph
     _onClick: function(e) {
+        this.startTime = new Date()
         if (this.steps.length >= 2) return;
         var self = this;
 
@@ -760,6 +761,9 @@ L.Handler.MultiPath = L.Handler.extend({
         var topology = Geotrek.TopologyHelper.buildTopologyFromComputedPath(this.idToLayer, data);
 
         this.showPathGeom(topology.layer);
+
+        var endTime = new Date()
+        console.log('time', endTime - this.startTime)
         this.fire('computed_topology', {topology:topology.serialized});
 
         // ## ONCE ##
@@ -851,6 +855,7 @@ Geotrek.PointOnPolyline = function (marker) {
             if (marker.snap) marker.fire('snap', {layer: marker.snap, latlng: marker.getLatLng()});
         },
         'snap': function onSnap(e) {
+            this.startTime = new Date()
             this.ll = e.latlng;
             this.polyline = e.layer;
             this.path_length = L.GeometryUtil.length(this.polyline);
