@@ -22,19 +22,29 @@ describe('Create trek', () => {
     });
 
     it('Create trek', () => {
-        cy.writeFile('benchmark_js.txt', 'test 1 ', { flag: 'a+' })
+        let startTime = 0
+        cy.then(() => {
+            startTime = performance.now()
+        });
         cy.visit('/trek/list');
         cy.wait('@tiles');
         cy.server();
         cy.route('/api/path/drf/paths/graph.json').as('graph');
         cy.get("a.btn-success[href='/trek/add/']").contains('Add a new trek').click();
-        cy.wait('@graph');
-        cy.writeFile('benchmark_js.txt', 'test 2', { flag: 'a+' })
-        cy.writeFile('benchmark_js.txt', '\n', { flag: 'a+' })
+        cy.wait('@graph')
+        .then(() => {
+            let elapsedTime = performance.now() - startTime
+            cy.writeFile('benchmark_js.txt', elapsedTime.toString() + ' ', { flag: 'a+' })
+            startTime = performance.now()
+        });
         cy.get("a.linetopology-control").click();
         cy.get("textarea[id='id_topology']").type('[{"pk": 2, "kind": "TREK", "offset": 0.0, "paths": [3], "positions": {"0": [0.674882030756843, 0.110030805790642]}}]', {
             force: true,
             parseSpecialCharSequences: false
+        })
+        .then(() => {
+            let elapsedTime = performance.now() - startTime
+            cy.writeFile('benchmark_js.txt', elapsedTime.toString() + '\n', { flag: 'a+' })
         });
         cy.get("input[id='id_duration']").type('100');
         cy.get("input[name='name_en']").type('Trek number 1');
