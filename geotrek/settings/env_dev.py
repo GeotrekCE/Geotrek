@@ -21,7 +21,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 INSTALLED_APPS += (
     'django_extensions',
-    'debug_toolbar',
+    # 'debug_toolbar',
     'geotrek.diving',
     'geotrek.sensitivity',
     'geotrek.outdoor',
@@ -33,7 +33,7 @@ INTERNAL_IPS = type(str('c'), (), {'__contains__': lambda *a: True})()
 ALLOWED_HOSTS = ['*']
 
 MIDDLEWARE += (
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 LOGGING['loggers']['']['level'] = 'DEBUG'
