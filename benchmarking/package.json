@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "cypress:benchmark": "cypress run --spec cypress/e2e/benchmark_automation.cy.js"
+  },
+  "dependencies": {
+    "cypress": "^13.11.0"
+  }
+}
