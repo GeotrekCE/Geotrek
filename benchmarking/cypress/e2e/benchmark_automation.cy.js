@@ -27,24 +27,24 @@ describe('Frontend-side routing', () => {
         cy.visit('/trek/add');
         cy.wait('@tiles');
 
-        // Get the graph and measure the execution time
-        let startTime = 0
+        // Get the graph and measure the response time
+        let startTime;
         cy.then(() => startTime = performance.now());
         cy.intercept('/api/path/drf/paths/graph.json')
         .then(() => {
             let elapsedTime = performance.now() - startTime
             cy.writeFile('benchmark_js.txt', elapsedTime.toString() + ' ', { flag: 'a+' })
-            startTime = performance.now()
         });
 
         // Click on the "Route" control
         cy.get("a.linetopology-control").click();
 
-        // Retrieve paths html elements
-        cy.get('[data-test^="pathLayer-"').as('paths')
-        cy.get('@paths').first().parent().next().children().first().click()
-        cy.get('@paths').last().parent().prev().children().first().click({force: true})
-        cy.get('[id^="pathdef-"').should('have.length', 3).then(() => {
+        // Click on the paths and wait for the route to be displayed
+        cy.get('[data-test="pathLayer-3"').click()
+        cy.get('[data-test="pathLayer-8"').click({force: true})
+        .then(() => startTime = performance.now())
+        cy.get('[id^="pathdef-"')
+        .then(() => {
             let elapsedTime = performance.now() - startTime
             cy.writeFile('benchmark_js.txt', elapsedTime.toString() + '\n', { flag: 'a+' })
         });
