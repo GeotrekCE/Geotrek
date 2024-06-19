@@ -41,21 +41,10 @@ describe('Frontend-side routing', () => {
         cy.get("a.linetopology-control").click();
 
         // Retrieve paths html elements
-        // TODO: get them by a data-test attribute
-        cy.get('.leaflet-objects-pane').within(() => {
-            cy.get('[stroke-width=2]').as('paths')
-            cy.get('@paths').first().parent().next().children().first().click()
-            cy.get('@paths').last().parent().prev().children().first().click({force: true})
-            // cy.get('[stroke-width=2]').as('paths')
-            // cy.get('@paths').first().invoke('getTotalLength').as('1st-path-len')
-            // cy.get('@paths').first().invoke('getPointAtLength', '@1st-path-len')
-            // cy.writeFile('benchmark_js.txt', '@1st-path-len', { flag: 'a+' })
-        })
-        // cy.get("textarea[id='id_topology']").type('[{"pk": 2, "kind": "TREK", "offset": 0.0, "paths": [3], "positions": {"0": [0.674882030756843, 0.110030805790642]}}]', {
-        //     force: true,
-        //     parseSpecialCharSequences: false
-        // })
-        .then(() => {
+        cy.get('[data-test^="pathLayer-"').as('paths')
+        cy.get('@paths').first().parent().next().children().first().click()
+        cy.get('@paths').last().parent().prev().children().first().click({force: true})
+        cy.get('[id^="pathdef-"').should('have.length', 3).then(() => {
             let elapsedTime = performance.now() - startTime
             cy.writeFile('benchmark_js.txt', elapsedTime.toString() + '\n', { flag: 'a+' })
         });
