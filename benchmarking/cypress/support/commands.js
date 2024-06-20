@@ -49,17 +49,16 @@ Cypress.Commands.add('mockTiles', (username, password) => {
     cy.intercept("https://*.tile.opentopomap.org/*/*/*.png", {fixture: "images/tile.png"}).as("tiles");
 });
 
-Cypress.Commands.add('clickOnPath', (pathPk, percentage, forceClick) => {
+Cypress.Commands.add('getCoordsOnPath', (pathPk, percentage) => {
   cy.get(`[data-test=pathLayer-${pathPk}]`).then(path => {
     let domPath = path['0']
     
-    // Get the coordinates of the click relative to the map element
+    // Get the coordinates relative to the map element
     let pathLength = domPath.getTotalLength()
     let lengthAtPercentage = percentage * pathLength / 100
     let coordsOnMap = domPath.getPointAtLength(lengthAtPercentage)
 
-    // The click coords are relative to the map. Since we have to click on the
-    // path, we convert the coords so they are relative to the path
+    // Convert the coords so they are relative to the path
     cy.get('[id="id_topology-map"]').then(map => {
       let domMap = map['0']
 
@@ -69,14 +68,29 @@ Cypress.Commands.add('clickOnPath', (pathPk, percentage, forceClick) => {
       let horizontalDelta = pathCoords.x - mapCoords.x
       let verticalDelta = pathCoords.y - mapCoords.y
 
-      // Get the coords of the click relative to the path element
-      let coordsOnPath = {
+      // Return the coords relative to the path element
+      return {
         x: coordsOnMap.x - horizontalDelta,
         y: coordsOnMap.y - verticalDelta,
       }
-
-      // Click on the path
-      cy.wrap(path).click(coordsOnPath.x, coordsOnPath.y, {force: forceClick})
     })
   })
 })
+
+Cypress.Commands.add('clickOnPath', (pathPk, percentage, forceClick) => {
+  // Get the click coordinates relative to the path
+  cy.getCoordsOnPath(pathPk, percentage).then(clickCoords => {
+    cy.get(`[data-test=pathLayer-${pathPk}]`)
+    .click(clickCoords.x, clickCoords.y, {force: forceClick})
+  })
+})
+
+// Cypress.Commands.add('addViaPoint', (srcPathPk, destPathPk) => {
+//   cy.get(`[data-test=pathLayer-${srcPathPk}]`).as('srcPath')
+//   cy.get(`[data-test=pathLayer-${destPathPk}]`).as('destPath')
+
+//   cy.get('@srcPath').trigger('mousedown')
+//   cy.get('@destPath').trigger('mouseup')
+
+//   // cy.get('id="id_topology-map')
+// })
