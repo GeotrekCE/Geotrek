@@ -39,10 +39,10 @@ describe('Frontend-side routing', () => {
 
         // Click on the paths and wait for the route to be displayed
         let startTime;
-        cy.get('[data-test="pathLayer-3"').click()
-        cy.get('[data-test="pathLayer-8"').click({force: true})
+        cy.get('[data-test=pathLayer-3]').click()
+        cy.get('[data-test=pathLayer-8]').click({force: true})
         .then(() => startTime = performance.now())
-        cy.get('[id^="pathdef-"')
+        cy.get('[id^="pathdef-"]')
         .then(() => {
             let elapsedTime = performance.now() - startTime
             cy.writeFile('benchmark_js.txt', elapsedTime.toString() + '\n', { flag: 'a+' })
