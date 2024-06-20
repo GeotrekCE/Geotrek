@@ -28,7 +28,7 @@ describe('Frontend-side routing', () => {
         cy.visit('/trek/add');
         cy.wait('@tiles');
 
-        // Write the response time after it has been received
+        // Write the request time after the response has been received
         cy.wait('@graph').then(intercept => {
             let elapsedTime = intercept.response.headers.elapsedTime
             cy.writeFile('benchmark_js.txt', elapsedTime.toString() + ' ', { flag: 'a+' })
@@ -39,9 +39,8 @@ describe('Frontend-side routing', () => {
 
         // Click on the paths and wait for the route to be displayed
         let startTime;
-        cy.get('[data-test=pathLayer-3]').click()
-        cy.get('[data-test=pathLayer-8]').click({force: true})
-        .then(() => startTime = performance.now())
+        cy.clickOnPath(3, 30, true)
+        cy.clickOnPath(8, 90, true).then(() => startTime = performance.now())
         cy.get('[id^="pathdef-"]')
         .then(() => {
             let elapsedTime = performance.now() - startTime
