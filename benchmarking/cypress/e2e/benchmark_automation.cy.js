@@ -16,30 +16,29 @@ describe('Frontend-side routing', () => {
         cy.mockTiles();
     });
 
-    // TODO
-    // beforeEach(() => {
-    //     Cypress.Cookies.preserveOnce('sessionid', 'csrftoken');
-    //     cy.setCookie('django_language', 'en');
-    // });
-
-    it('Find a route', () => {
+    it('Find a route', function () {
+        // Set the response time in its header to access it later
+        cy.intercept('/api/path/drf/paths/graph.json', request => {
+            let startTime = Date.now()
+            request.continue(response => {
+                response.headers.elapsedTime = Date.now() - startTime
+            })
+        }).as('graph')
 
         cy.visit('/trek/add');
         cy.wait('@tiles');
 
-        // Get the graph and measure the response time
-        let startTime;
-        cy.then(() => startTime = performance.now());
-        cy.intercept('/api/path/drf/paths/graph.json')
-        .then(() => {
-            let elapsedTime = performance.now() - startTime
+        // Write the response time after it has been received
+        cy.wait('@graph').then(intercept => {
+            let elapsedTime = intercept.response.headers.elapsedTime
             cy.writeFile('benchmark_js.txt', elapsedTime.toString() + ' ', { flag: 'a+' })
-        });
+        })
 
         // Click on the "Route" control
         cy.get("a.linetopology-control").click();
 
         // Click on the paths and wait for the route to be displayed
+        let startTime;
         cy.get('[data-test="pathLayer-3"').click()
         cy.get('[data-test="pathLayer-8"').click({force: true})
         .then(() => startTime = performance.now())
