@@ -19,9 +19,9 @@ describe('Frontend-side routing', () => {
     it('Find a route', function () {
         // Set the response time in its header to access it later
         cy.intercept('/api/path/drf/paths/graph.json', request => {
-            let startTime = Date.now()
+            let startTime = performance.now()
             request.continue(response => {
-                response.headers.elapsedTime = Date.now() - startTime
+                response.headers.elapsedTime = performance.now() - startTime
             })
         }).as('graph')
 
