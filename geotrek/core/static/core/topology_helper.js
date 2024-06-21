@@ -251,7 +251,9 @@ Geotrek.TopologyHelper = (function() {
                 console.warn('Topology problem: ' + i + ' not in ' + JSON.stringify(topology.positions));
             }
         }
-        return L.multiPolyline(latlngs);
+        let multiPolyline = L.multiPolyline(latlngs);
+        multiPolyline.on('mouseover', (e) => console.log('mouseover'));
+        return multiPolyline;
     }
 
     /**

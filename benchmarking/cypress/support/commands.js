@@ -49,48 +49,65 @@ Cypress.Commands.add('mockTiles', (username, password) => {
     cy.intercept("https://*.tile.opentopomap.org/*/*/*.png", {fixture: "images/tile.png"}).as("tiles");
 });
 
+Cypress.Commands.add('getMap', () => cy.get('[id="id_topology-map"]'))
+
 Cypress.Commands.add('getCoordsOnPath', (pathPk, percentage) => {
   cy.get(`[data-test=pathLayer-${pathPk}]`).then(path => {
-    let domPath = path['0']
+    let domPath = path['0'];
     
     // Get the coordinates relative to the map element
-    let pathLength = domPath.getTotalLength()
-    let lengthAtPercentage = percentage * pathLength / 100
-    let coordsOnMap = domPath.getPointAtLength(lengthAtPercentage)
+    let pathLength = domPath.getTotalLength();
+    let lengthAtPercentage = percentage * pathLength / 100;
+    let coordsOnMap = domPath.getPointAtLength(lengthAtPercentage);
 
     // Convert the coords so they are relative to the path
-    cy.get('[id="id_topology-map"]').then(map => {
-      let domMap = map['0']
+    cy.getMap().then(map => {
+      let domMap = map['0'];
 
       // Get the coords of the map and the path relative to the root DOM element
-      let mapCoords = domMap.getBoundingClientRect()
-      let pathCoords = domPath.getBoundingClientRect()
-      let horizontalDelta = pathCoords.x - mapCoords.x
-      let verticalDelta = pathCoords.y - mapCoords.y
+      let mapCoords = domMap.getBoundingClientRect();
+      let pathCoords = domPath.getBoundingClientRect();
+      let horizontalDelta = pathCoords.x - mapCoords.x;
+      let verticalDelta = pathCoords.y - mapCoords.y;
 
       // Return the coords relative to the path element
       return {
         x: coordsOnMap.x - horizontalDelta,
         y: coordsOnMap.y - verticalDelta,
       }
-    })
+    });
   })
 })
 
 Cypress.Commands.add('clickOnPath', (pathPk, percentage, forceClick) => {
   // Get the click coordinates relative to the path
   cy.getCoordsOnPath(pathPk, percentage).then(clickCoords => {
+    // cy.getMap().invoke('setView', [50.5, 30.5], {animate: false});
+    cy.getMap().then(map => {
+      let domMap = map.get(0);
+      console.log('domMap', domMap)
+      domMap.addEventListener('cypresszoom', (e) => console.log('zoom cypress'), false)
+      domMap.dispatchEvent(
+        new MouseEvent('cypresszoom', {
+            clientX: 0,
+            clientY: 0,
+            bubbles: true
+        })
+    )
+    })
+        
+
     cy.get(`[data-test=pathLayer-${pathPk}]`)
-    .click(clickCoords.x, clickCoords.y, {force: forceClick})
-  })
+    .click(clickCoords.x, clickCoords.y, {force: forceClick});
+  });
 })
 
-// Cypress.Commands.add('addViaPoint', (srcPathPk, destPathPk) => {
-//   cy.get(`[data-test=pathLayer-${srcPathPk}]`).as('srcPath')
-//   cy.get(`[data-test=pathLayer-${destPathPk}]`).as('destPath')
+Cypress.Commands.add('addViaPoint', (srcPathPk, destPathPk, forceClick) => {
+  cy.get(`[data-test=pathLayer-${srcPathPk}]`).as('srcPath');
+  cy.get(`[data-test=pathLayer-${destPathPk}]`).as('destPath');
 
-//   cy.get('@srcPath').trigger('mousedown')
-//   cy.get('@destPath').trigger('mouseup')
+  cy.get('@srcPath').trigger('mousedown');
+  cy.get('@destPath').trigger('mouseup');
 
-//   // cy.get('id="id_topology-map')
-// })
+  // cy.get('id="id_topology-map')
+})

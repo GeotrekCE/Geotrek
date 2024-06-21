@@ -55,16 +55,19 @@ MapEntity.GeometryField.GeometryFieldPathMixin = {
             // Reference to the object layer hovered before the path is hovered
             var overlapped = null;
             objectsLayer.on('mouseover', function (e) {
+                console.log('mouseover 1')
                 overlapped = e.layer;
             });
             // On path hover, propagate events to overlapped layer
             pathsLayer.on('mouseover mouseout', function (e) {
+                console.log('mouseover 2')
                 if (overlapped !== null) {
                     e.layer = overlapped;
                     e.target = overlapped;
                     overlapped.fire(e.type, e);
                 }
                 if (e.type == 'mouseout') {
+                    console.log('mouseout')
                     overlapped = null;
                 }
             });
