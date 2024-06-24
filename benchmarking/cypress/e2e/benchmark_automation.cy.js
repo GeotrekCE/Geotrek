@@ -31,7 +31,7 @@ describe('Frontend-side routing', () => {
         // Write the request time after the response has been received
         cy.wait('@graph').then(intercept => {
             let elapsedTime = intercept.response.headers.elapsedTime
-            cy.writeFile('benchmark_js.txt', elapsedTime.toString() + ' ', { flag: 'a+' })
+            cy.writeFile('time_measures_js.txt', elapsedTime.toString() + ' ', { flag: 'a+' })
         })
 
         // Click on the "Route" control
@@ -44,11 +44,11 @@ describe('Frontend-side routing', () => {
             cy.get('[id^="pathdef-"]')
             .then(() => {
                 let elapsedTime = performance.now() - startTime
-                cy.writeFile('benchmark_js.txt', elapsedTime.toString() + ' ', { flag: 'a+' })
+                cy.writeFile('time_measures_js.txt', elapsedTime.toString() + ' ', { flag: 'a+' })
             });
         }
         // Add a newline to the time log files
-        cy.writeFile('benchmark_js.txt', '\n', { flag: 'a+' })
-        cy.writeFile('benchmark_py.txt', '\n', { flag: 'a+' })
+        cy.writeFile('time_measures_js.txt', '\n', { flag: 'a+' })
+        cy.writeFile('time_measures_py.txt', '\n', { flag: 'a+' })
     })
 })

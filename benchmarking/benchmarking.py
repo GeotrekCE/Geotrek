@@ -15,7 +15,7 @@ def get_time_averages(measure_filename):
 
 
 if __name__ == '__main__':
-    averages = get_time_averages('benchmark_py.txt')
+    averages = get_time_averages('time_measures_py.txt')
     print('Python:', averages)
-    averages = get_time_averages('benchmark_js.txt')
+    averages = get_time_averages('time_measures_js.txt')
     print('JavaScript:', averages)
