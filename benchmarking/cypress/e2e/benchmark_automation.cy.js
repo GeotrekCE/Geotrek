@@ -35,11 +35,18 @@ describe('Frontend-side routing', () => {
         })
 
         // Click on the "Route" control
-        cy.get("a.linetopology-control").click();
-        cy.get("a.linetopology-control").click();
-        cy.get("a.linetopology-control").click();
-        cy.get("a.linetopology-control").click();
-        cy.get("a.linetopology-control").click();
+        let startTime;
+        cy.get("a.linetopology-control").click()
 
+        // Measure time for the next clicks
+        for (let i = 0; i < 4; i++) {
+            cy.get("a.linetopology-control").click().then(() => startTime = performance.now());
+            cy.get('[id^="pathdef-"]')
+            .then(() => {
+                let elapsedTime = performance.now() - startTime
+                cy.writeFile('benchmark_js.txt', elapsedTime.toString() + ' ', { flag: 'a+' })
+            });
+        }
+        cy.writeFile('benchmark_js.txt', '\n', { flag: 'a+' })
     })
 })
