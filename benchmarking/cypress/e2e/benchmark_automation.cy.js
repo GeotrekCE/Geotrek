@@ -47,6 +47,8 @@ describe('Frontend-side routing', () => {
                 cy.writeFile('benchmark_js.txt', elapsedTime.toString() + ' ', { flag: 'a+' })
             });
         }
+        // Add a newline to the time log files
         cy.writeFile('benchmark_js.txt', '\n', { flag: 'a+' })
+        cy.writeFile('benchmark_py.txt', '\n', { flag: 'a+' })
     })
 })
