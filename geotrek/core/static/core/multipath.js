@@ -305,10 +305,6 @@ L.Handler.MultiPath = L.Handler.extend({
     },
 
     onClickCypress: function () {
-        if (!this.cypressGeometry) {
-            this.cypressGeometry = this.restoreTopology(this.cypressTopology);
-        }
-
         if (this.steps.length < this.cypressTopology.length + 2) {
             let geom = this.cypressGeometry;
             if (this.steps.length == 0) {
@@ -396,6 +392,9 @@ L.Handler.MultiPath = L.Handler.extend({
         this._guidesLayer.on('click', this._onClick, this);
 
         this.stepsToggleActivate(true);
+        if (!this.cypressGeometry) {
+            this.cypressGeometry = this.restoreTopology(this.cypressTopology);
+        }
 
         this.fire('enabled');
     },
@@ -460,7 +459,7 @@ L.Handler.MultiPath = L.Handler.extend({
 
         var pop = new Geotrek.PointOnPolyline(marker);
         this.steps.splice(idx, 0, pop);  // Insert pop at position idx
-        
+
         pop.events.on('valid', function() {
             self.computePaths();
         });
