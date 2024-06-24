@@ -84,7 +84,8 @@ MapEntity.GeometryField.TopologyField = MapEntity.GeometryField.extend({
                     this.store.save(e.topology);
                 }, this);
                 // Make sure, we clean-up geometries when user changes from point to line
-                control.handler.on('enabled', resetTopologies, this);
+                // Warning: commented for cypress automation
+                // control.handler.on('enabled', resetTopologies, this);
             }
             else {
                 map.remove()

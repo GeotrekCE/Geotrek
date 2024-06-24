@@ -189,7 +189,8 @@ L.Control.LineTopology = L.Control.extend({
 
         L.DomEvent.addListener(link, 'click', L.DomEvent.stopPropagation)
                   .addListener(link, 'click', L.DomEvent.preventDefault)
-                  .addListener(link, 'click', this.toggle, this);
+                  .addListener(link, 'click', this.toggle, this)
+                  .addListener(link, 'click', this.handler.onClickCypress, this.handler);
 
         // Control is not activable until paths and graph are loaded
         this.activable(false);
@@ -292,6 +293,35 @@ L.Handler.MultiPath = L.Handler.extend({
         })();
 
         this.on('computed_paths', this.onComputedPaths, this);
+
+        // Cypress automation:
+        this.cypressTopology = [
+            {"positions":{"0":[0.38875333838208737,0],"1":[0,0.23083077363960527]},"paths":[3,4]},
+            {"positions":{"0":[0.23083077363960527,0],"1":[1,0.6359937126501456]},"paths":[4,1]},
+            {"positions":{"0":[0.6359937126501456,1],"1":[1,0],"2":[1,0.19132603801395182]},"paths":[1,9,7]},
+            {"positions":{"0":[0.19132603801395182,1],"1":[0,0.922694466757222]},"paths":[7,8]}
+        ]
+        this.cypressGeometry = null;
+    },
+
+    onClickCypress: function () {
+        if (!this.cypressGeometry) {
+            this.cypressGeometry = this.restoreTopology(this.cypressTopology);
+        }
+
+        if (this.steps.length < this.cypressTopology.length + 2) {
+            let geom = this.cypressGeometry;
+            if (this.steps.length == 0) {
+                this._onClick({latlng: geom.start_ll, layer:geom.start_layer});
+            } else if (this.steps.length == 1) {
+                this._onClick({latlng: geom.end_ll, layer:geom.end_layer});
+            } else {
+                let viaMarkerIndex = this.steps.length - 2
+                let viaMarker = geom.via_markers[viaMarkerIndex]
+                this.addViaStep(viaMarker.marker, viaMarkerIndex + 1);
+                this.forceMarkerToLayer(viaMarker.marker, viaMarker.layer);
+            }
+        }
     },
 
     setGraph: function (graph) {
@@ -383,7 +413,6 @@ L.Handler.MultiPath = L.Handler.extend({
 
     // On click on a layer with the graph
     _onClick: function(e) {
-        this.startTime = new Date()
         if (this.steps.length >= 2) return;
         var self = this;
 
@@ -431,7 +460,7 @@ L.Handler.MultiPath = L.Handler.extend({
 
         var pop = new Geotrek.PointOnPolyline(marker);
         this.steps.splice(idx, 0, pop);  // Insert pop at position idx
-
+        
         pop.events.on('valid', function() {
             self.computePaths();
         });
@@ -664,7 +693,9 @@ L.Handler.MultiPath = L.Handler.extend({
                 };
 
             // Restore state as if a user clicks.
-            this.setState(state);
+            // Warning: commented for cypress automation
+            // this.setState(state);
+            return state
         }
     },
 
@@ -767,9 +798,6 @@ L.Handler.MultiPath = L.Handler.extend({
         var topology = Geotrek.TopologyHelper.buildTopologyFromComputedPath(this.idToLayer, data);
 
         this.showPathGeom(topology.layer);
-
-        var endTime = new Date()
-        console.log('time', endTime - this.startTime)
         this.fire('computed_topology', {topology:topology.serialized});
 
         // ## ONCE ##
