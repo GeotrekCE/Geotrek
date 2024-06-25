@@ -691,11 +691,15 @@ L.Handler.MultiPath = L.Handler.extend({
                         if (new_path_layer) {
                             self.map.addLayer(new_path_layer);
                             new_path_layer.setStyle({'color': 'yellow', 'weight': 5, 'opacity': 0.8});
+                            let stepIdx = 0;
                             new_path_layer.eachLayer(function (l) {
-                            l.on('mousedown', (e) => console.log('no'));
                                 if (typeof l.setText == 'function') {
                                     l.setText('>  ', {repeat: true, attributes: {'fill': '#FF5E00'}});
+                                    l.eachLayer((layer) => {
+                                        layer._path.setAttribute('data-test', 'route-step-' + stepIdx);
+                                    })
                                 }
+                                stepIdx++;
                             });
                         }
                     }
