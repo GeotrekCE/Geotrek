@@ -106,7 +106,7 @@ Cypress.Commands.add('clickOnPath', (pathPk, percentage) => {
   cy.window().then(win => {
     const map = win.maps[0];
     const originalMapBounds = map.getBounds();
-    cy.fitPathBounds(8).then(() => {
+    cy.fitPathBounds(pathPk).then(() => {
 
       // Get the coordinates of the click and execute it
       cy.getCoordsOnPath(pathPk, percentage).then(clickCoords => {
@@ -133,20 +133,26 @@ Cypress.Commands.add('clickOnPath', (pathPk, percentage) => {
   //       })
   //   )
   //   })
-
-
-  //   cy.getPath(pathPk)
-  //   .click(clickCoords.x, clickCoords.y, {force: forceClick});
-  // });
 });
 
 
-Cypress.Commands.add('addViaPoint', (srcPathPk, percentage, stepIndex) => {
-  cy.getPath(srcPathPk).as('srcPath');
-  cy.getPath(destPathPk).as('destPath');
+Cypress.Commands.add('addViaPoint', (pathPk, percentage, stepIndex) => {
+  cy.getPath(pathPk).as('path');
 
-  cy.get('@srcPath').trigger('mousedown');
-  cy.get('@destPath').trigger('mouseup');
+  cy.window().then(win => {
+    const map = win.maps[0];
+    const originalMapBounds = map.getBounds();
+    cy.fitPathBounds(8).then(() => {
+
+      // Get the coordinates of the click and execute it
+      cy.getCoordsOnPath(pathPk, percentage).then(clickCoords => {
+        cy.getPath(pathPk)
+        .click(clickCoords.x, clickCoords.y, {force: true});
+      })
+      // Reset the map to its original bounds
+      .then(() => map.fitBounds(originalMapBounds));
+    })
+  });
 })
 
 
