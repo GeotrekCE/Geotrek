@@ -51,6 +51,7 @@ Cypress.Commands.add('mockTiles', (username, password) => {
 
 Cypress.Commands.add('getMap', () => cy.get('[id="id_topology-map"]'));
 Cypress.Commands.add('getPath', pathPk => cy.get(`[data-test=pathLayer-${pathPk}]`));
+Cypress.Commands.add('getRoute', () => cy.get('[id^="pathdef-"]'));
 
 Cypress.Commands.add('fitPathBounds', (pathPk) => {
   cy.window().then(win => {
@@ -72,19 +73,8 @@ Cypress.Commands.add('fitPathBounds', (pathPk) => {
 
 
 Cypress.Commands.add('getCoordsOnPath', (pathPk, percentage) => {
-  cy.window().then(win => {
-    const map = win.maps[0];
-    const originalMapBounds = map.getBounds()
-    cy.fitPathBounds(8).then(() => {
-      cy.log('a')
-
-      map.fitBounds(originalMapBounds)
-    })
-    cy.log('a')
-  })
-
   cy.getPath(pathPk).then(path => {
-    let domPath = path['0'];
+    let domPath = path.get(0);
 
     // Get the coordinates relative to the map element
     let pathLength = domPath.getTotalLength();
@@ -93,7 +83,7 @@ Cypress.Commands.add('getCoordsOnPath', (pathPk, percentage) => {
 
     // Convert the coords so they are relative to the path
     cy.getMap().then(map => {
-      let domMap = map['0'];
+      let domMap = map.get(0);
 
       // Get the coords of the map and the path relative to the root DOM element
       let mapCoords = domMap.getBoundingClientRect();
@@ -110,7 +100,7 @@ Cypress.Commands.add('getCoordsOnPath', (pathPk, percentage) => {
   })
 })
 
-Cypress.Commands.add('clickOnPath', (pathPk, percentage, forceClick) => {
+Cypress.Commands.add('clickOnPath', (pathPk, percentage) => {
 
   // Zoom on the path for precision
   cy.window().then(win => {
@@ -121,7 +111,7 @@ Cypress.Commands.add('clickOnPath', (pathPk, percentage, forceClick) => {
       // Get the coordinates of the click and execute it
       cy.getCoordsOnPath(pathPk, percentage).then(clickCoords => {
         cy.getPath(pathPk)
-        .click(clickCoords.x, clickCoords.y, {force: forceClick});
+        .click(clickCoords.x, clickCoords.y, {force: true});
       })
       // Reset the map to its original bounds
       .then(() => map.fitBounds(originalMapBounds));
@@ -149,6 +139,16 @@ Cypress.Commands.add('clickOnPath', (pathPk, percentage, forceClick) => {
   //   .click(clickCoords.x, clickCoords.y, {force: forceClick});
   // });
 });
+
+
+Cypress.Commands.add('addViaPoint', (srcPathPk, percentage, stepIndex) => {
+  cy.getPath(srcPathPk).as('srcPath');
+  cy.getPath(destPathPk).as('destPath');
+
+  cy.get('@srcPath').trigger('mousedown');
+  cy.get('@destPath').trigger('mouseup');
+})
+
 
 // Cypress.Commands.add('addViaPoint', (srcPathPk, destPathPk, forceClick) => {
 //   cy.getPath(srcPathPk).as('srcPath');
