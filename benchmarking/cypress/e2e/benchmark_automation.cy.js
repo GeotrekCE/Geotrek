@@ -46,6 +46,11 @@ describe('Frontend-side routing', () => {
             cy.writeFile('benchmark_js.txt', elapsedTime.toString() + '\n', { flag: 'a+' })
         });
 
+        cy.addViaPoint({pathPk: 8, percentage: 10}, {pathPk: 7, percentage: 50})
+        cy.get('.marker-drag').then(marker => {
+
+        })
+
         cy.getRoute().first().then((route) => {
             let domRoute = route.get(0)
             cy.getCoordsOnPath(8, 10).then(coordsSrc => {
@@ -60,13 +65,13 @@ describe('Frontend-side routing', () => {
                     //         bubbles: true
                     //     })
                     // );
-                    domRoute.dispatchEvent(
-                        new MouseEvent('mouseover', {
-                            clientX: coordsSrc.x,
-                            clientY: coordsSrc.y,
-                            bubbles: true
-                        })
-                    )
+                    // domRoute.dispatchEvent(
+                    //     new MouseEvent('mouseover', {
+                    //         clientX: coordsSrc.x,
+                    //         clientY: coordsSrc.y,
+                    //         bubbles: true
+                    //     })
+                    // )
                     cy.get('.marker-drag').then(marker => {
                         let domMarker = marker.get(0)
                         domMarker.dispatchEvent(
