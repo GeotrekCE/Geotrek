@@ -92,29 +92,26 @@ Cypress.Commands.add('getCoordsOnMap', (pathPk, percentage) => {
 
 Cypress.Commands.add('getCoordsOnPath', (pathPk, percentage) => {
   cy.getPath(pathPk).then(path => {
-    let domPath = path.get(0);
+    cy.getCoordsOnMap(pathPk, percentage).then(coordsOnMap => {
+      // Convert the coords so they are relative to the path
+      cy.getMap().then(map => {
+        let domMap = map.get(0);
+        let domPath = path.get(0);
 
-    // Get the coordinates relative to the map element
-    let pathLength = domPath.getTotalLength();
-    let lengthAtPercentage = percentage * pathLength / 100;
-    let coordsOnMap = domPath.getPointAtLength(lengthAtPercentage);
+        // Get the coords of the map and the path relative to the root DOM element
+        let mapCoords = domMap.getBoundingClientRect();
+        let pathCoords = domPath.getBoundingClientRect();
+        let horizontalDelta = pathCoords.x - mapCoords.x;
+        let verticalDelta = pathCoords.y - mapCoords.y;
 
-    // Convert the coords so they are relative to the path
-    cy.getMap().then(map => {
-      let domMap = map.get(0);
+        // Return the coords relative to the path element
+        return {
+          x: coordsOnMap.x - horizontalDelta,
+          y: coordsOnMap.y - verticalDelta,
+        }
+      });
+    })
 
-      // Get the coords of the map and the path relative to the root DOM element
-      let mapCoords = domMap.getBoundingClientRect();
-      let pathCoords = domPath.getBoundingClientRect();
-      let horizontalDelta = pathCoords.x - mapCoords.x;
-      let verticalDelta = pathCoords.y - mapCoords.y;
-
-      // Return the coords relative to the path element
-      return {
-        x: coordsOnMap.x - horizontalDelta,
-        y: coordsOnMap.y - verticalDelta,
-      }
-    });
   })
 })
 
@@ -173,26 +170,20 @@ Cypress.Commands.add('addViaPoint', (src, dest) => {
           console.log("srcCoords", srcCoords)
           console.log("destCoords", destCoords)
 
+          map.fire('mousemove', {layerPoint: {x: srcCoords.x, y: srcCoords.y}})
+          cy.get('.marker-drag').then(marker => {
+            console.log('marker cypress', marker)
+
+          })
+
           // Get the leaflet layer from which to start dragging
-
-
-
           cy.getRoute(0).first().then((route) => {
-            const domRoute = route.get(0);
-            const routeLayerId = domRoute.id.split('-')[1]
-            const routeLayer = map._layers[routeLayerId]
-            console.log(routeLayer)
+            // const domRoute = route.get(0);
+            // const routeLayerId = domRoute.id.split('-')[1]
+            // const routeLayer = map._layers[routeLayerId]
+            // console.log(routeLayer)
 
-            // TODO: get the coords relative to the map, not to the path
 
-            map.fire('mousemove', {layerPoint: {x: srcCoords.x, y: srcCoords.y}})
-
-            const draggableMarker = L.Handler.MultiPath.prototype.getDraggableMarker()
-            console.log('draggableMarker', draggableMarker)
-            // debugger
-            cy.get('.marker-drag').then(marker => {
-              console.log('marker cypress', marker)
-            })
 
 
           })
