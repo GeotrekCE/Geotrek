@@ -47,64 +47,64 @@ describe('Frontend-side routing', () => {
             cy.writeFile('benchmark_js.txt', elapsedTime.toString() + '\n', { flag: 'a+' })
         });
 
-        cy.get('[id^="pathdef-"]').then((path) => {
-            console.log("path", path)
-            let domPath = path.get(0)
-        })
-        cy.get('[id^="pathdef-"]').first().then((path) => {
-            let domPath = path['0']
-            cy.getCoordsOnPath(8, 10).then(coordsSrc => {
-                cy.getCoordsOnPath(7, 40).then(coordsDest => {
-                    console.log(coordsSrc)
-                    // console.log(coordsDest)
+        // cy.get('[id^="pathdef-"]').then((path) => {
+        //     console.log("path", path)
+        //     let domPath = path.get(0)
+        // })
+        // cy.get('[id^="pathdef-"]').first().then((path) => {
+        //     let domPath = path['0']
+        //     cy.getCoordsOnPath(8, 10).then(coordsSrc => {
+        //         cy.getCoordsOnPath(7, 40).then(coordsDest => {
+        //             console.log(coordsSrc)
+        //             // console.log(coordsDest)
 
-                    // domPath.dispatchEvent(
-                    //     new MouseEvent('dragstart', {
-                    //         clientX: coordsSrc.x,
-                    //         clientY: coordsSrc.y,
-                    //         bubbles: true
-                    //     })
-                    // );
-                    domPath.dispatchEvent(
-                        new MouseEvent('mouseover', {
-                            clientX: coordsSrc.x,
-                            clientY: coordsSrc.y,
-                            bubbles: true
-                        })
-                    )
-                    cy.get('.marker-drag').then(marker => {
-                        let domMarker = marker.get(0)
-                        domMarker.dispatchEvent(
-                            new MouseEvent('mousedown', {
-                                clientX: coordsSrc.x,
-                                clientY: coordsSrc.y,
-                                bubbles: true
-                            })
-                        )
-                        domMarker.dispatchEvent(
-                            new MouseEvent('mousemove', {
-                                clientX: coordsSrc.x,
-                                clientY: coordsSrc.y + 5,
-                                bubbles: true
-                            })
-                        )
-                        domMarker.dispatchEvent(
-                            new MouseEvent('mousemove', {
-                                clientX: coordsDest.x,
-                                clientY: coordsDest.y,
-                                bubbles: true
-                            })
-                        )
-                        domMarker.dispatchEvent(
-                            new MouseEvent('mouseup', {
-                                clientX: coordsDest.x,
-                                clientY: coordsDest.y,
-                                bubbles: true
-                            })
-                        );
-                    })
-                })
-            })
-        })
+        //             // domPath.dispatchEvent(
+        //             //     new MouseEvent('dragstart', {
+        //             //         clientX: coordsSrc.x,
+        //             //         clientY: coordsSrc.y,
+        //             //         bubbles: true
+        //             //     })
+        //             // );
+        //             domPath.dispatchEvent(
+        //                 new MouseEvent('mouseover', {
+        //                     clientX: coordsSrc.x,
+        //                     clientY: coordsSrc.y,
+        //                     bubbles: true
+        //                 })
+        //             )
+        //             cy.get('.marker-drag').then(marker => {
+        //                 let domMarker = marker.get(0)
+        //                 domMarker.dispatchEvent(
+        //                     new MouseEvent('mousedown', {
+        //                         clientX: coordsSrc.x,
+        //                         clientY: coordsSrc.y,
+        //                         bubbles: true
+        //                     })
+        //                 )
+        //                 domMarker.dispatchEvent(
+        //                     new MouseEvent('mousemove', {
+        //                         clientX: coordsSrc.x,
+        //                         clientY: coordsSrc.y + 5,
+        //                         bubbles: true
+        //                     })
+        //                 )
+        //                 domMarker.dispatchEvent(
+        //                     new MouseEvent('mousemove', {
+        //                         clientX: coordsDest.x,
+        //                         clientY: coordsDest.y,
+        //                         bubbles: true
+        //                     })
+        //                 )
+        //                 domMarker.dispatchEvent(
+        //                     new MouseEvent('mouseup', {
+        //                         clientX: coordsDest.x,
+        //                         clientY: coordsDest.y,
+        //                         bubbles: true
+        //                     })
+        //                 );
+        //             })
+        //         })
+        //     })
+        // })
     })
 })

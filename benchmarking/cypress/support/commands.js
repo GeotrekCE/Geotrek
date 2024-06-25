@@ -49,12 +49,43 @@ Cypress.Commands.add('mockTiles', (username, password) => {
     cy.intercept("https://*.tile.opentopomap.org/*/*/*.png", {fixture: "images/tile.png"}).as("tiles");
 });
 
-Cypress.Commands.add('getMap', () => cy.get('[id="id_topology-map"]'))
+Cypress.Commands.add('getMap', () => cy.get('[id="id_topology-map"]'));
+Cypress.Commands.add('getPath', pathPk => cy.get(`[data-test=pathLayer-${pathPk}]`));
+
+Cypress.Commands.add('fitPathBounds', (pathPk) => {
+  cy.window().then(win => {
+    const map = win.maps[0];
+    const L = win.L;
+    console.log(map)
+    console.log(L)
+
+    // Get the leaflet layer whose name contains the path pk
+    const mapLayers = map._layers;
+    console.log(Object.values(mapLayers))
+    const pathLayer = Object.values(mapLayers).find(layer => {
+      return layer.properties?.name && layer.properties.name === "path "+ pathPk
+    })
+    console.log(pathLayer)
+    map.fitBounds(pathLayer.getBounds())
+  })
+})
+
 
 Cypress.Commands.add('getCoordsOnPath', (pathPk, percentage) => {
-  cy.get(`[data-test=pathLayer-${pathPk}]`).then(path => {
+  cy.window().then(win => {
+    const map = win.maps[0];
+    const originalMapBounds = map.getBounds()
+    cy.fitPathBounds(8).then(() => {
+      cy.log('a')
+
+      map.fitBounds(originalMapBounds)
+    })
+    cy.log('a')
+  })
+
+  cy.getPath(pathPk).then(path => {
     let domPath = path['0'];
-    
+
     // Get the coordinates relative to the map element
     let pathLength = domPath.getTotalLength();
     let lengthAtPercentage = percentage * pathLength / 100;
@@ -80,34 +111,49 @@ Cypress.Commands.add('getCoordsOnPath', (pathPk, percentage) => {
 })
 
 Cypress.Commands.add('clickOnPath', (pathPk, percentage, forceClick) => {
-  // Get the click coordinates relative to the path
-  cy.getCoordsOnPath(pathPk, percentage).then(clickCoords => {
-    // cy.getMap().invoke('setView', [50.5, 30.5], {animate: false});
-    cy.getMap().then(map => {
-      let domMap = map.get(0);
-      console.log('domMap', domMap)
-      domMap.addEventListener('cypresszoom', (e) => console.log('zoom cypress'), false)
-      domMap.dispatchEvent(
-        new MouseEvent('cypresszoom', {
-            clientX: 0,
-            clientY: 0,
-            bubbles: true
-        })
-    )
+
+  // Zoom on the path for precision
+  cy.window().then(win => {
+    const map = win.maps[0];
+    const originalMapBounds = map.getBounds();
+    cy.fitPathBounds(8).then(() => {
+
+      // Get the coordinates of the click and execute it
+      cy.getCoordsOnPath(pathPk, percentage).then(clickCoords => {
+        cy.getPath(pathPk)
+        .click(clickCoords.x, clickCoords.y, {force: forceClick});
+      })
+      // Reset the map to its original bounds
+      .then(() => map.fitBounds(originalMapBounds));
     })
-        
-
-    cy.get(`[data-test=pathLayer-${pathPk}]`)
-    .click(clickCoords.x, clickCoords.y, {force: forceClick});
   });
-})
 
-Cypress.Commands.add('addViaPoint', (srcPathPk, destPathPk, forceClick) => {
-  cy.get(`[data-test=pathLayer-${srcPathPk}]`).as('srcPath');
-  cy.get(`[data-test=pathLayer-${destPathPk}]`).as('destPath');
+  // // Get the click coordinates relative to the path
+  // cy.getCoordsOnPath(pathPk, percentage).then(clickCoords => {
+  //   // cy.getMap().invoke('setView', [50.5, 30.5], {animate: false});
+  //   cy.getMap().then(map => {
+  //     let domMap = map.get(0);
+  //     console.log('domMap', domMap)
+  //     domMap.addEventListener('cypresszoom', (e) => console.log('zoom cypress'), false)
+  //     domMap.dispatchEvent(
+  //       new MouseEvent('cypresszoom', {
+  //           clientX: 0,
+  //           clientY: 0,
+  //           bubbles: true
+  //       })
+  //   )
+  //   })
 
-  cy.get('@srcPath').trigger('mousedown');
-  cy.get('@destPath').trigger('mouseup');
 
-  // cy.get('id="id_topology-map')
-})
+  //   cy.getPath(pathPk)
+  //   .click(clickCoords.x, clickCoords.y, {force: forceClick});
+  // });
+});
+
+// Cypress.Commands.add('addViaPoint', (srcPathPk, destPathPk, forceClick) => {
+//   cy.getPath(srcPathPk).as('srcPath');
+//   cy.getPath(destPathPk).as('destPath');
+
+//   cy.get('@srcPath').trigger('mousedown');
+//   cy.get('@destPath').trigger('mouseup');
+// })
