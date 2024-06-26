@@ -2,12 +2,14 @@
 #!/bin/bash
 
 NB_MEASURES=5
-JS_MEASURES_FILE=./time_measures/time_measures_js.txt
-PY_MEASURES_FILE=./time_measures/time_measures_py.txt
+MEASURES_DIR=./time_measures
 
 # Reset the measure files
-rm $JS_MEASURES_FILE
-rm $PY_MEASURES_FILE
+if [ -d "$MEASURES_DIR" ]; then
+    rm -rf "$MEASURES_DIR"/*
+else
+    mkdir "$MEASURES_DIR"
+fi
 
 # Launch the cypress tests to take the time measures
 for i in $(seq 1 $NB_MEASURES)
