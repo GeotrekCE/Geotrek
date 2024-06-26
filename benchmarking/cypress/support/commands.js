@@ -132,34 +132,16 @@ Cypress.Commands.add('clickOnPath', (pathPk, percentage) => {
       .then(() => map.fitBounds(originalMapBounds));
     })
   });
-
-  // // Get the click coordinates relative to the path
-  // cy.getCoordsOnPath(pathPk, percentage).then(clickCoords => {
-  //   // cy.getMap().invoke('setView', [50.5, 30.5], {animate: false});
-  //   cy.getMap().then(map => {
-  //     let domMap = map.get(0);
-  //     console.log('domMap', domMap)
-  //     domMap.addEventListener('cypresszoom', (e) => console.log('zoom cypress'), false)
-  //     domMap.dispatchEvent(
-  //       new MouseEvent('cypresszoom', {
-  //           clientX: 0,
-  //           clientY: 0,
-  //           bubbles: true
-  //       })
-  //   )
-  //   })
 });
 
 
-Cypress.Commands.add('addViaPoint', (src, dest) => {
+Cypress.Commands.add('addViaPoint', (src, dest, stepIndex) => {
   const {pathPk: srcPathPk, percentage: srcPathPercentage} = src
   const {pathPk: destPathPk, percentage: destPathPercentage} = dest
 
   cy.window().then(win => {
     const map = win.maps[0];
-    console.log(map)
     const L = win.L;
-    console.log(L)
     // Zoom on the paths for precision
     const originalMapBounds = map.getBounds();
     cy.fitPathsBounds([srcPathPk, destPathPk]).then(() => {
@@ -167,40 +149,30 @@ Cypress.Commands.add('addViaPoint', (src, dest) => {
       // Get the coordinates of the mouse down and mouse up events
       cy.getCoordsOnMap(srcPathPk, srcPathPercentage).then(srcCoords => {
         cy.getCoordsOnMap(destPathPk, destPathPercentage).then(destCoords => {
-          console.log("srcCoords", srcCoords)
-          console.log("destCoords", destCoords)
 
+          // Display the draggable marker by moving the mouse over a route layer
           map.fire('mousemove', {layerPoint: {x: srcCoords.x, y: srcCoords.y}})
-          cy.get('.marker-drag').then(marker => {
-            console.log('marker cypress', marker)
 
-          })
+          // Check that the draggable marker is displayed
+          cy.get('.marker-drag').then(_ => {
+            // Get the draggable marker layer corresponding to this step
+            const mapLayers = map._layers;
+            const draggableMarkers = Object.values(mapLayers).filter(layer => {
+              return layer.classname === "marker-drag"
+            })
+            const draggableMarker = draggableMarkers[stepIndex]
 
-          // Get the leaflet layer from which to start dragging
-          cy.getRoute(0).first().then((route) => {
-            // const domRoute = route.get(0);
-            // const routeLayerId = domRoute.id.split('-')[1]
-            // const routeLayer = map._layers[routeLayerId]
-            // console.log(routeLayer)
+            // Simulate dragging and dropping the marker onto the destination
+            draggableMarker.fire('dragstart')
+            const destLatLng = map.layerPointToLatLng(L.point(destCoords.x, destCoords.y))
+            draggableMarker.setLatLng(destLatLng)
+            draggableMarker.fire('dragend')
+          });
 
-
-
-
-          })
-
-        })
+        });
       })
       // Reset the map to its original bounds
-      // .then(() => map.fitBounds(originalMapBounds));
-    })
+      .then(() => map.fitBounds(originalMapBounds));
+    });
   });
 })
-
-
-// Cypress.Commands.add('addViaPoint', (srcPathPk, destPathPk, forceClick) => {
-//   cy.getPath(srcPathPk).as('srcPath');
-//   cy.getPath(destPathPk).as('destPath');
-
-//   cy.get('@srcPath').trigger('mousedown');
-//   cy.get('@destPath').trigger('mouseup');
-// })

@@ -46,65 +46,7 @@ describe('Frontend-side routing', () => {
             cy.writeFile('benchmark_js.txt', elapsedTime.toString() + '\n', { flag: 'a+' })
         });
 
-        cy.addViaPoint({pathPk: 8, percentage: 10}, {pathPk: 7, percentage: 50})
-        cy.get('.marker-drag').then(marker => {
-
-        })
-
-        cy.getRoute().first().then((route) => {
-            let domRoute = route.get(0)
-            cy.getCoordsOnPath(8, 10).then(coordsSrc => {
-                cy.getCoordsOnPath(7, 40).then(coordsDest => {
-                    console.log(coordsSrc)
-                    // console.log(coordsDest)
-
-                    // domRoute.dispatchEvent(
-                    //     new MouseEvent('dragstart', {
-                    //         clientX: coordsSrc.x,
-                    //         clientY: coordsSrc.y,
-                    //         bubbles: true
-                    //     })
-                    // );
-                    // domRoute.dispatchEvent(
-                    //     new MouseEvent('mouseover', {
-                    //         clientX: coordsSrc.x,
-                    //         clientY: coordsSrc.y,
-                    //         bubbles: true
-                    //     })
-                    // )
-                    cy.get('.marker-drag').then(marker => {
-                        let domMarker = marker.get(0)
-                        domMarker.dispatchEvent(
-                            new MouseEvent('mousedown', {
-                                clientX: coordsSrc.x,
-                                clientY: coordsSrc.y,
-                                bubbles: true
-                            })
-                        )
-                        domMarker.dispatchEvent(
-                            new MouseEvent('mousemove', {
-                                clientX: coordsSrc.x,
-                                clientY: coordsSrc.y + 5,
-                                bubbles: true
-                            })
-                        )
-                        domMarker.dispatchEvent(
-                            new MouseEvent('mousemove', {
-                                clientX: coordsDest.x,
-                                clientY: coordsDest.y,
-                                bubbles: true
-                            })
-                        )
-                        domMarker.dispatchEvent(
-                            new MouseEvent('mouseup', {
-                                clientX: coordsDest.x,
-                                clientY: coordsDest.y,
-                                bubbles: true
-                            })
-                        );
-                    })
-                })
-            })
-        })
+        cy.addViaPoint({pathPk: 8, percentage: 10}, {pathPk: 7, percentage: 50}, 0)
+        cy.addViaPoint({pathPk: 3, percentage: 20}, {pathPk: 4, percentage: 70}, 1)
     })
 })

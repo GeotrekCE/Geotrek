@@ -252,7 +252,6 @@ Geotrek.TopologyHelper = (function() {
             }
         }
         let multiPolyline = L.multiPolyline(latlngs);
-        multiPolyline.on('mouseover', (e) => console.log('mouseover'));
         return multiPolyline;
     }
 

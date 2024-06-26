@@ -171,7 +171,6 @@ L.Control.LineTopology = L.Control.extend({
     initialize: function (map, guidesLayer, field, options) {
         L.Control.prototype.initialize.call(this, options);
         this.handler = new L.Handler.MultiPath(map, guidesLayer, options);
-        this.handler.on('mousedown', (e) => console.log('blop'));
     },
 
     setGraph: function (graph) {
@@ -275,18 +274,14 @@ L.Handler.MultiPath = L.Handler.extend({
             function dragstart(e) {
                 var next_step_idx = self.draggable_marker.group_layer.step_idx + 1;
                 self.addViaStep(self.draggable_marker, next_step_idx);
-                console.log('dragstart', e)
             }
             function dragend(e) {
                 self.draggable_marker.off('dragstart', dragstart);
                 self.draggable_marker.off('dragend', dragend);
                 init();
-                console.log('dragend', e)
             }
             function init() {
                 self.draggable_marker = self.markersFactory.drag(new L.LatLng(0, 0), null, true);
-
-                self.draggable_marker.on('mousedown', (e) => console.log('yes'));
                 self.draggable_marker.on('dragstart', dragstart);
                 self.draggable_marker.on('dragend', dragend);
                 self.map.removeLayer(self.draggable_marker);
