@@ -105,8 +105,6 @@ $(window).on('detailmap:ready', function (e, data) {
         layer = data.layer,
         DETAIL_STYLE = window.SETTINGS.map.styles.detail;
 
-        map.addEventListener('cypresszoom', (e) => console.log('zoom leaflet'), false)
-
     if (data.context && data.context.print) {
         var specified = window.SETTINGS.map.styles.print[data.modelname];
         DETAIL_STYLE = L.Util.extend(DETAIL_STYLE, specified || {});

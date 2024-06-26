@@ -282,6 +282,7 @@ L.Handler.MultiPath = L.Handler.extend({
             }
             function init() {
                 self.draggable_marker = self.markersFactory.drag(new L.LatLng(0, 0), null, true);
+
                 self.draggable_marker.on('dragstart', dragstart);
                 self.draggable_marker.on('dragend', dragend);
                 self.map.removeLayer(self.draggable_marker);
@@ -382,7 +383,6 @@ L.Handler.MultiPath = L.Handler.extend({
 
     // On click on a layer with the graph
     _onClick: function(e) {
-        this.startTime = new Date()
         if (this.steps.length >= 2) return;
         var self = this;
 
@@ -862,7 +862,6 @@ Geotrek.PointOnPolyline = function (marker) {
             if (marker.snap) marker.fire('snap', {layer: marker.snap, latlng: marker.getLatLng()});
         },
         'snap': function onSnap(e) {
-            this.startTime = new Date()
             this.ll = e.latlng;
             this.polyline = e.layer;
             this.path_length = L.GeometryUtil.length(this.polyline);

@@ -1,8 +1,4 @@
 {
-  "scripts": {
-    "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
-  },
   "dependencies": {
     "@foreachbe/cypress-tinymce": "^1.0.0",
     "cypress": "^9.5.1"
