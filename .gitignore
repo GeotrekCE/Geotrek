@@ -13,6 +13,13 @@ __pycache__/
 geotrek/settings/custom.py
 geotrek/cypress/node_modules
 Makefile.perso.mk
+
+# Benchmarking
+benchmarking/time_measures/
+benchmarking/cypress/videos/
+benchmarking/cypress/screenshots/
+benchmarking/node_modules/
+
 # buildout stuff
 .mr.developer.cfg
 .installed.cfg
