@@ -166,6 +166,14 @@ Cypress.Commands.add('addViaPoint', (src, dest, stepIndex) => {
             draggableMarker.fire('dragstart')
             const destLatLng = map.layerPointToLatLng(L.point(destCoords.x, destCoords.y))
             draggableMarker.setLatLng(destLatLng)
+
+            // Measure time from the click to the display of the new route layer
+            const startTime = performance.now();
+            cy.getRoute(stepIndex + 1).then(() => {
+              let elapsedTime = performance.now() - startTime
+              cy.writeFile('time_measures/time_measures_js.txt', elapsedTime.toString() + ' ', { flag: 'a+' })
+            });
+
             draggableMarker.fire('dragend')
           });
 

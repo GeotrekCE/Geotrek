@@ -31,7 +31,7 @@ describe('Frontend-side routing', () => {
         // Write the request time after the response has been received
         cy.wait('@graph').then(intercept => {
             let elapsedTime = intercept.response.headers.elapsedTime
-            cy.writeFile('benchmark_js.txt', elapsedTime.toString() + ' ', { flag: 'a+' })
+            cy.writeFile('time_measures/time_measures_js.txt', elapsedTime.toString() + ' ', { flag: 'a+' })
         });
 
         // Click on the "Route" control
@@ -43,10 +43,15 @@ describe('Frontend-side routing', () => {
         cy.clickOnPath(8, 90).then(() => startTime = performance.now());
         cy.getRoute().then(() => {
             let elapsedTime = performance.now() - startTime
-            cy.writeFile('benchmark_js.txt', elapsedTime.toString() + '\n', { flag: 'a+' })
+            cy.writeFile('time_measures/time_measures_js.txt', elapsedTime.toString() + ' ', { flag: 'a+' })
         });
 
-        cy.addViaPoint({pathPk: 8, percentage: 10}, {pathPk: 7, percentage: 50}, 0)
-        cy.addViaPoint({pathPk: 3, percentage: 20}, {pathPk: 4, percentage: 70}, 1)
+        // Add the via-points
+        cy.addViaPoint({pathPk: 3, percentage: 20}, {pathPk: 4, percentage: 70}, 0)
+        cy.addViaPoint({pathPk: 8, percentage: 10}, {pathPk: 7, percentage: 50}, 1)
+
+        // Add a newline to the time log files
+        cy.writeFile('time_measures/time_measures_js.txt', '\n', { flag: 'a+' })
+        cy.writeFile('time_measures/time_measures_py.txt', '\n', { flag: 'a+' })
     })
 })
