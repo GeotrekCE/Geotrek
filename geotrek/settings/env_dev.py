@@ -22,9 +22,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 INSTALLED_APPS += (
     'django_extensions',
     # 'debug_toolbar',
-    'geotrek.diving',
-    'geotrek.sensitivity',
-    'geotrek.outdoor',
+    # 'geotrek.diving',
+    # 'geotrek.sensitivity',
+    # 'geotrek.outdoor',
     'drf_yasg',
 )
 
