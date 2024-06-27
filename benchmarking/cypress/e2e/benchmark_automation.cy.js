@@ -16,7 +16,7 @@ describe('Frontend-side routing', () => {
         cy.mockTiles();
     });
 
-    it('Find a route', function () {
+    it('100 via points', function () {
         // Set the response time in its header to access it later
         cy.intercept('/api/path/drf/paths/graph.json', request => {
             let startTime = performance.now()
@@ -37,18 +37,44 @@ describe('Frontend-side routing', () => {
         // Click on the "Route" control
         cy.get("a.linetopology-control").click();
 
-        // Click on the paths and wait for the route to be displayed
-        let startTime;
-        cy.clickOnPath(3, 30);
-        cy.clickOnPath(8, 90).then(() => startTime = performance.now());
-        cy.getRoute().then(() => {
-            let elapsedTime = performance.now() - startTime
-            cy.writeFile('time_measures/time_measures_js.txt', elapsedTime.toString() + ' ', { flag: 'a+' })
-        });
+        cy.fixture('topologies.json').then(topologies => {
+            // Get the paths and positions for the start and end markers
+            let topo = topologies.withViaPoints;
+            const firstMarker = {
+                path: topo[0].paths[0],
+                position: topo[0].positions[0][0],
+            };
+            const lastMarker = {
+                path: topo.at(-1).paths.at(-1),
+                position: topo.at(-1).positions[Object.keys(topo.at(-1).positions).length - 1].at(-1),
+            };
 
-        // Add the via-points
-        cy.addViaPoint({pathPk: 3, percentage: 20}, {pathPk: 4, percentage: 70}, 0)
-        cy.addViaPoint({pathPk: 8, percentage: 10}, {pathPk: 7, percentage: 50}, 1)
+            // Add the start and end markers and wait for the route to be displayed
+            let startTime;
+            cy.clickOnPath(firstMarker.path, firstMarker.position * 100);
+            cy.clickOnPath(lastMarker.path, lastMarker.position * 100)
+            .then(() => startTime = performance.now());
+            cy.getRoute().then(() => {
+                let elapsedTime = performance.now() - startTime
+                cy.writeFile('time_measures/time_measures_js.txt', elapsedTime.toString() + ' ', { flag: 'a+' })
+            });
+
+            // Add the via-points: for each step, drag from previous marker
+            // and drop on last path and position of the current step
+            let prevMarker = firstMarker;
+            for (let step = 0; step < topo.length - 1; step++) {
+                const viaMarker = {
+                    path: topo[step].paths.at(-1),
+                    position: topo[step].positions[Object.keys(topo[step].positions).length - 1].at(-1),
+                };
+                cy.addViaPoint(
+                    {pathPk: prevMarker.path, percentage: prevMarker.position * 100},
+                    {pathPk: viaMarker.path, percentage: viaMarker.position * 100},
+                    step
+                );
+                prevMarker = viaMarker;
+            }
+        })
 
         // Add a newline to the time log files
         cy.writeFile('time_measures/time_measures_js.txt', '\n', { flag: 'a+' })
