@@ -40,10 +40,12 @@ Cypress.Commands.add('fitPathsBounds', (pathPkList) => {
 
     // For each path, extend the bounds so they include it
     cy.wrap(pathPkList).each(pk => {
-      // Get the leaflet layer whose name contains the path pk
+      // Get the leaflet layer whose id is the path pk
       const mapLayers = map._layers;
+      console.log("pk", pk)
+      console.log("mapLayers", mapLayers)
       const pathLayer = Object.values(mapLayers).find(layer => {
-        return layer.properties?.name && layer.properties.name === "path "+ pk
+        return layer.properties?.id && layer.properties.id == pk
       });
       bounds.extend(pathLayer.getBounds());
     }).then(() => {
