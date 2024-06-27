@@ -6,8 +6,8 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 
 describe('Frontend-side routing', () => {
     before(() => {
-        const username = 'admin';
-        const password = 'admin';
+        const username = 'geotrek';
+        const password = 'geotrek';
 
         cy.loginByCSRF(username, password)
             .then((resp) => {
