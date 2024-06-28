@@ -39,7 +39,7 @@ describe('Frontend-side routing', () => {
 
         cy.fixture('topologies.json').then(topologies => {
             // Get the paths and positions for the start and end markers
-            let topo = topologies.withViaPoints;
+            let topo = topologies.mediumDBViaPoints;
             const firstMarker = {
                 path: topo[0].paths[0],
                 position: topo[0].positions[0][0],
