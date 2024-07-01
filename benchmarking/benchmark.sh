@@ -11,11 +11,12 @@ else
     mkdir "$MEASURES_DIR"
 fi
 
-# Launch the cypress tests to take the time measures
 for i in $(seq 1 $NB_MEASURES)
 do
-    curl 'http://geotrek.local:8000/admin/clearcache/' -X POST -H 'Cookie: csrftoken=jJPzy1w4p7KNspD9QG1Y2xOqG8Oczf2l; sessionid=xm0ia4g7gpjdtq9l85sbff3gscdlobfl; django_language=en' --data-raw 'csrfmiddlewaretoken=VihAxtR8JyN10VzyXyyEAUSiwWIbVnPG4RWZVkd2YvnEia2xD4psshwy2UmdksHR&cache_name=fat&clearcache=Clear+cache+now+%F0%9F%92%A3'
-    npm run cypress:benchmark
+    # Empty the backend cache
+    curl 'http://geotrek.local:8000/admin/clearcache/' -X POST -H 'Cookie: csrftoken=jJPzy1w4p7KNspD9QG1Y2xOqG8Oczf2l; sessionid=xm0ia4g7gpjdtq9l85sbff3gscdlobfl' --data-raw 'csrfmiddlewaretoken=VihAxtR8JyN10VzyXyyEAUSiwWIbVnPG4RWZVkd2YvnEia2xD4psshwy2UmdksHR&cache_name=fat'
+    # Launch the cypress test to take the time measures
+    npx cypress run --spec cypress/e2e/scenarios.cy.js --browser edge
 done
 
 # Compute the average times
