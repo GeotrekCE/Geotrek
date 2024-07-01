@@ -42,8 +42,6 @@ Cypress.Commands.add('fitPathsBounds', (pathPkList) => {
     cy.wrap(pathPkList).each(pk => {
       // Get the leaflet layer whose id is the path pk
       const mapLayers = map._layers;
-      console.log("pk", pk)
-      console.log("mapLayers", mapLayers)
       const pathLayer = Object.values(mapLayers).find(layer => {
         return layer.properties?.id && layer.properties.id == pk
       });

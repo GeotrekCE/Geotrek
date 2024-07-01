@@ -4,19 +4,40 @@ Cypress.on('uncaught:exception', (err, runnable) => {
     return false
 })
 
-describe('Frontend-side routing', () => {
-    before(() => {
-        const username = 'geotrek';
-        const password = 'geotrek';
+export function routeTracing(topologyName, emptyBackendCache) {
+    // beforeEach(function() {
+    // })
 
-        cy.loginByCSRF(username, password)
-            .then((resp) => {
-                expect(resp.status).to.eq(200);
-            });
-        cy.mockTiles();
-    });
+    it('Trace route with given parameters', function () {
+        // if (emptyBackendCache) {
+        //     cy.getCookie('csrftoken').then(csrfToken => {
+        //         cy.request({
+        //             url: '/admin/clearcache',
+        //             method: 'POST',
+        //             headers: {'X-CSRFToken': csrfToken.value},
+        //             body: {cache_name: 'fat'},
+        //         })
+        //     })
+        // }
 
-    it('100 via points', function () {
+        // await fetch("http://geotrek.local:8000/admin/clearcache/", {
+        //     "credentials": "include",
+        //     "headers": {
+        //         "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:127.0) Gecko/20100101 Firefox/127.0",
+        //         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+        //         "Accept-Language": "en-US,en;q=0.5",
+        //         "Content-Type": "application/x-www-form-urlencoded",
+        //         "Upgrade-Insecure-Requests": "1",
+        //         "Priority": "u=1",
+        //         "Pragma": "no-cache",
+        //         "Cache-Control": "no-cache"
+        //     },
+        //     "referrer": "http://geotrek.local:8000/admin/clearcache/",
+        //     "body": "cache_name=fat&clearcache=Clear+cache+now+%F0%9F%92%A3",
+        //     "method": "POST",
+        //     "mode": "cors"
+        // });
+
         // Set the response time in its header to access it later
         cy.intercept('/api/path/drf/paths/graph.json', request => {
             let startTime = performance.now()
@@ -39,7 +60,7 @@ describe('Frontend-side routing', () => {
 
         cy.fixture('topologies.json').then(topologies => {
             // Get the paths and positions for the start and end markers
-            let topo = topologies.mediumDBViaPoints;
+            let topo = topologies[topologyName];
             const firstMarker = {
                 path: topo[0].paths[0],
                 position: topo[0].positions[0][0],
@@ -80,4 +101,4 @@ describe('Frontend-side routing', () => {
         cy.writeFile('time_measures/time_measures_js.txt', '\n', { flag: 'a+' })
         cy.writeFile('time_measures/time_measures_py.txt', '\n', { flag: 'a+' })
     })
-})
+}
