@@ -1,5 +1,3 @@
-import { routeTracing, CacheLevel } from "./benchmark_automation.cy";
-
 describe('Benchmark scenarios', function() {
     before(function() {
         const username = 'geotrek';
@@ -11,7 +9,7 @@ describe('Benchmark scenarios', function() {
         cy.mockTiles();
     });
 
-    context('Medium database, 100 via-points, backend cache', function() {
-        routeTracing('mediumDB100ViaPoints')
+    it('Medium database, 100 via-points, backend cache', function() {
+        cy.generateRouteTracingTimes('mediumDB3ViaPoints')
     })
 })
