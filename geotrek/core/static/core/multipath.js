@@ -281,7 +281,7 @@ L.Handler.MultiPath = L.Handler.extend({
         this.layersOrderedByIdx = function() {
             var layers = this._routeLayer ? this._routeLayer.__layerArray : []
             var sortedLayers = layers.toSorted((first, second) => {
-                return first.step_idx - second.step_idx     
+                return first.step_idx - second.step_idx
             })
             return sortedLayers
         }
@@ -362,6 +362,12 @@ L.Handler.MultiPath = L.Handler.extend({
 
     addHooks: function () {
         L.DomUtil.addClass(this._container, 'cursor-topo-start');
+
+        // For each path layer, set its data-test attribute
+        this._guidesLayer.eachLayer((layer) => {
+            layer._path.setAttribute('data-test', 'pathLayer-' + layer.properties.id)
+        })
+
         this._guidesLayer.on('click', this._onClick, this);
 
         this.stepsToggleActivate(true);
@@ -430,7 +436,7 @@ L.Handler.MultiPath = L.Handler.extend({
             if (!pop.isValid()) { // If the pop was not dropped on a path
                 // Display an alert message
                 this._unsnappedMarkerToast.show()
-                
+
                 if (pop.previousPosition) {
                     // If the pop was on a path before, set it to its previous position
                     pop.marker.setLatLng(pop.previousPosition.ll)
@@ -458,7 +464,7 @@ L.Handler.MultiPath = L.Handler.extend({
             if (currentStepIdx < self.steps.length - 1)
                 newStepsIndexes.push(currentStepIdx + 1)
 
-            // Create the array of step indexes before the route is updated 
+            // Create the array of step indexes before the route is updated
             var oldStepsIndexes
             if (this._currentStepsNb == this.steps.length)  // If a marker is being moved
                 oldStepsIndexes = [...newStepsIndexes]
@@ -562,12 +568,12 @@ L.Handler.MultiPath = L.Handler.extend({
                 return false;
             if (new_steps_indexes.length < 2)
                 return false;
-    
+
             for (var i = 0; i < steps_to_route.length; i++) {
                 if (!steps_to_route[i].isValid())
                     return false;
             }
-    
+
             return true;
         }
 
@@ -652,7 +658,7 @@ L.Handler.MultiPath = L.Handler.extend({
             }
             return interpolated.latLng;
         };
-        
+
         // Create and show the route geometry
         var restoredRouteLayer = L.featureGroup()
         serializedTopology.forEach((topology, idx) => {
@@ -735,7 +741,7 @@ L.Handler.MultiPath = L.Handler.extend({
                     'updateGeom': function(new_path_layer) {
                         var prev_path_layer = current_path_layer;
                         current_path_layer = new_path_layer;
-                        
+
                         if (prev_path_layer) {
                             self.map.removeLayer(prev_path_layer);
                         }
@@ -743,10 +749,15 @@ L.Handler.MultiPath = L.Handler.extend({
                         if (new_path_layer) {
                             self.map.addLayer(new_path_layer);
                             new_path_layer.setStyle({'color': 'yellow', 'weight': 5, 'opacity': 0.8});
+                            let stepIdx = 0;
                             new_path_layer.eachLayer(function (l) {
                                 if (typeof l.setText == 'function') {
                                     l.setText('>  ', {repeat: true, attributes: {'fill': '#FF5E00'}});
+                                    l.eachLayer((layer) => {
+                                        layer._path.setAttribute('data-test', 'route-step-' + stepIdx);
+                                    })
                                 }
+                                stepIdx++;
                             });
                         }
                     }
@@ -845,7 +856,7 @@ L.Handler.MultiPath = L.Handler.extend({
 
         var newRouteLayer = L.featureGroup()
         var newIndexOfPreviousLayer = -1
-        
+
         // The layers before the modified portion are added as-is
         var oldLayers = this.layersOrderedByIdx()
 
