@@ -9,7 +9,7 @@ describe('Benchmark scenarios', function() {
         cy.mockTiles();
     });
 
-    it('Medium database, 100 via-points, backend cache', function() {
-        cy.generateRouteTracingTimes('mediumDB3ViaPoints')
+    it('Medium database, 100 via-points', function() {
+        cy.generateRouteTracingTimes('mediumDB100ViaPoints')
     })
 })
