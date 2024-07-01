@@ -12,8 +12,6 @@ describe('Benchmark scenarios', function() {
     });
 
     context('Medium database, 100 via-points, backend cache', function() {
-        routeTracing('mediumDB100ViaPoints', true)
+        routeTracing('mediumDB100ViaPoints')
     })
-
-
 })
