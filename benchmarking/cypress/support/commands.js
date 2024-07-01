@@ -96,6 +96,10 @@ Cypress.Commands.add('clickOnPath', (pathPk, percentage) => {
     const map = win.maps[0];
     const originalMapBounds = map.getBounds();
     cy.fitPathsBounds([pathPk]).then(() => {
+        // console.log("map", map)
+        // console.log("L", map)
+        // debugger
+        console.log('before/after')
 
       // Get the coordinates of the click and execute it
       cy.getCoordsOnPath(pathPk, percentage).then(clickCoords => {
@@ -160,22 +164,8 @@ Cypress.Commands.add('addViaPoint', (src, dest, stepIndex) => {
 })
 
 Cypress.Commands.add('generateRouteTracingTimes', topologyName => {
-  // Set the response time in its header to access it later
-  cy.intercept('/api/path/drf/paths/graph.json', request => {
-    let startTime = performance.now()
-    request.continue(response => {
-        response.headers.elapsedTime = performance.now() - startTime
-    })
-  }).as('graph');
-
   cy.visit('/trek/add');
   cy.wait('@tiles');
-
-  // Write the request time after the response has been received
-  cy.wait('@graph').then(intercept => {
-      let elapsedTime = intercept.response.headers.elapsedTime
-      cy.writeFile('time_measures/time_measures_js.txt', elapsedTime.toString() + ' ', { flag: 'a+' })
-  });
 
   // Click on the "Route" control
   cy.get("a.linetopology-control").click();
@@ -191,6 +181,17 @@ Cypress.Commands.add('generateRouteTracingTimes', topologyName => {
           path: topo.at(-1).paths.at(-1),
           position: topo.at(-1).positions[Object.keys(topo.at(-1).positions).length - 1].at(-1),
       };
+
+      // Wait for all leaflet-related systems to be ready
+      cy.window().then(win => {
+        const L = win.L
+        console.log(L)
+        console.log(win.maps[0])
+        cy.spy(L.Handler.MultiPath.prototype, 'addHooks')//.should('have.been.calledOnce')
+        expect(L.Handler.MultiPath.prototype.addHooks).to.be.called
+        // L.Handler.MultiPath.on('enabled', cy.stub().as('onEnabled'))
+      })
+    //   cy.get('@onEnabled').should('have.been.calledOnce')
 
       // Add the start and end markers and wait for the route to be displayed
       let startTime;

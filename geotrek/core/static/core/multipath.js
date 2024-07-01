@@ -364,6 +364,7 @@ L.Handler.MultiPath = L.Handler.extend({
         L.DomUtil.addClass(this._container, 'cursor-topo-start');
 
         // For each path layer, set its data-test attribute
+        console.log('addHooks')
         this._guidesLayer.eachLayer((layer) => {
             layer._path.setAttribute('data-test', 'pathLayer-' + layer.properties.id)
         })
