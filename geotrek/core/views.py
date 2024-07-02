@@ -340,7 +340,7 @@ class PathViewSet(GeotrekMapentityViewSet):
 
         end = time.time()
         with open('benchmarking/time_measures/time_measures_py.txt', 'a', newline='') as output_file:
-            output_file.write(str(end - start) + ' ')
+            output_file.write(str((end - start) * 1000) + ' ')
         return Response(response, status)
 
 
