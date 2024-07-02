@@ -127,6 +127,10 @@ MapEntity.GeometryField.TopologyField = MapEntity.GeometryField.extend({
         // Path layer is ready, display the route
         this._pathsLayer.fire('data:loading');
         this.load();
+        // For each path layer, set its data-test attribute
+        this._pathsLayer.eachLayer((layer) => {
+            layer._path.setAttribute('data-test', 'pathLayer-' + layer.properties.id)
+        })
         this._pathsLayer.fire('data:loaded');
     },
 

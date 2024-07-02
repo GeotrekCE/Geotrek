@@ -96,11 +96,6 @@ Cypress.Commands.add('clickOnPath', (pathPk, percentage) => {
     const map = win.maps[0];
     const originalMapBounds = map.getBounds();
     cy.fitPathsBounds([pathPk]).then(() => {
-        // console.log("map", map)
-        // console.log("L", map)
-        // debugger
-        console.log('before/after')
-
       // Get the coordinates of the click and execute it
       cy.getCoordsOnPath(pathPk, percentage).then(clickCoords => {
         cy.getPath(pathPk)
@@ -144,6 +139,7 @@ Cypress.Commands.add('addViaPoint', (src, dest, stepIndex) => {
             draggableMarker.fire('dragstart')
             const destLatLng = map.layerPointToLatLng(L.point(destCoords.x, destCoords.y))
             draggableMarker.setLatLng(destLatLng)
+            draggableMarker.fire('dragend')
 
             // Measure time from the click to the display of the new route layer
             const startTime = performance.now();
@@ -151,8 +147,6 @@ Cypress.Commands.add('addViaPoint', (src, dest, stepIndex) => {
               let elapsedTime = performance.now() - startTime
               cy.writeFile('time_measures/time_measures_js.txt', elapsedTime.toString() + ' ', { flag: 'a+' })
             });
-
-            draggableMarker.fire('dragend')
           });
 
         });

@@ -363,12 +363,6 @@ L.Handler.MultiPath = L.Handler.extend({
     addHooks: function () {
         L.DomUtil.addClass(this._container, 'cursor-topo-start');
 
-        // For each path layer, set its data-test attribute
-        console.log('addHooks')
-        this._guidesLayer.eachLayer((layer) => {
-            layer._path.setAttribute('data-test', 'pathLayer-' + layer.properties.id)
-        })
-
         this._guidesLayer.on('click', this._onClick, this);
 
         this.stepsToggleActivate(true);
@@ -609,7 +603,6 @@ L.Handler.MultiPath = L.Handler.extend({
             })
             .then(
                 data => {  // Status code 200:
-                    console.log('response data:', data)
                     if (data) {
                         var route = {
                             'geojson': data.geojson,

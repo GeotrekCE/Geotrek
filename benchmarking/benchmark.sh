@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NB_MEASURES=5
+NB_MEASURES=15
 MEASURES_DIR=./time_measures
 
 launch_scenario() {
