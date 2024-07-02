@@ -2,6 +2,7 @@
 
 NB_MEASURES=15
 MEASURES_DIR=./time_measures
+SESSION_ID=4ixgl58y4x2v8aiyqlx2ziqhz5ojdkpo
 
 launch_scenario() {
 # $1 (string): cypress spec path
@@ -18,7 +19,7 @@ launch_scenario() {
     do
         if ! $2; then
             # Empty the backend cache
-            curl 'http://geotrek.local:8000/admin/clearcache/' -X POST -H 'Cookie: csrftoken=jJPzy1w4p7KNspD9QG1Y2xOqG8Oczf2l; sessionid=xm0ia4g7gpjdtq9l85sbff3gscdlobfl' --data-raw 'csrfmiddlewaretoken=VihAxtR8JyN10VzyXyyEAUSiwWIbVnPG4RWZVkd2YvnEia2xD4psshwy2UmdksHR&cache_name=fat'
+            curl 'http://geotrek.local:8000/admin/clearcache/' -X POST -H "Cookie: csrftoken=jJPzy1w4p7KNspD9QG1Y2xOqG8Oczf2l; sessionid=$SESSION_ID" --data-raw 'csrfmiddlewaretoken=VihAxtR8JyN10VzyXyyEAUSiwWIbVnPG4RWZVkd2YvnEia2xD4psshwy2UmdksHR&cache_name=fat'
         fi
         # Launch the cypress test to take the time measures
         npx cypress run --spec $1 --browser edge
