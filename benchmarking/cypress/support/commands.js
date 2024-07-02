@@ -98,11 +98,15 @@ Cypress.Commands.add('clickOnPath', (pathPk, percentage) => {
     cy.fitPathsBounds([pathPk]).then(() => {
       // Get the coordinates of the click and execute it
       cy.getCoordsOnPath(pathPk, percentage).then(clickCoords => {
+        let startTime;
         cy.getPath(pathPk)
-        .click(clickCoords.x, clickCoords.y, {force: true});
+        .then((path) => {startTime = performance.now(); return path})
+        .click(clickCoords.x, clickCoords.y, {force: true})
+        // Return startTime so it is yielded by the command
+        .then(() => startTime);
       })
       // Reset the map to its original bounds
-      .then(() => map.fitBounds(originalMapBounds));
+      .then(() => {map.fitBounds(originalMapBounds)});
     })
   });
 });
@@ -138,15 +142,15 @@ Cypress.Commands.add('addViaPoint', (src, dest, stepIndex) => {
             // Simulate dragging and dropping the marker onto the destination
             draggableMarker.fire('dragstart')
             const destLatLng = map.layerPointToLatLng(L.point(destCoords.x, destCoords.y))
-            draggableMarker.setLatLng(destLatLng)
-            draggableMarker.fire('dragend')
 
-            // Measure time from the click to the display of the new route layer
+            // Measure time from the marker drop to the display of the new route layer
             const startTime = performance.now();
+            draggableMarker.setLatLng(destLatLng)
             cy.getRoute(stepIndex + 1).then(() => {
               let elapsedTime = performance.now() - startTime
               cy.writeFile('time_measures/time_measures_js.txt', elapsedTime.toString() + ' ', { flag: 'a+' })
             });
+            draggableMarker.fire('dragend')
           });
 
         });
@@ -178,13 +182,13 @@ Cypress.Commands.add('generateRouteTracingTimes', topologyName => {
       };
 
       // Add the start and end markers and wait for the route to be displayed
-      let startTime;
       cy.clickOnPath(firstMarker.path, firstMarker.position * 100);
       cy.clickOnPath(lastMarker.path, lastMarker.position * 100)
-      .then(() => startTime = performance.now());
-      cy.getRoute().then(() => {
-          let elapsedTime = performance.now() - startTime
-          cy.writeFile('time_measures/time_measures_js.txt', elapsedTime.toString() + ' ', { flag: 'a+' })
+      .then((startTime) => {
+        cy.getRoute().then(() => {
+            let elapsedTime = performance.now() - startTime
+            cy.writeFile('time_measures/time_measures_js.txt', elapsedTime.toString() + ' ', { flag: 'a+' })
+        });
       });
 
       // Add the via-points: for each step, drag from previous marker
