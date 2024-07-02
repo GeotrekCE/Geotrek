@@ -297,7 +297,7 @@ class PathViewSet(GeotrekMapentityViewSet):
             if cache_latest and cache_latest >= latest:
                 end = time.time()
                 with open('benchmarking/time_measures/time_measures_py.txt', 'a', newline='') as output_file:
-                    output_file.write(str(end - start) + ' ')
+                    output_file.write(str((end - start) * 1000) + ' ')
                 return Response(graph)
 
         # cache does not exist or is not up-to-date, rebuild the graph and cache it
@@ -306,7 +306,7 @@ class PathViewSet(GeotrekMapentityViewSet):
         cache.set(key, (latest, graph))
         end = time.time()
         with open('benchmarking/time_measures/time_measures_py.txt', 'a', newline='') as output_file:
-            output_file.write(str(end - start) + ' ')
+            output_file.write(str((end - start) * 1000) + ' ')
         return Response(graph)
 
     @method_decorator(permission_required('core.change_path'))
