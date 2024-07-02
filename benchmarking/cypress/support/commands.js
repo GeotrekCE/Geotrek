@@ -167,7 +167,8 @@ Cypress.Commands.add('generateRouteTracingTimes', topologyName => {
   cy.visit('/trek/add');
   cy.wait('@tiles');
 
-  // Click on the "Route" control
+  // Wait for the path layers to be ready before clicking on the "Route" control
+  cy.get('[data-test^="pathLayer-"]')
   cy.get("a.linetopology-control").click();
 
   cy.fixture('topologies.json').then(topologies => {
@@ -181,17 +182,6 @@ Cypress.Commands.add('generateRouteTracingTimes', topologyName => {
           path: topo.at(-1).paths.at(-1),
           position: topo.at(-1).positions[Object.keys(topo.at(-1).positions).length - 1].at(-1),
       };
-
-      // Wait for all leaflet-related systems to be ready
-      cy.window().then(win => {
-        const L = win.L
-        console.log(L)
-        console.log(win.maps[0])
-        cy.spy(L.Handler.MultiPath.prototype, 'addHooks')//.should('have.been.calledOnce')
-        expect(L.Handler.MultiPath.prototype.addHooks).to.be.called
-        // L.Handler.MultiPath.on('enabled', cy.stub().as('onEnabled'))
-      })
-    //   cy.get('@onEnabled').should('have.been.calledOnce')
 
       // Add the start and end markers and wait for the route to be displayed
       let startTime;
