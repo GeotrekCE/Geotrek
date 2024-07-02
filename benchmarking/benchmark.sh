@@ -27,6 +27,7 @@ launch_scenario() {
     # Compute and display the average times
     echo "Scenario:" $1 >> "$MEASURES_DIR"/time_averages.txt
     echo "Backend cache:" $2 >> "$MEASURES_DIR"/time_averages.txt
+    echo "Number of runs:" $NB_MEASURES >> "$MEASURES_DIR"/time_averages.txt
     python3 ./time_averages.py >> "$MEASURES_DIR"/time_averages.txt
     echo "" >> "$MEASURES_DIR"/time_averages.txt
 }
