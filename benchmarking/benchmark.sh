@@ -1,8 +1,8 @@
 #!/bin/bash
 
-NB_MEASURES=15
+NB_MEASURES=2
 MEASURES_DIR=./time_measures
-SESSION_ID=4ixgl58y4x2v8aiyqlx2ziqhz5ojdkpo
+SESSION_ID=l58uz87gwsv7zgcvciqln7fipjikiw1w
 
 launch_scenario() {
 # $1 (string): cypress spec path
@@ -26,6 +26,7 @@ launch_scenario() {
     done
 
     # Compute and display the average times
+    echo "Branch:" $(git rev-parse --abbrev-ref HEAD) >> "$MEASURES_DIR"/time_averages.txt
     echo "Scenario:" $1 >> "$MEASURES_DIR"/time_averages.txt
     echo "Backend cache:" $2 >> "$MEASURES_DIR"/time_averages.txt
     echo "Number of runs:" $NB_MEASURES >> "$MEASURES_DIR"/time_averages.txt
@@ -39,5 +40,5 @@ if [ -d "$MEASURES_DIR" ]; then
     else
         mkdir "$MEASURES_DIR"
     fi
-launch_scenario "cypress/e2e/mediumDB100ViaPts.cy.js" false
-launch_scenario "cypress/e2e/mediumDB100ViaPts.cy.js" true
+launch_scenario "cypress/e2e/bigDBNoViaPts.cy.js" false
+launch_scenario "cypress/e2e/bigDBNoViaPts.cy.js" true
