@@ -1,8 +1,9 @@
 #!/bin/bash
 
-NB_MEASURES=5
+NB_MEASURES=1
 MEASURES_DIR=./time_measures
-SESSION_ID=l58uz87gwsv7zgcvciqln7fipjikiw1w
+PATH_TO_SCENARIO=$1
+SESSION_ID=$2
 
 launch_scenario() {
 # $1 (string): cypress spec path
@@ -40,5 +41,5 @@ if [ -d "$MEASURES_DIR" ]; then
     else
         mkdir "$MEASURES_DIR"
     fi
-launch_scenario "cypress/e2e/bigDB25ViaPts.cy.js" false
-launch_scenario "cypress/e2e/bigDB25ViaPts.cy.js" true
+launch_scenario "$PATH_TO_SCENARIO" false
+launch_scenario "$PATH_TO_SCENARIO" true
