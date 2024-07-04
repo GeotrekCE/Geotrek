@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NB_MEASURES=2
+NB_MEASURES=5
 MEASURES_DIR=./time_measures
 SESSION_ID=l58uz87gwsv7zgcvciqln7fipjikiw1w
 
@@ -40,5 +40,5 @@ if [ -d "$MEASURES_DIR" ]; then
     else
         mkdir "$MEASURES_DIR"
     fi
-launch_scenario "cypress/e2e/bigDBNoViaPts.cy.js" false
-launch_scenario "cypress/e2e/bigDBNoViaPts.cy.js" true
+launch_scenario "cypress/e2e/bigDB25ViaPts.cy.js" false
+launch_scenario "cypress/e2e/bigDB25ViaPts.cy.js" true
