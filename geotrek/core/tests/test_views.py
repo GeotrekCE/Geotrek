@@ -649,6 +649,59 @@ class PathViewsTest(CommonTest):
         with self.assertNumQueries(4):
             self.client.get(obj.get_layer_url())
 
+    def test_route_geometry_fail_no_steps_array(self):
+        response = self.client.post(reverse('core:path-drf-route-geometry'), {})
+        self.assertEqual(response.status_code, 400)
+
+    def test_route_geometry_fail_empty_steps_array(self):
+        response = self.client.post(reverse('core:path-drf-route-geometry'), {'steps': []})
+        self.assertEqual(response.status_code, 400)
+
+    def test_route_geometry_fail_one_step(self):
+        body = {'steps': [{'lat': 48.866667, 'lng': 2.333333}]}
+        response = self.client.post(reverse('core:path-drf-route-geometry'), body)
+        self.assertEqual(response.status_code, 400)
+
+    def test_route_geometry_fail_no_lat(self):
+        body = {'steps': [{'lng': 2.333333}]}
+        response = self.client.post(reverse('core:path-drf-route-geometry'), body)
+        self.assertEqual(response.status_code, 400)
+
+    def test_route_geometry_fail_no_lng(self):
+        body = {'steps': [{'lat': 48.866667}]}
+        response = self.client.post(reverse('core:path-drf-route-geometry'), body)
+        self.assertEqual(response.status_code, 400)
+
+    def test_route_geometry_fail_no_latlng(self):
+        body = {'steps': [{}]}
+        response = self.client.post(reverse('core:path-drf-route-geometry'), body)
+        self.assertEqual(response.status_code, 400)
+
+    def test_route_geometry_fail_incorrect_lat(self):
+        body = {'steps': [{'lat': 1000, 'lng': 2.333333}]}
+        response = self.client.post(reverse('core:path-drf-route-geometry'), body)
+        self.assertEqual(response.status_code, 400)
+
+    def test_route_geometry_fail_incorrect_lng(self):
+        body = {'steps': [{'lat': 48.866667, 'lng': 1000}]}
+        response = self.client.post(reverse('core:path-drf-route-geometry'), body)
+        self.assertEqual(response.status_code, 400)
+
+    def test_route_geometry_fail_incorrect_latlng(self):
+        body = {'steps': [{'lat': 1000, 'lng': 1000}]}
+        response = self.client.post(reverse('core:path-drf-route-geometry'), body)
+        self.assertEqual(response.status_code, 400)
+
+    def test_route_geometry_fail_no_possible_path(self):
+        ...
+
+    def test_route_geometry_not_fail_no_via_point(self):
+        ...
+
+    def test_route_geometry_not_fail_with_via_points(self):
+        ...
+
+
 
 @skipIf(not settings.TREKKING_TOPOLOGY_ENABLED, 'Test with dynamic segmentation only')
 class PathKmlGPXTest(TestCase):
