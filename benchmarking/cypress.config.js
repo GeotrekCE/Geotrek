@@ -5,8 +5,8 @@ module.exports = defineConfig({
     baseUrl: 'http://geotrek.local:8000',
   },
   video: false,
-  defaultCommandTimeout: 5000000,
-  requestTimeout: 5000000,
-  responseTimeout: 5000000,
+  defaultCommandTimeout: 1800000, // 30min
+  requestTimeout: 1800000,
+  responseTimeout: 1800000,
   projectId: "ktpy7v"
 });
