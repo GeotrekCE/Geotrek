@@ -1,4 +1,5 @@
 import re
+import json
 from unittest import mock, skipIf
 
 from bs4 import BeautifulSoup
@@ -152,6 +153,9 @@ class PathViewsTest(CommonTest):
         for p in Path.objects.all():
             p.delete()
         super()._post_add_form()
+
+    def get_route_geometry(self, body):
+        return self.client.post(reverse('core:path-drf-route-geometry'), body, content_type='application/json')
 
     def test_draft_permission_detail(self):
         path = PathFactory(name="DRAFT_PATH", draft=True)
@@ -650,60 +654,53 @@ class PathViewsTest(CommonTest):
             self.client.get(obj.get_layer_url())
 
     def test_route_geometry_fail_no_steps_array(self):
-        body = {}
-        response = self.client.post(reverse('core:path-drf-route-geometry'), body)
+        response = self.get_route_geometry({})
         self.assertEqual(response.status_code, 400)
 
     def test_route_geometry_fail_empty_steps_array(self):
-        body = {"steps": []}
-        response = self.client.post(reverse('core:path-drf-route-geometry'), body)
+        response = self.get_route_geometry({"steps": []})
         self.assertEqual(response.status_code, 400)
 
     def test_route_geometry_fail_one_step(self):
-        body = {"steps": [{"lat": 48.866667, "lng": 2.333333}]}
-        response = self.client.post(reverse('core:path-drf-route-geometry'), body)
+        response = self.get_route_geometry({"steps": [{"lat": 48.866667, "lng": 2.333333}]})
         self.assertEqual(response.status_code, 400)
 
     def test_route_geometry_fail_no_lat(self):
-        body = {"steps": [{"lng": 2.333333}, {"lat": 47.866667, "lng": 1.333333}]}
-        response = self.client.post(reverse('core:path-drf-route-geometry'), body)
+        response = self.get_route_geometry({"steps": [{"lng": 2.333333}, {"lat": 47.866667, "lng": 1.333333}]})
         self.assertEqual(response.status_code, 400)
 
     def test_route_geometry_fail_no_lng(self):
-        body = {"steps": [{"lat": 48.866667}, {"lat": 47.866667, "lng": 1.333333}]}
-        response = self.client.post(reverse('core:path-drf-route-geometry'), body)
+        response = self.get_route_geometry({"steps": [{"lat": 48.866667}, {"lat": 47.866667, "lng": 1.333333}]})
         self.assertEqual(response.status_code, 400)
 
     def test_route_geometry_fail_incorrect_lat(self):
-        body = {"steps": [{"lat": 1000, "lng": 2.333333}, {"lat": 47.866667, "lng": 1.333333}]}
-        response = self.client.post(reverse('core:path-drf-route-geometry'), body)
+        response = self.get_route_geometry({"steps": [{"lat": 1000, "lng": 2.333333}, {"lat": 47.866667, "lng": 1.333333}]})
+        self.assertEqual(response.status_code, 400)
+        response = self.get_route_geometry({"steps": [{"lat": "abc", "lng": 2.333333}, {"lat": 47.866667, "lng": 1.333333}]})
         self.assertEqual(response.status_code, 400)
 
     def test_route_geometry_fail_incorrect_lng(self):
-        body = {"steps": [{"lat": 48.866667, "lng": 1000}, {"lat": 47.866667, "lng": 1.333333}]}
-        response = self.client.post(reverse('core:path-drf-route-geometry'), body)
+        response = self.get_route_geometry({"steps": [{"lat": 48.866667, "lng": 1000}, {"lat": 47.866667, "lng": 1.333333}]})
+        self.assertEqual(response.status_code, 400)
+        response = self.get_route_geometry({"steps": [{"lat": 48.866667, "lng": "abc"}, {"lat": 47.866667, "lng": 1.333333}]})
         self.assertEqual(response.status_code, 400)
 
-    def test_route_geometry_fail_no_possible_path(self):
+    def test_route_geometry_fail_no_possible_route(self):
         PathFactory.create(name="PATH_AB", geom=LineString((1, 1), (4, 1)), draft=False)
         PathFactory.create(name="PATH_CD", geom=LineString((1, 2), (4, 2)), draft=False)
-
-        body = {"steps": [{"lat": 1, "lng": 1}, {"lat": 4, "lng": 2}]}
-        response = self.client.post(reverse('core:path-drf-route-geometry'), body)
+        response = self.get_route_geometry({"steps": [{"lat": 1, "lng": 1}, {"lat": 4, "lng": 2}]})
         self.assertEqual(response.status_code, 400)
 
     def test_route_geometry_not_fail_no_via_point(self):
         PathFactory.create(name="PATH_AB", geom=LineString((1, 2), (4, 2)), draft=False)
-        PathFactory.create(name="PATH_CD", geom=LineString((4, 2), (4, 4)), draft=False)
-
-        body = {"steps": [{"lat": 2, "lng": 1}, {"lat": 4, "lng": 2}]}
-        response = self.client.post(reverse('core:path-drf-route-geometry'), body)
+        PathFactory.create(name="PATH_BC", geom=LineString((4, 2), (4, 4)), draft=False)
+        response = self.get_route_geometry({"steps": [{"lat": 1, "lng": 2}, {"lat": 4, "lng": 4}]})
+        print(response)
         self.assertEqual(response.status_code, 200)
         # TODO: check body
 
     def test_route_geometry_not_fail_with_via_points(self):
         ...
-
 
 
 @skipIf(not settings.TREKKING_TOPOLOGY_ENABLED, 'Test with dynamic segmentation only')
