@@ -10,6 +10,6 @@ describe('Benchmark scenarios', function() {
     });
 
     it('Big database, no via-point', function() {
-        cy.generateRouteTracingTimes('bigDB25ViaPoints')
+        cy.generateRouteTracingTimes('bigDB2ViaPoints')
     })
 })
