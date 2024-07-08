@@ -725,16 +725,141 @@ class PathViewsTest(CommonTest):
         self.assertEqual(response.status_code, 400)
 
     def test_route_geometry_not_fail_no_via_point_one_path(self):
-        ...
+        path_geom = LineString([
+            [1.3664246, 43.4569065],
+            [1.6108704, 43.4539158],
+        ], srid=settings.API_SRID)
+        path_geom.transform(settings.SRID)
+        PathFactory(geom=path_geom)
+
+        response = self.get_route_geometry({
+            "steps": [
+                {"lat": 43.456434372150945, "lng": 1.4050149210509666},
+                {"lat": 43.45443525706161, "lng": 1.568413282119847}
+            ]
+        })
+        self.assertEqual(response.status_code, 200)
+        geometries = response.data.get('geojson').get('geometries')
+        self.assertEqual(len(geometries), 1)
+        self.assertEqual(len(geometries[0].get('coordinates')), 2)
+        for coords in geometries[0].get('coordinates'):
+            self.assertEqual(len(coords), 2)
+        serialized = response.data.get('serialized')
+        self.assertEqual(len(serialized), 1)
+        self.assertEqual(len(serialized[0].get('positions').items()), 1)
+        self.assertEqual(len(serialized[0].get('positions').get(0)), 2)
+        self.assertEqual(serialized[0].get('paths'), [1])
 
     def test_route_geometry_not_fail_no_via_point_several_paths(self):
-        ...
+        pathGeom1 = LineString([
+            [1.3904572, 43.5271443],
+            [1.4451303, 43.5270311],
+        ], srid=settings.API_SRID)
+        pathGeom1.transform(settings.SRID)
+        PathFactory(geom=pathGeom1)
 
-    def test_route_geometry_not_fail_with_via_points_one_path(self):
-        ...
+        pathGeom2 = LineString([
+            [1.4447021, 43.5803909],
+            [1.4451303, 43.5270311],
+        ], srid=settings.API_SRID)
+        pathGeom2.transform(settings.SRID)
+        PathFactory(geom=pathGeom2)
 
-    def test_route_geometry_not_fail_with_via_points_several_path(self):
-        ...
+        response = self.get_route_geometry({
+            "steps": [
+                {"lat": 43.5271443, "lng": 1.3904572},
+                {"lat": 43.5803909, "lng": 1.4447021}
+            ]
+        })
+        self.assertEqual(response.status_code, 200)
+        geometries = response.data.get('geojson').get('geometries')
+        self.assertEqual(len(geometries), 1)
+        self.assertEqual(len(geometries[0].get('coordinates')), 3)
+        for coords in geometries[0].get('coordinates'):
+            self.assertEqual(len(coords), 2)
+        serialized = response.data.get('serialized')
+        self.assertEqual(len(serialized), 1)
+        self.assertEqual(len(serialized[0].get('positions').items()), 2)
+        self.assertEqual(len(serialized[0].get('positions').get(0)), 2)
+        self.assertEqual(len(serialized[0].get('positions').get(1)), 2)
+        self.assertEqual(serialized[0].get('paths'), [1, 2])
+
+    def test_route_geometry_not_fail_with_via_point_one_path(self):
+        path_geom = LineString([
+            [1.3664246, 43.4569065],
+            [1.6108704, 43.4539158],
+        ], srid=settings.API_SRID)
+        path_geom.transform(settings.SRID)
+        PathFactory(geom=path_geom)
+
+        response = self.get_route_geometry({
+            "steps": [
+                {"lat": 43.45672005573014, "lng": 1.3816640340701447},
+                {"lat": 43.45549487037786, "lng": 1.4818060951734013},
+                {"lat": 43.4543343323152, "lng": 1.5766622578279499}
+            ]
+        })
+
+        self.assertEqual(response.status_code, 200)
+        geometries = response.data.get('geojson').get('geometries')
+        self.assertEqual(len(geometries), 2)
+        for geom in geometries:
+            self.assertEqual(len(geom.get('coordinates')), 2)
+            for coords in geom.get('coordinates'):
+                self.assertEqual(len(coords), 2)
+        serialized = response.data.get('serialized')
+        self.assertEqual(len(serialized), 2)
+        for ser in serialized:
+            self.assertEqual(len(ser.get('positions').items()), 1)
+            self.assertEqual(len(ser.get('positions').get(0)), 2)
+            self.assertEqual(ser.get('paths'), [1])
+
+    def test_route_geometry_not_fail_with_via_points_several_paths(self):
+        pathGeom1 = LineString([
+            [1.4451303, 43.5270311],
+            [1.5305685, 43.5267991],
+        ], srid=settings.API_SRID)
+        pathGeom1.transform(settings.SRID)
+        PathFactory(geom=pathGeom1)
+
+        pathGeom2 = LineString([
+            [1.5305685, 43.5267991],
+            [1.5277863, 43.6251412],
+        ], srid=settings.API_SRID)
+        pathGeom2.transform(settings.SRID)
+        PathFactory(geom=pathGeom2)
+
+        response = self.get_route_geometry({
+            "steps": [
+                {"lat": 43.55713801872145, "lng": 1.5297106650186976},
+                {"lat": 43.5357564571998, "lng": 1.530315275025278},
+                {"lat": 43.526894753922015, "lng": 1.49534225136577},
+                {"lat": 43.526909669925175, "lng": 1.4898491643494793}
+            ]
+        })
+        self.assertEqual(response.status_code, 200)
+        geometries = response.data.get('geojson').get('geometries')
+        self.assertEqual(len(geometries), 3)
+        self.assertEqual(len(geometries[0].get('coordinates')), 2)
+        self.assertEqual(len(geometries[1].get('coordinates')), 3)
+        self.assertEqual(len(geometries[2].get('coordinates')), 2)
+        for geom in geometries:
+            for coords in geom.get('coordinates'):
+                self.assertEqual(len(coords), 2)
+        serialized = response.data.get('serialized')
+        self.assertEqual(len(serialized), 3)
+        self.assertEqual(len(serialized[0].get('positions').items()), 1)
+        self.assertEqual(len(serialized[0].get('positions').get(0)), 2)
+        self.assertEqual(serialized[0].get('paths'), [2])
+
+        self.assertEqual(len(serialized[1].get('positions').items()), 2)
+        self.assertEqual(len(serialized[1].get('positions').get(0)), 2)
+        self.assertEqual(len(serialized[1].get('positions').get(1)), 2)
+        self.assertEqual(serialized[1].get('paths'), [2, 1])
+
+        self.assertEqual(len(serialized[2].get('positions').items()), 1)
+        self.assertEqual(len(serialized[2].get('positions').get(0)), 2)
+        self.assertEqual(serialized[2].get('paths'), [1])
 
 @skipIf(not settings.TREKKING_TOPOLOGY_ENABLED, 'Test with dynamic segmentation only')
 class PathKmlGPXTest(TestCase):
