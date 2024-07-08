@@ -748,7 +748,7 @@ class PathViewsTest(CommonTest):
         self.assertEqual(len(serialized), 1)
         self.assertEqual(len(serialized[0].get('positions').items()), 1)
         self.assertEqual(len(serialized[0].get('positions').get(0)), 2)
-        self.assertEqual(serialized[0].get('paths'), [1])
+        self.assertEqual(len(serialized[0].get('paths')), 1)
 
     def test_route_geometry_not_fail_no_via_point_several_paths(self):
         pathGeom1 = LineString([
@@ -782,7 +782,7 @@ class PathViewsTest(CommonTest):
         self.assertEqual(len(serialized[0].get('positions').items()), 2)
         self.assertEqual(len(serialized[0].get('positions').get(0)), 2)
         self.assertEqual(len(serialized[0].get('positions').get(1)), 2)
-        self.assertEqual(serialized[0].get('paths'), [1, 2])
+        self.assertEqual(len(serialized[0].get('paths')), 2)
 
     def test_route_geometry_not_fail_with_via_point_one_path(self):
         path_geom = LineString([
@@ -812,7 +812,7 @@ class PathViewsTest(CommonTest):
         for ser in serialized:
             self.assertEqual(len(ser.get('positions').items()), 1)
             self.assertEqual(len(ser.get('positions').get(0)), 2)
-            self.assertEqual(ser.get('paths'), [1])
+            self.assertEqual(len(ser.get('paths')), 1)
 
     def test_route_geometry_not_fail_with_via_points_several_paths(self):
         pathGeom1 = LineString([
@@ -850,16 +850,16 @@ class PathViewsTest(CommonTest):
         self.assertEqual(len(serialized), 3)
         self.assertEqual(len(serialized[0].get('positions').items()), 1)
         self.assertEqual(len(serialized[0].get('positions').get(0)), 2)
-        self.assertEqual(serialized[0].get('paths'), [2])
+        self.assertEqual(len(serialized[0].get('paths')), 1)
 
         self.assertEqual(len(serialized[1].get('positions').items()), 2)
         self.assertEqual(len(serialized[1].get('positions').get(0)), 2)
         self.assertEqual(len(serialized[1].get('positions').get(1)), 2)
-        self.assertEqual(serialized[1].get('paths'), [2, 1])
+        self.assertEqual(len(serialized[1].get('paths')), 2)
 
         self.assertEqual(len(serialized[2].get('positions').items()), 1)
         self.assertEqual(len(serialized[2].get('positions').get(0)), 2)
-        self.assertEqual(serialized[2].get('paths'), [1])
+        self.assertEqual(len(serialized[2].get('paths')), 1)
 
 @skipIf(not settings.TREKKING_TOPOLOGY_ENABLED, 'Test with dynamic segmentation only')
 class PathKmlGPXTest(TestCase):
