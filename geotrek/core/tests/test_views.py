@@ -686,12 +686,12 @@ class PathViewsTest(CommonTest):
         self.assertEqual(response.status_code, 400)
 
     def test_route_geometry_fail_steps_not_on_paths(self):
-        toulouse_trek_geom = LineString([
+        path_geom = LineString([
             [1.3664246, 43.4569065],
             [1.6108704, 43.4539158],
         ], srid=settings.API_SRID)
-        toulouse_trek_geom.transform(settings.SRID)
-        PathFactory(geom=toulouse_trek_geom)
+        path_geom.transform(settings.SRID)
+        PathFactory(geom=path_geom)
 
         response = self.get_route_geometry({
             "steps": [
@@ -701,34 +701,40 @@ class PathViewsTest(CommonTest):
         })
         self.assertEqual(response.status_code, 400)
 
-    def test_route_geometry_not_fail_no_via_point(self):
-        PathFactory.create(name="PATH_AB", geom=LineString((1, 1), (4, 1)), draft=False)
-        PathFactory.create(name="PATH_CD", geom=LineString((2, 0), (2, 2)), draft=False)
-        response = self.get_route_geometry({
-            "steps": [
-                {"lat": 0, "lng": 0},
-                {"lat": 0, "lng": 0}
-            ]
-        })
-        print(response)
-        self.assertEqual(response.status_code, 200)
-        # FIXME
-        # TODO: check body
+    def test_route_geometry_fail_paths_not_linked(self):
+        pathGeom1 = LineString([
+            [1.3664246, 43.4569065],
+            [1.6108704, 43.4539158],
+        ], srid=settings.API_SRID)
+        pathGeom1.transform(settings.SRID)
+        PathFactory(geom=pathGeom1)
 
-    def test_route_geometry_not_fail_with_via_points(self):
-        PathFactory.create(name="PATH_AB", geom=LineString((1, 1), (4, 1)), draft=False)
-        PathFactory.create(name="PATH_CD", geom=LineString((2, 0), (2, 2)), draft=False)
-        PathFactory.create(name="PATH_EF", geom=LineString((3, 0), (3, 4)), draft=False)
+        pathGeom2 = LineString([
+            [1.5305685, 43.5267991],
+            [1.5765381, 43.5266465],
+        ], srid=settings.API_SRID)
+        pathGeom2.transform(settings.SRID)
+        PathFactory(geom=pathGeom2)
+
         response = self.get_route_geometry({
             "steps": [
-                {"lat": 0, "lng": 0},
-                {"lat": 0, "lng": 0}
+                {"lat": 43.4569065, "lng": 1.3664246},
+                {"lat": 43.5266465, "lng": 1.5765381}
             ]
         })
-        print(response)
-        self.assertEqual(response.status_code, 200)
-        # FIXME
-        # TODO: check body
+        self.assertEqual(response.status_code, 400)
+
+    def test_route_geometry_not_fail_no_via_point_one_path(self):
+        ...
+
+    def test_route_geometry_not_fail_no_via_point_several_paths(self):
+        ...
+
+    def test_route_geometry_not_fail_with_via_points_one_path(self):
+        ...
+
+    def test_route_geometry_not_fail_with_via_points_several_path(self):
+        ...
 
 @skipIf(not settings.TREKKING_TOPOLOGY_ENABLED, 'Test with dynamic segmentation only')
 class PathKmlGPXTest(TestCase):
