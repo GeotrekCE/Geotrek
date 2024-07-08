@@ -685,23 +685,50 @@ class PathViewsTest(CommonTest):
         response = self.get_route_geometry({"steps": [{"lat": 48.866667, "lng": "abc"}, {"lat": 47.866667, "lng": 1.333333}]})
         self.assertEqual(response.status_code, 400)
 
-    def test_route_geometry_fail_no_possible_route(self):
-        PathFactory.create(name="PATH_AB", geom=LineString((1, 1), (4, 1)), draft=False)
-        PathFactory.create(name="PATH_CD", geom=LineString((1, 2), (4, 2)), draft=False)
-        response = self.get_route_geometry({"steps": [{"lat": 1, "lng": 1}, {"lat": 4, "lng": 2}]})
+    def test_route_geometry_fail_steps_not_on_paths(self):
+        toulouse_trek_geom = LineString([
+            [1.3664246, 43.4569065],
+            [1.6108704, 43.4539158],
+        ], srid=settings.API_SRID)
+        toulouse_trek_geom.transform(settings.SRID)
+        PathFactory(geom=toulouse_trek_geom)
+
+        response = self.get_route_geometry({
+            "steps": [
+                {"lat": 40.5267991, "lng": 0.5305685},
+                {"lat": 40.5266465, "lng": 0.5765381}
+            ]
+        })
         self.assertEqual(response.status_code, 400)
 
     def test_route_geometry_not_fail_no_via_point(self):
-        PathFactory.create(name="PATH_AB", geom=LineString((1, 2), (4, 2)), draft=False)
-        PathFactory.create(name="PATH_BC", geom=LineString((4, 2), (4, 4)), draft=False)
-        response = self.get_route_geometry({"steps": [{"lat": 1, "lng": 2}, {"lat": 4, "lng": 4}]})
+        PathFactory.create(name="PATH_AB", geom=LineString((1, 1), (4, 1)), draft=False)
+        PathFactory.create(name="PATH_CD", geom=LineString((2, 0), (2, 2)), draft=False)
+        response = self.get_route_geometry({
+            "steps": [
+                {"lat": 0, "lng": 0},
+                {"lat": 0, "lng": 0}
+            ]
+        })
         print(response)
         self.assertEqual(response.status_code, 200)
+        # FIXME
         # TODO: check body
 
     def test_route_geometry_not_fail_with_via_points(self):
-        ...
-
+        PathFactory.create(name="PATH_AB", geom=LineString((1, 1), (4, 1)), draft=False)
+        PathFactory.create(name="PATH_CD", geom=LineString((2, 0), (2, 2)), draft=False)
+        PathFactory.create(name="PATH_EF", geom=LineString((3, 0), (3, 4)), draft=False)
+        response = self.get_route_geometry({
+            "steps": [
+                {"lat": 0, "lng": 0},
+                {"lat": 0, "lng": 0}
+            ]
+        })
+        print(response)
+        self.assertEqual(response.status_code, 200)
+        # FIXME
+        # TODO: check body
 
 @skipIf(not settings.TREKKING_TOPOLOGY_ENABLED, 'Test with dynamic segmentation only')
 class PathKmlGPXTest(TestCase):
