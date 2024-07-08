@@ -10,6 +10,6 @@ describe('Benchmark scenarios', function() {
     });
 
     it('Medium database, 100 via-points', function() {
-        cy.generateRouteTracingTimes('mediumDB100ViaPoints')
+        cy.generateRouteTracingTimes('mediumDB2ViaPoints')
     })
 })

@@ -15,10 +15,10 @@ geotrek/cypress/node_modules
 Makefile.perso.mk
 
 # Benchmarking
-benchmarking/time_measures/
-benchmarking/cypress/videos/
-benchmarking/cypress/screenshots/
-benchmarking/node_modules/
+tools/benchmarking/time_measures/
+tools/benchmarking/cypress/videos/
+tools/benchmarking/cypress/screenshots/
+tools/benchmarking/node_modules/
 
 # buildout stuff
 .mr.developer.cfg

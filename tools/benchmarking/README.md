@@ -16,7 +16,7 @@ To compare two versions of the route calculation, follow these steps:
 2. If needed, add a custom topology and scenario (see below: 'How to create a new scenario') and ensure you are using the corresponding database
 3. If needed, modify the measurements in the Python or Cypress code (see below: 'How to make custom measurements')
 4. Launch the geotrek admin server
-5. Go to the the `benchmarking/` directory
+5. Go to the the `tools/benchmarking/` directory
 6. Launch the script using this command:
     ```
     ./benchmark.sh path_to_scenario session_id

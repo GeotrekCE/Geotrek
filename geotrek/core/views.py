@@ -313,7 +313,6 @@ class PathViewSet(GeotrekMapentityViewSet):
 
     @action(methods=['POST'], detail=False, url_path="route-geometry", renderer_classes=[JSONRenderer])
     def route_geometry(self, request, *args, **kwargs):
-        start = time.time()
         try:
             params = request.data
             steps = params.get('steps')
@@ -340,10 +339,6 @@ class PathViewSet(GeotrekMapentityViewSet):
                 status = 400
         except Exception as exc:
             response, status = {'error': '%s' % exc, }, 500
-
-        end = time.time()
-        with open('benchmarking/time_measures/time_measures_py.txt', 'a', newline='') as output_file:
-            output_file.write(str((end - start) * 1000) + ' ')
         return Response(response, status)
 
 
