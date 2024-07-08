@@ -317,19 +317,15 @@ class PathViewSet(GeotrekMapentityViewSet):
         try:
             params = request.data
             steps = params.get('steps')
-            print('steps', steps)
             if steps is None:
                 raise Exception("Request parameters should contain a 'steps' array")
             if len(steps) < 2:
-                print('exception 2')
                 raise Exception("There must be at least 2 steps")
             for step in steps:
                 lat = step.get('lat')
                 lng = step.get('lng')
-                print('types', type(lat), type(lng))
                 if (not isinstance(lat, (int, float)) or not isinstance(lng, (int, float))
                     or lat < 0 or 90 < lat or lng < -180 or 180 < lng):
-                    print('exception 3')
                     raise Exception("Each step should contain valid latitude and longitude")
         except Exception as exc:
             return Response({'error': '%s' % exc, }, 400)
