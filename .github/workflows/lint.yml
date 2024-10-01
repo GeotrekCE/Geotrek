@@ -86,13 +86,14 @@ jobs:
           sudo apt-get -qq update
           sudo apt-get -yqq install gettext libcairo2 libpq-dev
           python3.8 -m venv venv
-          ./venv/bin/pip install -r requirements.txt
+          pip install -r requirements.txt
 
       - name: Generate translation files
         run: |
+          rm cypress/custom.py
           mkdir -p ./var/log ./var/cache/sessions geotrek/locale ./var/conf/extra_locale
           mkdir -p $VAR_DIR/conf/extra_static $VAR_DIR/tmp
-          ENV=dev ./venv/bin/django-admin makemessages -a --no-location --no-obsolete
+          ENV=dev django-admin makemessages -a --no-location --no-obsolete
 
       - uses: tj-actions/verify-changed-files@v20
         id: verify-changed-files
