@@ -52,7 +52,7 @@ jobs:
 
       - name: Check translations
         run: |
-          ENV=dev ./venv/bin/python3 ./manage.py makemessages -a --no-location --no-obsolete
+          ENV=dev ./manage.py makemessages -a --no-location --no-obsolete
 
       - uses: tj-actions/verify-changed-files@v20
         id: verify-changed-files
