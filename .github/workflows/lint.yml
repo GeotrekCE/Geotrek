@@ -92,8 +92,7 @@ jobs:
       - name: Generate translation files
         run: |
           rm cypress/custom.py
-          mkdir -p ./var/log ./var/cache/sessions geotrek/locale ./var/conf/extra_locale
-          mkdir -p $VAR_DIR/conf/extra_static $VAR_DIR/tmp
+          mkdir -p $VAR_DIR/log $VAR_DIR/sessions geotrek/locale $VAR_DIR/conf/extra_locale $VAR_DIR/conf/extra_static $VAR_DIR/tmp
           ENV=dev ./manage.py makemessages -a --no-location --no-obsolete
 
       - uses: tj-actions/verify-changed-files@v20
