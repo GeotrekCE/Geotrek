@@ -9,6 +9,8 @@ on:
       - 'setup.cfg'   # if lint tools configuration change
 
 jobs:
+  env:
+    VAR_DIR: /home/runner/work/Geotrek-admin/Geotrek-admin/var
   migrations:
     name: Checking SRID in migrations files
     runs-on: ubuntu-latest
@@ -46,14 +48,12 @@ jobs:
         run: |
           sudo apt-get install -y gettext
           pip3 install -r dev-requirements.txt
-          mkdir -p /opt/geotrek-admin/var/log
-          touch /opt/geotrek-admin/var/log/geotrek.log
-          pwd
-          ls -als
+          mkdir -p var/static var/conf/extra_static var/media/upload var/cache/sessions var/cache/api_v2 var/cache/fat var/log var/conf/extra_templates var/conf/extra_locale var/tmp
 
       - name: Check translations
         run: |
           ENV=dev ./manage.py makemessages -a --no-location --no-obsolete
+          ls -als
 
       - uses: tj-actions/verify-changed-files@v20
         id: verify-changed-files
