@@ -53,6 +53,7 @@ jobs:
       - name: Check translations
         run: |
           ENV=dev ./manage.py makemessages -a --no-location --no-obsolete
+          ENV=dev ./manage.py compilemessages
           ls -als
 
       - uses: tj-actions/verify-changed-files@v20
