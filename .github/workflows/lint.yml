@@ -53,7 +53,7 @@ jobs:
 
       - name: Check translations
         run: |
-          ./manage.py makemessages -a # --no-location --no-obsolete
+          ./manage.py makemessages -a --no-location --no-obsolete -v 3
           ./manage.py compilemessages
           ls -als
 
