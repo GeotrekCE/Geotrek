@@ -8,15 +8,12 @@ on:
       - 'dev-requirements.txt'  # if dev-requirements.txt change
       - 'setup.cfg'   # if lint tools configuration change
 
-env:
-  DEBIAN_FRONTEND: noninteractive
-
 jobs:
   migrations:
     name: Checking SRID in migrations files
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: |
           test $(ls geotrek/*/migrations/*.py | xargs grep -l srid | xargs grep -L SRID | wc -l) -eq 0
 
@@ -47,7 +44,7 @@ jobs:
           requirements: requirements.txt
       - name: Install dependencies
         run: |
-          sudo apt install gettext
+          sudo apt-get install -y gettext
           pip3 install -r dev-requirements.txt
           mkdir -p /opt/geotrek-admin/var/log
           touch /opt/geotrek-admin/var/log/geotrek.log
