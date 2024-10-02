@@ -9,6 +9,7 @@ on:
       - 'setup.cfg'   # if lint tools configuration change
 env:
   VAR_DIR: /home/runner/work/Geotrek-admin/Geotrek-admin/var
+  ENV: dev
 
 jobs:
   migrations:
