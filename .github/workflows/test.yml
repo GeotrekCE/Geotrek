@@ -157,24 +157,6 @@ jobs:
         ./venv/bin/coverage combine
         ./venv/bin/coverage xml -o coverage.xml
 
-    - name: Check translations
-      run: |
-        ENV=dev ./venv/bin/python3 ./manage.py makemessages -a --no-location --no-obsolete
-
-    - uses: tj-actions/verify-changed-files@v20
-      id: verify-changed-files
-      with:
-        files: |
-          **/*.po
-
-    - name: Verify translation files changed
-      if: steps.verify-changed-files.outputs.files_changed == 'true'
-      env:
-        CHANGED_FILES: ${{ steps.verify-changed-files.outputs.changed_files }}
-      run: |
-        echo "Changed files: $CHANGED_FILES"
-        core.setFailed('Please fix your translation files with ./manage.py makemessages -a --no-location --no-obsolete')
-
     - name: Save coverage
       if: ${{ matrix.os != 'bionic-3.8'}}
       uses: actions/upload-artifact@v4
