@@ -49,6 +49,8 @@ jobs:
         run: |
           sudo apt install gettext
           pip3 install -r dev-requirements.txt
+          mkdir -p /opt/geotrek-admin/var/log
+          touch /opt/geotrek-admin/var/log/geotrek.log
 
       - name: Check translations
         run: |
