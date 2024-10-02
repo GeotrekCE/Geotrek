@@ -87,6 +87,7 @@ jobs:
           sudo apt-get -yqq install gettext libcairo2 libpq-dev
           python3.8 -m venv venv
           pip install -r requirements.txt
+          pip install -r dev-requirements.txt
 
       - name: Generate translation files
         run: |
