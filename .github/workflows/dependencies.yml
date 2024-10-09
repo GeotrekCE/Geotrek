@@ -68,6 +68,5 @@ jobs:
         with:
           commit_message: "Fix deps by pip-compile in GHA"
           commit_user_name: "GitHub Actions"
-          commit_user_email: "
           token: ${{ secrets.GHA_PAT }}
 
