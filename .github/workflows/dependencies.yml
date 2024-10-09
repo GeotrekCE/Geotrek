@@ -15,17 +15,12 @@ env:
 jobs:
   quality:
     name: Checking dependency graph
-    runs-on: ${{ matrix.os }}
+    runs-on: 'ubuntu-latest'
 
     permissions:
       # Give the default GITHUB_TOKEN write permission to commit and push the
       # added or changed files to the repository.
       contents: write
-
-    strategy:
-      matrix:
-        os: ['ubuntu-20.04']
-        python-version: ['3.8']
 
     steps:
       - uses: actions/checkout@v4
@@ -66,7 +61,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         if: steps.verify-changed-files.outputs.files_changed == 'true'
         with:
-          commit_message: "Fix deps by pip-compile in GHA"
-          commit_user_name: "GitHub Actions"
           token: ${{ secrets.GHA_PAT }}
-
