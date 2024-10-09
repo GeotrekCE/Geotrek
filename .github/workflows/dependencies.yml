@@ -2,19 +2,6 @@ name: Check deps
 
 on:
   push:
-    paths:
-      - setup.py
-      - requirements.txt
-      - dev-requirements.txt
-      - docs/requirements.txt
-      - .github/workflows/dependencies.yml
-  pull_request:
-    paths:
-      - setup.py
-      - requirements.txt
-      - dev-requirements.txt
-      - docs/requirements.txt
-      - .github/workflows/dependencies.yml
 
 env:
   DEBIAN_FRONTEND: noninteractive
