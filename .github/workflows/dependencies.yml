@@ -1,13 +1,7 @@
 name: Check deps
 
 on:
-  pull_request:
-    paths:
-      - setup.py
-      - requirements.txt
-      - dev-requirements.txt
-      - docs/requirements.txt
-      - .github/workflows/dependencies.yml
+  push:
 
 env:
   DEBIAN_FRONTEND: noninteractive
@@ -15,14 +9,19 @@ env:
 jobs:
   quality:
     name: Checking dependency graph
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: ['ubuntu-20.04']
-        python-version: ['3.8']
+    runs-on: 'ubuntu-latest'
+
+    permissions:
+      # Give the default GITHUB_TOKEN write permission to commit and push the
+      # added or changed files to the repository.
+      contents: write
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.GHA_PAT }}
 
       - name: Set up Python
         uses: ./.github/actions/python-cache-requirements
@@ -53,4 +52,6 @@ jobs:
         run: |
           echo "Dependency file(s) changed: ${{ steps.verify-changed-files.outputs.changed_files }}"
           git diff
-          core.setFailed('Please add your new dependencies in setup.py and/or dev-requirements.in then run pip-compile to add them in requirements. (see docs/contribute/development)')
+
+      - name: "Commiting dependencies files"
+        uses: EndBug/add-and-commit@v9
