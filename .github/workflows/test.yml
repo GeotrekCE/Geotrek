@@ -313,8 +313,10 @@ jobs:
 
       - name: Cypress run
         uses: cypress-io/github-action@v6
+        with:
+            working-directory: cypress
         env:
-          CYPRESS_RECORD_KEY: 64a5a9b3-9869-4a2f-91e4-e3cd27c2f564
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CYPRESS_BASE_URL: http://geotrek.local
           CYPRESS_CACHE_FOLDER: ~/cypress/cache
