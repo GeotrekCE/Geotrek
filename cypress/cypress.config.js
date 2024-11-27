@@ -5,7 +5,12 @@ module.exports = defineConfig({
   redirectionLimit:400,
   requestTimeout: 50000,
   defaultCommandTimeout: 80000,
+  screenshotsFolder: "screenshots",
+  fixturesFolder: "fixtures",
+  videosFolder: "videos",
+  videos: true,
   e2e: {
     baseUrl: "http://geotrek.local:8000",
+    supportFile: "support/e2e.js",
     },
   });
