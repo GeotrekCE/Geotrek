@@ -1,10 +1,13 @@
 Cypress.Commands.add('loginByCSRF', (username, password) => {
-    cy.request('/login/?next=/')
+  cy.session(
+    [username, password],
+    () => {
+      cy.request('/login/?next=/')
       .its('body')
       .then((body) => {
         // we can use Cypress.$ to parse the string body
         // thus enabling us to query into it easily
-        const $html = Cypress.$(body)
+        const $html = Cypress.$(body);
         cy.request({
           method: 'POST',
           url: '/login/?next=/',
@@ -17,7 +20,14 @@ Cypress.Commands.add('loginByCSRF', (username, password) => {
          }
         });
       });
-    });
+    },
+    {
+      validate() {
+        cy.request('/').its('status').should('eq', 200);
+      },
+    }
+  );
+});
 
 Cypress.Commands.add('mockTiles', (username, password) => {
     cy.intercept("https://*.tile.opentopomap.org/*/*/*.png", {fixture: "images/tile.png"}).as("tiles");
