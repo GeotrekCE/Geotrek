@@ -8,5 +8,4 @@ module.exports = defineConfig({
   e2e: {
     baseUrl: "http://geotrek.local:8000",
     },
-  },
-});
+  });
