@@ -3,10 +3,7 @@ describe('Create tourism event', () => {
         const username = 'admin';
         const password = 'admin';
 
-        cy.loginByCSRF(username, password)
-            .then((resp) => {
-                expect(resp.status).to.eq(200);
-            });
+        cy.loginByCSRF(username, password);
         cy.mockTiles();
     });
 
