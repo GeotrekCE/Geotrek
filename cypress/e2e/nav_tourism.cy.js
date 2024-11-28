@@ -9,7 +9,7 @@ describe('Create tourism event', () => {
     });
 
     it('Should dynamically show/hide cancellation reason', () => {
-       cy.wait('@tiles');
+        cy.wait('@tiles');
         // check initially hidden
         cy.get('#div_id_cancellation_reason').should("not.be.visible");
         // check toggle hide/show

@@ -2,7 +2,7 @@ describe('Login from home page / admin page', () => {
 
     beforeEach(() => {
         cy.setCookie('django_language', 'en');
-    })
+    });
 
     it('Redirects to login page.', () => {
         cy.visit('/');
@@ -10,7 +10,7 @@ describe('Login from home page / admin page', () => {
         cy.get('form');
         cy.contains("Username");
         cy.get('[name="username"]');
-    })
+    });
 
     it('Fail to login', () => {
         cy.visit('/login/?next=/');
@@ -22,7 +22,7 @@ describe('Login from home page / admin page', () => {
             .should('have.value', 'password');
         cy.get("button[type='submit']").click();
         cy.url().should('include', '/login/?next=/');
-    })
+    });
 
     it('Login', () => {
         cy.visit('/login/?next=/');
@@ -35,7 +35,7 @@ describe('Login from home page / admin page', () => {
         cy.get("button[type='submit']").click();
         cy.url().should('include', '/path/list/');
         cy.url().should('not.include', '/login/?next=/');
-    })
+    });
 
     it('Redirects to admin login page.', () => {
         cy.visit('/admin');
@@ -43,16 +43,15 @@ describe('Login from home page / admin page', () => {
         cy.get('form');
         cy.contains("Username");
         cy.get('[name="username"]');
-    })
-})
-
+    });
+});
 
 describe('Logout', () => {
     beforeEach(() => {
         const username = 'admin';
         const password = 'admin';
         cy.loginByCSRF(username, password);
-    })
+    });
 
     it('Logout', () => {
         cy.visit('/');
@@ -60,5 +59,5 @@ describe('Logout', () => {
         cy.get("a.dropdown-toggle").contains('admin').click();
         cy.get("a[href='/logout/']").click();
         cy.url().should('include', '/login/');
-    })
-})
+    });
+});

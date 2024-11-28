@@ -1,15 +1,8 @@
 describe('Create path', () => {
-    before(() => {
+    beforeEach(() => {
         const username = 'admin';
         const password = 'admin';
-        cy.loginByCSRF(username, password)
-            .then((resp) => {
-                expect(resp.status).to.eq(200)
-            });
-    })
-
-    beforeEach(() => {
-        Cypress.Cookies.preserveOnce('sessionid', 'csrftoken');
+        cy.loginByCSRF(username, password);
     });
 
     it('Change language', () => {
@@ -20,6 +13,5 @@ describe('Create path', () => {
         cy.url().should('include', '/path/list/');
         cy.get("a.dropdown-toggle").contains('admin').click();
         cy.get("button.language-menu-item[value='en']").click();
-    })
-
-})
+    });
+});
