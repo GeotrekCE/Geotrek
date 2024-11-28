@@ -2,7 +2,7 @@ Cypress.Commands.add('loginByCSRF', (username, password) => {
   cy.session(
     [username, password],
     () => {
-      cy.request('/login/?next=/')
+      cy.request('/login/')
       .its('body')
       .then((body) => {
         // we can use Cypress.$ to parse the string body
@@ -25,6 +25,7 @@ Cypress.Commands.add('loginByCSRF', (username, password) => {
       validate() {
         cy.request('/').its('status').should('eq', 200);
       },
+      cacheAcrossSpecs: true
     }
   );
 });
