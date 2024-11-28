@@ -51,11 +51,7 @@ describe('Logout', () => {
     beforeEach(() => {
         const username = 'admin';
         const password = 'admin';
-        cy.loginByCSRF(username, password)
-            .then((resp) => {
-                expect(resp.status).to.eq(200)
-            })
-        Cypress.Cookies.preserveOnce('sessionid', 'csrftoken');
+        cy.loginByCSRF(username, password);
     })
 
     it('Logout', () => {

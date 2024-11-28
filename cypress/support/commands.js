@@ -19,6 +19,7 @@ Cypress.Commands.add('loginByCSRF', (username, password) => {
             "csrfmiddlewaretoken": $html.find('input[name=csrfmiddlewaretoken]').val(), // insert this as part of form body
          }
         });
+        cy.setCookie('django_language', 'en');
       });
     },
     {
