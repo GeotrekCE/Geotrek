@@ -392,6 +392,7 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
             working-directory: cypress
+            record: true
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
