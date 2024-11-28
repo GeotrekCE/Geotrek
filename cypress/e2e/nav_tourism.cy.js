@@ -5,12 +5,11 @@ describe('Create tourism event', () => {
 
         cy.loginByCSRF(username, password);
         cy.mockTiles();
+        cy.visit('/touristicevent/add/');
     });
 
     it('Should dynamically show/hide cancellation reason', () => {
-        cy.visit('/touristicevent/add/').get("#event").scrollTo('bottom');
-        //
-        cy.wait('@tiles');
+       cy.wait('@tiles');
         // check initially hidden
         cy.get('#div_id_cancellation_reason').should("not.be.visible");
         // check toggle hide/show
@@ -18,7 +17,7 @@ describe('Create tourism event', () => {
         cy.get('#div_id_cancellation_reason').should("be.visible");
         cy.get('#id_cancelled').uncheck({force: true});
         cy.get('#div_id_cancellation_reason').should("not.be.visible");
-    })
+    });
 
     it('Should dynamically show/hide reservation text box', () => {
         // check initially hidden
@@ -28,5 +27,5 @@ describe('Create tourism event', () => {
         cy.get('#booking_widget').should("be.visible");
         cy.get('#id_bookable').uncheck({force: true});
         cy.get('#booking_widget').should("not.be.visible");
-    })
-})
+    });
+});
