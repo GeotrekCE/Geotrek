@@ -154,7 +154,7 @@ django-leaflet==0.19.post11
     # via mapentity
 django-modelcluster==6.3
     # via geotrek (setup.py)
-django-modeltranslation==0.18.11
+django-modeltranslation==0.19.12
     # via mapentity
 django-mptt==0.14.0
     # via geotrek (setup.py)
