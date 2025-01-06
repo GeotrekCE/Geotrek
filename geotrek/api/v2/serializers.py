@@ -505,6 +505,10 @@ if 'geotrek.tourism' in settings.INSTALLED_APPS:
         departure_city = serializers.SerializerMethodField()
         types = serializers.SerializerMethodField()
         url = HyperlinkedIdentityField(view_name='apiv2:touristiccontent-detail')
+        published = serializers.SerializerMethodField()
+
+        def get_published(self, obj):
+            return get_translation_or_dict('published', self, obj)
 
         class Meta(TimeStampedSerializer.Meta):
             model = tourism_models.TouristicContent
