@@ -28,6 +28,7 @@ CHANGELOG
 
 - Fix missing Dockerfile path on make build scripts
 - Fix SchemaRandonneeParser url update when description is null or was not updated (#4022)
+- Fix: protect report endpoint from email failure
 
 **Documentation**
 
@@ -653,12 +654,8 @@ Do not use - Causes bug in Geotrek-Rando-v3 exposing Outdoor data
 - Add a scroll bar into filter form and module list (#2849)
 - In projects, start year must be before end year (#3567)
 
-**Maintenance**
 
-- Upgrade `django-mapentity`
-
-
-2.98.1     (2023-05-30)
+2.98.1 (2023-05-30)
 -----------------------
 
 **Bug fixes**

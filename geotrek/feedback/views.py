@@ -1,3 +1,6 @@
+import os
+import smtplib
+
 from crispy_forms.helper import FormHelper
 from django.conf import settings
 from django.contrib.gis.db.models.functions import Transform
@@ -134,3 +137,79 @@ class ReportViewSet(GeotrekMapentityViewSet):
                 self.request.user.pk if settings.SURICATE_WORKFLOW_ENABLED else ''
             )
         return geojson_lookup
+
+
+class ReportAPIViewSet(APIViewSet):
+    queryset = feedback_models.Report.objects.existing()\
+                              .select_related("activity", "category", "problem_magnitude", "status", "related_trek")\
+                              .prefetch_related("attachments")
+    parser_classes = [FormParser, MultiPartParser]
+    serializer_class = feedback_serializers.ReportAPISerializer
+    geojson_serializer_class = feedback_serializers.ReportAPIGeojsonSerializer
+    authentication_classes = []
+    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.select_related(
+            "activity", "category", "problem_magnitude", "status", "related_trek"
+        )
+
+    @action(detail=False, methods=["post"])
+    def report(self, request, lang=None):
+        response = super().create(request)
+        creator, created = get_user_model().objects.get_or_create(
+            username="feedback", defaults={"is_active": False}
+        )
+        for file in request._request.FILES.values():
+            attachment = Attachment(
+                filetype=FileType.objects.get_or_create(type=settings.REPORT_FILETYPE)[
+                    0
+                ],
+                content_type=ContentType.objects.get_for_model(feedback_models.Report),
+                object_id=response.data.get("id"),
+                creator=creator,
+                attachment_file=file,
+            )
+            name, extension = os.path.splitext(file.name)
+            try:
+                attachment.full_clean()  # Check that file extension and mimetypes are allowed
+            except ValidationError as e:
+                logger.error(f"Invalid attachment {name}{extension} for report {response.data.get('id')} : " + str(e))
+            else:
+                try:
+                    # Reencode file to bitmap then back to jpeg lfor safety
+                    if not os.path.exists(f"{settings.TMP_DIR}/report_file/"):
+                        os.mkdir(f"{settings.TMP_DIR}/report_file/")
+                    tmp_bmp_path = os.path.join(f"{settings.TMP_DIR}/report_file/", f"{name}.bmp")
+                    tmp_jpeg_path = os.path.join(f"{settings.TMP_DIR}/report_file/", f"{name}.jpeg")
+                    Image.open(file).save(tmp_bmp_path)
+                    Image.open(tmp_bmp_path).save(tmp_jpeg_path)
+                    with open(tmp_jpeg_path, 'rb') as converted_file:
+                        attachment.attachment_file = File(converted_file, name=f"{name}.jpeg")
+                        attachment.save()
+                    os.remove(tmp_bmp_path)
+                    os.remove(tmp_jpeg_path)
+                except Exception as e:
+                    logger.error(f"Failed to convert attachment {name}{extension} for report {response.data.get('id')}: " + str(e))
+
+        if settings.SEND_REPORT_ACK and response.status_code == 201:
+            try:
+                send_mail(
+                    _("Geotrek : Signal a mistake"),
+                    _(
+                        """Hello,
+
+We acknowledge receipt of your feedback, thank you for your interest in Geotrek.
+
+Best regards,
+
+The Geotrek Team
+http://www.geotrek.fr"""
+                    ),
+                    settings.DEFAULT_FROM_EMAIL,
+                    [request.data.get("email")],
+                )
+            except (smtplib.SMTPException, ConnectionError, OSError) as error:
+                logger.error("Error while sending feedback acknowledgment email: %s", error)
+        return response
