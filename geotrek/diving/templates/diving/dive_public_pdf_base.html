@@ -157,7 +157,7 @@
           {% for area in object.published_sensitive_areas %}
             <div class="text-content">
               {% if area.species.pictogram %}<img src="file://{{ area.species.pictogram.path }}">{% endif %}
-              <h3>{{ area.species.name }}</h3>
+              <h3>{{ area.name }}</h3>
               <p>{% trans "Sensitivity period:" %} {{ area.pretty_period }}</p>
               {% if area.contact %}<p>{% trans "Contact:" %} {{ area.contact|safe }}</p>{% endif %}
               <p>{{ area.description|safe }}</p>

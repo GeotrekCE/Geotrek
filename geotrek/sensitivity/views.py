@@ -27,8 +27,8 @@ logger = logging.getLogger(__name__)
 class SensitiveAreaList(CustomColumnsMixin, MapEntityList):
     queryset = SensitiveArea.objects.existing()
     filterform = SensitiveAreaFilterSet
-    mandatory_columns = ['id', 'species']
-    default_extra_columns = ['category']
+    mandatory_columns = ['id', 'name']
+    default_extra_columns = ['species','category']
 
 
 class SensitiveAreaFormatList(MapEntityFormat, SensitiveAreaList):

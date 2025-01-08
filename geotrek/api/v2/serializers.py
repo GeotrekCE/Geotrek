@@ -986,7 +986,7 @@ if 'geotrek.sensitivity' in settings.INSTALLED_APPS:
 
     class SensitiveAreaSerializer(DynamicFieldsMixin, TimeStampedSerializer):
         url = HyperlinkedIdentityField(view_name='apiv2:sensitivearea-detail')
-        name = serializers.SerializerMethodField()
+        name = serializers.CharField(source='area_name')
         elevation = serializers.SerializerMethodField()
         description = serializers.SerializerMethodField()
         period = serializers.SerializerMethodField()
@@ -1001,7 +1001,7 @@ if 'geotrek.sensitivity' in settings.INSTALLED_APPS:
         attachments = AttachmentSerializer(many=True)
 
         def get_name(self, obj):
-            return get_translation_or_dict('name', self, obj.species)
+            return get_translation_or_dict('name', self, obj)
 
         def get_description(self, obj):
             return get_translation_or_dict('description', self, obj)

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-03 15:39+0000\n"
+"POT-Creation-Date: 2024-12-03 16:28+0100\n"
 "PO-Revision-Date: 2020-04-22 07:48+0000\n"
 "Last-Translator: Emmanuelle Helly <emmanuelle.helly@makina-corpus.com>\n"
 "Language-Team: French <https://weblate.makina-corpus.net/projects/geotrek-"
@@ -113,8 +113,11 @@ msgstr "ID externe"
 msgid "Species"
 msgstr "Espèces"
 
+msgid "Area name"
+msgstr "Nom de la zone"
+
 msgid "Species or regulatory area"
-msgstr "Espèce ou zone réglementaire"
+msgstr "Espèce"
 
 msgid "Published"
 msgstr "Publiée"
@@ -133,6 +136,11 @@ msgstr "Zone de sensibilité"
 
 msgid "Sensitive areas"
 msgstr "Zones sensibles"
+
+#, fuzzy
+#| msgid "Published"
+msgid "Published name"
+msgstr "Publiée"
 
 msgid "Radius"
 msgstr "Rayon"

@@ -70,7 +70,7 @@ class SensitiveAreaTemplatesTest(TestCase):
     def test_species_name_shown_in_detail_page(self):
         url = reverse("sensitivity:sensitivearea_detail", kwargs={"pk": self.area.pk})
         response = self.client.get(url)
-        self.assertContains(response, self.area.species.name)
+        self.assertContains(response, self.area.name)
 
 
 class SensitiveAreaOpenAirViewsTest(TestCase):

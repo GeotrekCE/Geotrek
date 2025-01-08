@@ -92,6 +92,7 @@ class Species(TimeStampedModelMixin, OptionalPictogramMixin):
 
 class SensitiveArea(GeotrekMapEntityMixin, StructureRelated, TimeStampedModelMixin, NoDeleteMixin,
                     AddPropertyMixin):
+    name = models.CharField(max_length=250, verbose_name=_("Name"), default='undefined')
     geom = models.GeometryField(srid=settings.SRID)
     geom_buffered = models.GeometryField(srid=settings.SRID, editable=False)
     species = models.ForeignKey(Species, verbose_name=_("Species or regulatory area"), on_delete=models.PROTECT)
@@ -120,7 +121,7 @@ class SensitiveArea(GeotrekMapEntityMixin, StructureRelated, TimeStampedModelMix
         )
 
     def __str__(self):
-        return self.species.name
+        return self.name
 
     @property
     def radius(self):
@@ -185,14 +186,26 @@ class SensitiveArea(GeotrekMapEntityMixin, StructureRelated, TimeStampedModelMix
             return []
 
     @property
-    def species_display(self):
-        s = '<a data-pk="%s" href="%s" title="%s">%s</a>' % (self.pk,
-                                                             self.get_detail_url(),
-                                                             self.species.name,
-                                                             self.species.name)
+    def area_name(self):
+        if self.species.category == 1:
+            return self.species.name if self.name == "" else self.name
+        else:
+            return self.name
+        
+    @classproperty
+    def area_name_verbose_name(cls):
+        return _("Published name")
+        
+    @property
+    def name_display(self):
+        s = f'<a data-pk="{self.pk}" href="{self.get_detail_url()}" title="{self.area_name}">{self.area_name}</a>'
         if self.published:
-            s = '<span class="badge badge-success" title="%s">&#x2606;</span> ' % _("Published") + s
+            s = f"""<span class="badge badge-success" title="{_('Published')}">&#x2606;</span> {s}"""
         return s
+
+    @property
+    def species_display(self):
+        return self.species.name
 
     @property
     def extent(self):
@@ -211,7 +224,7 @@ class SensitiveArea(GeotrekMapEntityMixin, StructureRelated, TimeStampedModelMix
                 geometry += (coords, )
             geom = GEOSGeometry(Polygon(geometry), srid=settings.SRID)
         geom = geom.transform(4326, clone=True)  # KML uses WGS84
-        line = kml.newpolygon(name=self.species.name,
+        line = kml.newpolygon(name=self.name,
                               description=plain_text(self.description),
                               altitudemode=simplekml.AltitudeMode.relativetoground,
                               outerboundaryis=simplify_coords(geom.coords[0]))

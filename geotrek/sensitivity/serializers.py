@@ -8,7 +8,8 @@ from . import models as sensitivity_models
 class SensitiveAreaSerializer(DynamicFieldsMixin, rest_serializers.ModelSerializer):
     category = rest_serializers.CharField(source='category_display')
     structure = rest_serializers.SlugRelatedField('name', read_only=True)
-    species = rest_serializers.CharField(source='species_display')
+    species = rest_serializers.CharField(source='species.name')
+    name = rest_serializers.CharField(source='name_display')
 
     class Meta:
         model = sensitivity_models.SensitiveArea

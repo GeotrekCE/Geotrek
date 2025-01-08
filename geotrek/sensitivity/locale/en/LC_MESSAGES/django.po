@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-03 15:39+0000\n"
+"POT-Creation-Date: 2024-12-03 16:28+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -112,8 +112,11 @@ msgstr ""
 msgid "Species"
 msgstr ""
 
-msgid "Species or regulatory area"
+msgid "Area name"
 msgstr ""
+
+msgid "Species or regulatory area"
+msgstr "Specie"
 
 msgid "Published"
 msgstr ""
@@ -131,6 +134,9 @@ msgid "Sensitive area"
 msgstr ""
 
 msgid "Sensitive areas"
+msgstr ""
+
+msgid "Published name"
 msgstr ""
 
 msgid "Radius"

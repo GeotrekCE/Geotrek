@@ -1,0 +1,35 @@
+from django.db import migrations, models
+from modeltranslation.translator import translator
+from django.conf import settings
+from geotrek.sensitivity.models import SensitiveArea, Species
+
+def generate_name(apps, schema_editor):
+    """Populate SensitiveAreas name from Species"""
+
+    sensitive_area = SensitiveArea
+    species = Species
+    languages = settings.MODELTRANSLATION_LANGUAGES
+    update_fields = [
+        "name",
+    ]
+    update_fields += [f"name_{lang}" for lang in languages]
+    for row in sensitive_area.objects.filter(deleted=False, species__category=2):
+        sp = species.objects.filter(pk=row.species.pk)
+        values_dict = sp.values(*update_fields)[0] 
+        print(values_dict)
+        # print({field: getattr(sp.first(), field) or "" for field in update_fields})
+        sensitive_area.objects.filter(pk=row.pk).update(**values_dict)
+        sp.update(**{field:"" for field in update_fields})
+        # row.save(update_fields=update_fields)
+        # row.species.save(update_fields=update_fields)
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ("sensitivity", "0029_sensitivearea_name"),
+    ]
+
+    operations = [
+        migrations.RunPython(generate_name, reverse_code=migrations.RunPython.noop),
+    ]
