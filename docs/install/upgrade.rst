@@ -89,6 +89,19 @@ Make sure to run the following command **BEFORE** upgrading:
 ``su postgres -c "psql -q -d $POSTGRES_DB -c 'CREATE EXTENSION pgcrypto;'"``
 
 
+From Geotrek-admin <= 2.110.0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+**WARNING!**
+
+Starting from version 2.111.0, Geotrek now requires pgRouting. Before upgrading:
+
+1. Install the pgRouting package by running ``sudo apt install -y postgresql-pgrouting wget software-properties-common``
+
+2. Run the following command: ``su postgres -c "psql -q -d $POSTGRES_DB -c 'CREATE EXTENSION pgrouting;'"``
+
+
+
 Server migration
 ~~~~~~~~~~~~~~~~
 
@@ -180,7 +193,7 @@ Now, install newest version of PostgreSQL and PostGIS:
 
 ::
 
-    sudo apt install postgresql-14-postgis-3
+    sudo apt install postgresql-14-pgrouting
 
 
 
@@ -206,6 +219,7 @@ Recreate user and database:
     CREATE EXTENSION postgis;
     CREATE EXTENSION postgis_raster;
     CREATE EXTENSION pgcrypto;
+    CREATE EXTENSION pgrouting;
     \q
 
 .. warning::

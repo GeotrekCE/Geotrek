@@ -56,6 +56,22 @@
     background-image: url('images/marker-target.png');
 }
 
+.marker-source.marker-disabled {
+    background-image: url('images/marker-bound-disabled.png');
+}
+
+.marker-target.marker-disabled {
+    background-image: url('images/marker-bound-disabled.png');
+}
+
+.marker-drag.marker-disabled {
+    background-image: url('images/marker-drag-disabled.png');
+}
+
+.marker-drag.marker-highlighted {
+    background-image: url('images/marker-drag-highlighted.png'); 
+}
+
 .marker-source.marker-snapped {
     background-image: url('images/marker-source-snap.png');
 }
@@ -93,4 +109,31 @@ span.aggregation {
 .leaflet-editing-icon.marker-snapped {
     background-image: none;
     background-color: yellow;
+}
+
+.toast-stack {
+    position: absolute;
+    right: 1.5rem;
+    bottom: 1.5rem;
+}
+
+.toast-error {
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
+    display: none;
+}
+
+.toast-error-header {
+    justify-content: space-between;
+    color: #842029;
+    background-color: #f8d7da;
+}
+
+.toast-error-button {
+    color: #842029;
+}
+
+.toast-error-body {
+    background-color: #f8d7da;
+    color: #842029;
 }

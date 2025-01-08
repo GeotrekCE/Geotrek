@@ -733,3 +733,20 @@ class MergePathsTest(TestCase):
                       f"--- RAN 6 MERGES - FROM 16 TO 10 PATHS ---\n")
         self.assertEqual(Path.objects.count(), 10)
         self.assertIn(output_str, output.getvalue())
+
+
+@skipIf(not settings.TREKKING_TOPOLOGY_ENABLED, 'Test with dynamic segmentation only')
+class GeneratePgrNetworkTopologyTest(TestCase):
+
+    def test_generate_newtork_topology(self):
+        geom_1 = LineString(Point(700000, 6600000), Point(700100, 6600100), srid=settings.SRID)
+        geom_2 = LineString(Point(700000, 6600100), Point(700100, 6600000), srid=settings.SRID)
+        path_1 = PathFactory.create(geom=geom_1)
+        path_2 = PathFactory.create(geom=geom_2)
+        call_command('generate_pgr_network_topology')
+        path_1.refresh_from_db()
+        path_2.refresh_from_db()
+        self.assertIsNotNone(path_1.source_pgr)
+        self.assertIsNotNone(path_1.target_pgr)
+        self.assertIsNotNone(path_2.source_pgr)
+        self.assertIsNotNone(path_2.target_pgr)

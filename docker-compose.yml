@@ -15,7 +15,7 @@ x-images:
 
 services:
   postgres:
-    image: postgis/postgis:12-2.5
+    image: pgrouting/pgrouting:12-3.0-3.0.0
     env_file:
       - .env
     ports:

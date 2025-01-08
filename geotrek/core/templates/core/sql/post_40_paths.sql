@@ -158,3 +158,20 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER core_path_latest_updated_d_tgr
 AFTER DELETE ON core_path
 FOR EACH ROW EXECUTE PROCEDURE path_latest_updated_d();
+
+
+----------------------------------------------------------------------------
+-- Set pgRouting-related values to null after the geometry has been modified
+----------------------------------------------------------------------------
+
+CREATE FUNCTION {{ schema_geotrek }}.set_pgrouting_values_to_null() RETURNS trigger SECURITY DEFINER AS $$
+DECLARE
+BEGIN
+    UPDATE core_path SET source = NULL, target = NULL WHERE id = NEW.id;
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER core_path_pgrouting_values_null_tgr
+AFTER UPDATE OF geom ON core_path
+FOR EACH ROW EXECUTE PROCEDURE set_pgrouting_values_to_null();

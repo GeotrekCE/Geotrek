@@ -43,6 +43,14 @@ var PolylineExtremities = {
             // http://stackoverflow.com/a/10477334
             'path': 'M 22.5, 22.5 m -20, 0 a 20,20 0 1,0 40,0 a 20,20 0 1,0 -40,0'
         },
+        arrowM: {
+            'viewBox': '0 0 10 10',
+            'refX': '1',
+            'refY': '5',
+            'markerUnits': 'strokeWidth',
+            'orient': 'auto',
+            'path': 'M 0 0 L 10 5 L 0 10 z'
+        },
     },
 
     onAdd: function (map) {
@@ -71,7 +79,7 @@ var PolylineExtremities = {
         /* If not in SVG mode or Polyline not added to map yet return */
         /* showExtremities will be called by onAdd, using value stored in this._pattern */
         if (!L.Browser.svg || typeof this._map === 'undefined') {
-          return this;
+            return this;
         }
 
         /* If empty pattern, hide */
@@ -87,12 +95,12 @@ var PolylineExtremities = {
         var defsNode;
         if (L.DomUtil.hasClass(svg, 'defs')) {
             defsNode = svg.getElementById('defs');
-
-        } else{
+        } else {
             L.DomUtil.addClass(svg, 'defs');
             defsNode = L.Path.prototype._createElement('defs');
             defsNode.setAttribute('id', 'defs');
-            svg.appendChild(defsNode);
+            var svgFirstChild = svg.childNodes[0];
+            svg.insertBefore(defsNode, svgFirstChild);
         }
 
         // Add the marker to the line
@@ -117,7 +125,7 @@ var PolylineExtremities = {
         }
 
         // Copy the path apparence to the marker
-        var styleProperties = ['stroke', 'stroke-opacity'];
+        var styleProperties = ['class', 'stroke', 'stroke-opacity'];
         for (var i=0; i<styleProperties.length; i++) {
             var styleProperty = styleProperties[i];
             var pathProperty = this._path.getAttribute(styleProperty);

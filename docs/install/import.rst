@@ -106,7 +106,7 @@ or `via QGis following this blog post <https://makina-corpus.com/sig-webmapping/
     * **Geometric type** : Linestring
     * **Expected formats** (supported by GDAL) : Shapefile, Geojson, Geopackage
     * **Template** : :download:`paths.geojson <../files/import/paths.geojson>`
-    * **Good to know** : 
+    * **Good to know** :
        * The default SRID code is 4326
        * The default encoding is UTF-8
        * Imported paths are unpublished by default
@@ -138,6 +138,26 @@ or `via QGis following this blog post <https://makina-corpus.com/sig-webmapping/
     --structure "DEMO" \
     --name-attribute id \
     --comments-attribute commentaire
+
+After importing a large quantity of paths, it is recommended to pre-generate the
+paths graph needed for the routing. This action is not mandatory, but will reduce the time needed for the first
+routing following the import.
+
+To pre-generate the graph, use the ``generate_pgr_network_topology`` command::
+
+    sudo geotrek generate_pgr_network_topology
+    OR
+    docker compose run --rm web ./manage.py generate_pgr_network_topology
+
+After importing a large quantity of paths, it is recommended to pre-generate the
+paths graph needed for the routing. This action is not mandatory, but will reduce the time needed for the first
+routing following the import.
+
+To pre-generate the graph, use the ``generate_pgr_network_topology`` command::
+
+    sudo geotrek generate_pgr_network_topology
+    OR
+    docker compose run --rm web ./manage.py generate_pgr_network_topology
 
 .. _import-data-from-touristic-data-systems-sit:
 
@@ -228,7 +248,7 @@ Don't forget the u character before strings if they contain non-ascii characters
 
 In this case categories and types in Geotrek database have to be the same as in Esprit parc database. Otherwise missing categories and types will be created in Geotrek database.
 
-Imported contents will be automatically published and approved. 
+Imported contents will be automatically published and approved.
 
 If you use an url that filters a unique category, you can change its name. Example to get only Honey products and set the Geotrek category and type in which import them:
 
@@ -257,7 +277,7 @@ When sensitive areas module is enabled, Geotrek provides 3 parsers to import dat
 
 * **Import sensitive areas from http://biodiv-sports.fr** (``geotrek.sensitivity.parsers.BiodivParser``). By default this
   parser imports all sensitive areas in configured spatial extent.
-* **Import species sensitive areas from a zipped shapefile**. 
+* **Import species sensitive areas from a zipped shapefile**.
   Imported field names are: ``espece`` (required), ``contact`` and ``descriptio``. Species with corresponding names have to be created manually before import.
 * **Import regulatory sensitive areas from a zipped shapefile**. Imported field names are: ``nom`` (required), ``contact``, ``descriptio``, ``periode`` (month numbers separated with comas), ``pratiques`` (separated with comas), and ``url``. Practices with corresponding names have to be created manually before import.
 
@@ -312,7 +332,7 @@ In the following example, ``Provider_1Parser`` and ``Provider_2Parser`` will eac
 
 
 .. danger::
-    It is recommended to use ``provider`` from the first import - Do not add a ``provider`` field to preexisting parsers that already imported objects, or you will have to manually set the same value for ``provider`` on all objects already created by this parser. 
+    It is recommended to use ``provider`` from the first import - Do not add a ``provider`` field to preexisting parsers that already imported objects, or you will have to manually set the same value for ``provider`` on all objects already created by this parser.
 
 
 .. danger::
@@ -448,17 +468,17 @@ It is also possible to import sensitive areas through command line:
 
     sudo geotrek import geotrek.sensitivity.parsers.BiodivParser
 
-.. warning:: 
-  If you don't see any data in your area, it means that Biodiv'Sports does not contains data for your territory. 
-  Then it is widely recommended to add your data directly into Biodiv'Sports, as it will be available for 
-  multiple users, and then retrieve them into your Geotrek instance. To import data in Biodiv'Sports 
+.. warning::
+  If you don't see any data in your area, it means that Biodiv'Sports does not contains data for your territory.
+  Then it is widely recommended to add your data directly into Biodiv'Sports, as it will be available for
+  multiple users, and then retrieve them into your Geotrek instance. To import data in Biodiv'Sports
   go visit its website: https://biodiv-sports.fr
 
 
 Import from shapefile
 ---------------------
 
-Imported data must be in standard ESRI shapefile format. 
+Imported data must be in standard ESRI shapefile format.
 The various Shapefile files (``.shp``, ``.shx``, ``.dbf``, ``.prj``, *etc*.) must be assembled in a zip archive.
 
 .. warning::
@@ -468,7 +488,7 @@ Attribute data for sensitive areas species
 
 - ``espece``: Species name. Mandatory. A species with this name must first have been created in Biodiv'sports. Otherwise, import of the line will fail.
 - ``contact``: Contact in text or HTML format. *Optional*.
-- ``descriptio``: Description in text or HTML format. *Optional*. 
+- ``descriptio``: Description in text or HTML format. *Optional*.
 
 .. warning::
   Species name must strictly respect the species name string (accentuation, case and punctuation).
@@ -512,7 +532,7 @@ or:
     sudo geotrek  import geotrek.sensitivity.parsers.RegulatorySensitiveAreaShapeParser <file.shp>.
 
 
-.. warning:: 
+.. warning::
   Relaunching an import **with the same file** will create duplicates.
 
 
@@ -534,7 +554,7 @@ You can also use some of Geotrek commands to import data from a vector file hand
 
 Possible data are e.g.: POI, infrastructures, signages, cities, districts, restricted areas, paths.
 
-You must use these commands to import spatial data because of the dynamic segmentation, which will not be computed if you enter the data manually. 
+You must use these commands to import spatial data because of the dynamic segmentation, which will not be computed if you enter the data manually.
 
 Here are the Geotrek commands available to import data from file:
 
@@ -553,7 +573,7 @@ To get help about a command:
 ::
 
     sudo geotrek help <subcommand>
-    
+
 .. _import-dem-altimetry:
 
 
@@ -671,7 +691,7 @@ Import POIs
     * **Geometric type** : Point
     * **Expected formats** (supported by GDAL) : Shapefile, Geojson, Geopackage
     * **Template** : :download:`poi.geojson <../files/import/poi.geojson>`
-    * **Good to know** : 
+    * **Good to know** :
        * The SRID must be 4326
        * The default encoding is UTF-8
        * Imported POIs are unpublished by default
@@ -801,7 +821,7 @@ Import Infrastructure
     * **Geometric type** : Point
     * **Expected formats** (supported by GDAL) : Shapefile, Geojson, Geopackage
     * **Template** : :download:`infrastructure.geojson <../files/import/infrastructure.geojson>`
-    * **Good to know** : 
+    * **Good to know** :
        * The SRID must be 4326
        * The default encoding is UTF-8
        * Imported infrastructures are unpublished by default
@@ -980,7 +1000,7 @@ Import Signage
     * **Geometric type** : Point
     * **Expected formats** (supported by GDAL) : Shapefile, Geojson, Geopackage
     * **Template** : :download:`signage.geojson <../files/import/signage.geojson>`
-    * **Good to know** : 
+    * **Good to know** :
        * The default SRID code is 4326
        * The default encoding is UTF-8
        * Imported signage are unpublished by default
@@ -1058,7 +1078,7 @@ Import Cities
     * **Geometric type** : Polygon
     * **Expected formats** (supported by GDAL) : Shapefile, Geojson, Geopackage
     * **Template** : :download:`cities.geojson <../files/import/cities.geojson>`
-    * **Good to know** : 
+    * **Good to know** :
        * The default SRID code is 4326
        * The default encoding is UTF-8
        * Imported cities are unpublished by default
@@ -1145,7 +1165,7 @@ Import Districts
     * **Geometric type** : Polygon
     * **Expected formats** (supported by GDAL) : Shapefile, Geojson, Geopackage
     * **Template** : :download:`districts.geojson <../files/import/districts.geojson>`
-    * **Good to know** : 
+    * **Good to know** :
        * The default SRID code is 4326
        * The default encoding is UTF-8
        * Imported districts are unpublished by default
@@ -1219,7 +1239,7 @@ Import Restricted areas
     * **Geometric type** : Polygon
     * **Expected formats** (supported by GDAL) : Shapefile, Geojson, Geopackage
     * **Template** : :download:`restrictedareas.geojson <../files/import/restrictedareas.geojson>`
-    * **Good to know** : 
+    * **Good to know** :
        * The default SRID code is 4326
        * The default encoding is UTF-8
        * Imported restricted areas are unpublished by default
@@ -1265,10 +1285,10 @@ Merge segmented paths
 A path network is most optimized when there is only one path between intersections.
 If the path database includes many fragmented paths, they could be merged to improve performances.
 
-You can run ``sudo geotrek merge_segmented_paths``. 
+You can run ``sudo geotrek merge_segmented_paths``.
 
 .. danger::
-    This command can take several hours to run. During the process, every topology on a path will be set on the path it is merged with, but it would still be more efficient (and safer) to run it before creating topologies. 
+    This command can take several hours to run. During the process, every topology on a path will be set on the path it is merged with, but it would still be more efficient (and safer) to run it before creating topologies.
 
 Before :
 ::

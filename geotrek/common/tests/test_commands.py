@@ -192,18 +192,25 @@ class CheckVersionsCommandTestCase(TestCase):
         call_command('check_versions', '--postgis', '--no-color', stdout=self.output)
         self.assertEqual(self.output.getvalue().strip(), '3.1.0')
 
+    @patch('django.db.connection.cursor')
+    def test_pgrouting_version(self, mock_cursor):
+        mock_cursor.return_value.__enter__.return_value.fetchone.return_value = ['3.0.0']
+        call_command('check_versions', '--pgrouting', '--no-color', stdout=self.output)
+        self.assertEqual(self.output.getvalue().strip(), '3.0.0')
+
     @patch('geotrek.common.management.commands.check_versions.sys')
     @patch('django.get_version', return_value='3.2.2')
     @patch('django.db.connection.cursor')
     def test_full_version(self, mock_cursor, mock_get_version, mock_version_info):
         type(mock_version_info).version = PropertyMock(return_value="3.9.1")
-        mock_cursor.return_value.__enter__.return_value.fetchone.return_value = ['14', '3.0']
+        mock_cursor.return_value.__enter__.return_value.fetchone.side_effect = [('14',), ('3.0',), ('3.0.0',)]
         call_command('check_versions', '--full', '--no-color', stdout=self.output)
         expected_result = (
             f"Geotrek version    : {__version__}\n"
             "Python version     : 3.9.1\n"
             "Django version     : 3.2.2\n"
             "PostgreSQL version : 14\n"
-            "PostGIS version    : 14"
+            "PostGIS version    : 3.0\n"
+            "pgRouting version  : 3.0.0"
         )
         self.assertEqual(self.output.getvalue().strip(), expected_result)

@@ -25,14 +25,7 @@ describe('Create trek', () => {
         cy.visit('/trek/list');
         cy.wait('@tiles');
         cy.server();
-        cy.route('/api/path/drf/paths/graph.json').as('graph');
         cy.get("a.btn-success[href='/trek/add/']").contains('Add a new trek').click();
-        cy.wait('@graph');
-        cy.get("a.linetopology-control").click();
-        cy.get("textarea[id='id_topology']").type('[{"pk": 2, "kind": "TREK", "offset": 0.0, "paths": [3], "positions": {"0": [0.674882030756843, 0.110030805790642]}}]', {
-            force: true,
-            parseSpecialCharSequences: false
-        });
         cy.get("input[id='id_duration']").type('100');
         cy.get("input[name='name_en']").type('Trek number 1');
         cy.get("a[href='#name_fr']").click();
@@ -52,6 +45,10 @@ describe('Create trek', () => {
         cy.setTinyMceContent('id_description_teaser_en', 'Description teaser number 1');
         cy.setTinyMceContent('id_ambiance_en', 'Ambiance number 1');
         cy.setTinyMceContent('id_description_en', 'Description number 1');
+        cy.get("a.linetopology-control").click();
+        cy.clickOnPath(3, 67);
+        cy.clickOnPath(3, 11);
+        cy.get('[data-test^="route-step-"]');
         cy.get('#save_changes').click();
         cy.url().should('not.include', '/trek/add/');
         cy.get('.content').should('contain', 'Trek number 1');

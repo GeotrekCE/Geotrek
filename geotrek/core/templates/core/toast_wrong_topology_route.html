@@ -1,0 +1,6 @@
+{% load i18n %}
+
+<div class="toast-stack">
+  {% include "core/error_toast.html" with id="routing-unsnapped-marker-error-toast" title=_("Warning") message=_("The marker was not dropped on a path.") %}
+  {% include "core/error_toast.html" with id="routing-isolated-marker-error-toast" title=_("Warning") message=_("No routing found for this marker. Please move or delete it.") %}
+</div>

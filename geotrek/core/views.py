@@ -5,7 +5,6 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 from django.contrib.gis.db.models.functions import Transform
-from django.core.cache import caches
 from django.db.models import Sum, Prefetch
 from django.http import HttpResponseRedirect
 from django.http.response import HttpResponse
@@ -13,15 +12,14 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext as _
-from django.views.decorators.cache import cache_control
-from django.views.decorators.http import last_modified as cache_last_modified
 from django.views.generic import TemplateView
 from django.views.generic.detail import BaseDetailView
 from mapentity.serializers import GPXSerializer
 from mapentity.views import (MapEntityList, MapEntityDetail, MapEntityDocument, MapEntityCreate, MapEntityUpdate,
                              MapEntityDelete, MapEntityFormat, LastModifiedMixin)
+from rest_framework import permissions
 from rest_framework.decorators import action
-from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
+from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 
 from geotrek.authent.decorators import same_structure_required
@@ -30,7 +28,7 @@ from geotrek.common.mixins.views import CustomColumnsMixin
 from geotrek.common.mixins.forms import FormsetMixin
 from geotrek.common.permissions import PublicOrReadPermMixin
 from geotrek.common.viewsets import GeotrekMapentityViewSet
-from . import graph as graph_lib
+from .path_router import PathRouter
 from .filters import PathFilterSet, TrailFilterSet
 from .forms import PathForm, TrailForm, CertificationTrailFormSet
 from .models import AltimetryMixin, Path, Trail, Topology, CertificationTrail
@@ -234,6 +232,11 @@ class PathViewSet(GeotrekMapentityViewSet):
     filterset_class = PathFilterSet
     mapentity_list_class = PathList
 
+    def get_permissions(self):
+        if self.action == 'route_geometry':
+            return [permissions.IsAuthenticated()]
+        return super().get_permissions()
+
     def view_cache_key(self):
         """Used by the ``view_cache_response_content`` decorator."""
         language = self.request.LANGUAGE_CODE
@@ -277,29 +280,6 @@ class PathViewSet(GeotrekMapentityViewSet):
         data = super().get_filter_count_infos(qs)
         return f"{data} ({round(qs.aggregate(sumPath=Sum(Length('geom') / 1000)).get('sumPath') or 0, 1)} km)"
 
-    @method_decorator(cache_control(max_age=0, must_revalidate=True))
-    @method_decorator(cache_last_modified(lambda x: Path.no_draft_latest_updated()))
-    @action(methods=['GET'], detail=False, url_path='graph.json', renderer_classes=[JSONRenderer, BrowsableAPIRenderer])
-    def graph(self, request, *args, **kwargs):
-        """ Return a graph of the path. """
-        cache = caches['fat']
-        key = 'path_graph_json'
-
-        result = cache.get(key)
-        latest = Path.no_draft_latest_updated()
-
-        if result and latest:
-            cache_latest, graph = result
-            # Not empty and still valid
-            if cache_latest and cache_latest >= latest:
-                return Response(graph)
-
-        # cache does not exist or is not up-to-date, rebuild the graph and cache it
-        graph = graph_lib.graph_edges_nodes_of_qs(Path.objects.exclude(draft=True))
-
-        cache.set(key, (latest, graph))
-        return Response(graph)
-
     @method_decorator(permission_required('core.change_path'))
     @action(methods=['POST'], detail=False, renderer_classes=[JSONRenderer])
     def merge_path(self, request, *args, **kwargs):
@@ -334,6 +314,39 @@ class PathViewSet(GeotrekMapentityViewSet):
             response = {'error': '%s' % exc, }
 
         return Response(response)
+
+    @action(methods=['POST'], detail=False, url_path="route-geometry",
+            renderer_classes=[JSONRenderer])
+    def route_geometry(self, request, *args, **kwargs):
+        try:
+            params = request.data
+            steps = params.get('steps')
+            if steps is None:
+                raise Exception("Request parameters should contain a 'steps' array")
+            if len(steps) < 2:
+                raise Exception("There must be at least 2 steps")
+            for step in steps:
+                lat = step.get('lat')
+                lng = step.get('lng')
+                if not isinstance(lat, (int, float)) or not isinstance(lng, (int, float)) or lat < 0 or 90 < lat or lng < -180 or 180 < lng:
+                    raise Exception("Each step should contain a valid latitude and longitude")
+                path_id = step.get('path_id')
+                if not isinstance(path_id, int) or Path.objects.filter(pk=path_id).first() is None:
+                    raise Exception("Each step should contain a valid path id")
+        except Exception as exc:
+            return Response({'error': '%s' % exc, }, 400)
+
+        try:
+            path_router = PathRouter()
+            response = path_router.get_route(steps)
+            if response is not None:
+                status = 200
+            else:
+                response = {'error': 'No path between the given points'}
+                status = 400
+        except Exception as exc:
+            response, status = {'error': '%s' % exc, }, 500
+        return Response(response, status)
 
 
 class CertificationTrailMixin(FormsetMixin):

@@ -18,7 +18,7 @@ class RuleFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = models.Rule
-        django_get_or_create = ('code', 'name', 'url', 'pictogram')
+        django_get_or_create = ('code', )
 
 
 class SportPracticeFactory(factory.django.DjangoModelFactory):

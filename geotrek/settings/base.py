@@ -478,15 +478,13 @@ LEAFLET_CONFIG = {
     'SPATIAL_EXTENT': api_bbox(SPATIAL_EXTENT, VIEWPORT_MARGIN),
     'NO_GLOBALS': False,
     'PLUGINS': {
-        'geotrek': {'js': ['core/leaflet.lineextremities.js',
-                           'core/leaflet.textpath.js',
+        'geotrek': {'js': ['vendor/leaflet.lineextremities.v0.1.1.js',
+                           'vendor/leaflet.textpath.v1.1.0.js',
                            'common/points_reference.js',
                            'trekking/parking_location.js']},
         'topofields': {'js': ['core/geotrek.forms.snap.js',
                               'core/geotrek.forms.topology.js',
-                              'core/dijkstra.js',
-                              'core/multipath.js',
-                              'core/topology_helper.js']}
+                              'core/multipath.js']}
     }
 }
 

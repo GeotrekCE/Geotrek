@@ -1,3 +1,5 @@
+var Geotrek = Geotrek || {};
+
 L.Mixin.ActivableControl = {
     activable: function (activable) {
         /**
@@ -173,14 +175,6 @@ L.Control.LineTopology = L.Control.extend({
         this.handler = new L.Handler.MultiPath(map, guidesLayer, options);
     },
 
-    setGraph: function (graph) {
-        /**
-         * Set the Dikjstra graph
-         */
-        this.handler.setGraph(graph);
-        this.activable(true);
-    },
-
     onAdd: function (map) {
         this._container = L.DomUtil.create('div', 'leaflet-draw leaflet-control leaflet-bar leaflet-control-zoom');
         var link = L.DomUtil.create('a', 'leaflet-control-zoom-out linetopology-control', this._container);
@@ -191,7 +185,7 @@ L.Control.LineTopology = L.Control.extend({
                   .addListener(link, 'click', L.DomEvent.preventDefault)
                   .addListener(link, 'click', this.toggle, this);
 
-        // Control is not activable until paths and graph are loaded
+        // Control is not activable until paths are loaded
         this.activable(false);
 
         return this._container;
@@ -240,9 +234,27 @@ L.Handler.MultiPath = L.Handler.extend({
         this.map = map;
         this._container = map._container;
         this._guidesLayer = guidesLayer;
+        this._routeLayer = null
+        this._routeTopology = []
+        this._currentStepsNb = 0
+        this._previousStepsNb = 0
         this.options = options;
 
-        this.graph = null;
+        this.spinner = new Spinner()
+
+        // Toast displayed when a marker was not dropped on a path:
+        this._unsnappedMarkerToast = new bootstrap.Toast(
+            document.getElementById("routing-unsnapped-marker-error-toast"),
+            {delay: 5000}
+        )
+        // Toast displayed when there is no route due to a marker on an unreachable path:
+        this._isolatedMarkerToast = new bootstrap.Toast(
+            document.getElementById("routing-isolated-marker-error-toast"),
+            {delay: 5000}
+        )
+
+        // Is the currently displayed route valid? i.e are all its markers linkable?
+        this._routeIsValid = null
 
         // markers
         this.markersFactory = this.getMarkers();
@@ -254,6 +266,26 @@ L.Handler.MultiPath = L.Handler.extend({
             return guidesLayer.getLayer(id);
         };
 
+        this.stepIndexToLayer = function(idx, layerArray) {
+            if (!layerArray)
+                return null
+            for (var i = 0; i < layerArray.length; i++) {
+                var layer = layerArray[i]
+                if (layer.step_idx == idx)
+                    return layer
+            }
+            return null;
+        };
+
+        this.layersOrderedByIdx = function() {
+            if (!this._routeLayer)
+                return []
+            var layers = this._routeLayer.getLayers()
+            var sortedLayers = layers.toSorted((first, second) => {
+                return first.step_idx - second.step_idx
+            })
+            return sortedLayers
+        }
 
         /*
          * Draggable via steps
@@ -268,7 +300,6 @@ L.Handler.MultiPath = L.Handler.extend({
         }, this);
 
         // Draggable marker initialisation and step creation
-        var draggable_marker = null;
         var self = this;
         (function() {
             function dragstart(e) {
@@ -291,35 +322,8 @@ L.Handler.MultiPath = L.Handler.extend({
             init();
         })();
 
-        this.on('computed_paths', this.onComputedPaths, this);
-    },
-
-    setGraph: function (graph) {
-        this.graph = graph;
-    },
-
-    setState: function(state, autocompute) {
-        autocompute = autocompute === undefined ? true : autocompute;
-        var self = this;
-
-        // Ensure we got a fresh start
-        this.disable();
-        this.reset();
-        this.enable();
-        console.debug('setState('+JSON.stringify({start:{pk:state.start_layer.properties.id,
-                                                         latlng:state.start_ll.toString()},
-                                                  end:  {pk:state.end_layer.properties.id,
-                                                         latlng:state.end_ll.toString()}})+')');
-
-        this._onClick({latlng: state.start_ll, layer:state.start_layer});
-        this._onClick({latlng: state.end_ll, layer:state.end_layer});
-
-        state.via_markers && $.each(state.via_markers, function(idx, via_marker) {
-            console.debug('Add via marker (' + JSON.stringify({pk: via_marker.layer.properties.id,
-                                                               latlng: via_marker.marker.getLatLng().toString()}) + ')');
-            self.addViaStep(via_marker.marker, idx + 1);
-            self.forceMarkerToLayer(via_marker.marker, via_marker.layer);
-        });
+        this.on('fetched_route', this.onFetchedRoute, this);
+        this.on('invalid_route', this.onInvalidRoute, this);
     },
 
     // Reset the whole state
@@ -335,10 +339,12 @@ L.Handler.MultiPath = L.Handler.extend({
 
         // reset state
         this.steps = [];
-        this.computed_paths = [];
-        this.all_edges = [];
-
         this.marker_source = this.marker_dest = null;
+        this._routeTopology = []
+        this._routeLayer = null
+        this._currentStepsNb = 0
+        this._previousStepsNb = 0
+        this.fire('computed_topology', null);
     },
 
     // Activate/Deactivate existing steps and markers - mostly about (un)bindings listeners
@@ -357,6 +363,7 @@ L.Handler.MultiPath = L.Handler.extend({
 
     addHooks: function () {
         L.DomUtil.addClass(this._container, 'cursor-topo-start');
+
         this._guidesLayer.on('click', this._onClick, this);
 
         this.stepsToggleActivate(true);
@@ -377,41 +384,36 @@ L.Handler.MultiPath = L.Handler.extend({
 
     // On click on a layer with the graph
     _onClick: function(e) {
-        if (this.steps.length >= 2) return;
-        var self = this;
-
         var layer = e.layer
           , latlng = e.latlng
-          , len = this.steps.length;
 
+        var pop = this.addStartOrEndStep(layer, latlng)
+        pop.events.fire('placed');
+    },
+
+    addStartOrEndStep: function(layer, latlng) {
+        if (this.steps.length >= 2) return;
+
+        var self = this;
         var next_step_idx = this.steps.length;
-
-        // 1. Click - you are adding a new marker
         var marker;
+
         if (next_step_idx == 0) {
             L.DomUtil.removeClass(this._container, 'cursor-topo-start');
             L.DomUtil.addClass(this._container, 'cursor-topo-end');
             marker = this.markersFactory.source(latlng);
-            marker.on('unsnap', function () {
-                this.showPathGeom(null);
-            }, this);
             this.marker_source = marker;
         } else {
             L.DomUtil.removeClass(this._container, 'cursor-topo-start');
             L.DomUtil.removeClass(this._container, 'cursor-topo-end');
             marker = this.markersFactory.dest(latlng)
-            marker.on('unsnap', function () {
-                this.showPathGeom(null);
-            }, this);
             this.marker_dest = marker;
         }
 
         var pop = self.createStep(marker, next_step_idx);
-
         pop.toggleActivate();
-
-        // If this was clicked, the marker should be close enough, snap it.
         self.forceMarkerToLayer(marker, layer);
+        return pop
     },
 
     forceMarkerToLayer: function(marker, layer) {
@@ -425,8 +427,56 @@ L.Handler.MultiPath = L.Handler.extend({
         var pop = new Geotrek.PointOnPolyline(marker);
         this.steps.splice(idx, 0, pop);  // Insert pop at position idx
 
-        pop.events.on('valid', function() {
-            self.computePaths();
+        pop.events.on('placed', () => {
+
+            if (!pop.isValid()) { // If the pop was not dropped on a path
+                // Display an alert message
+                this._unsnappedMarkerToast.show()
+
+                if (pop.previousPosition) {
+                    // If the pop was on a path before, set it to its previous position
+                    pop.marker.setLatLng(pop.previousPosition.ll)
+                    self.forceMarkerToLayer(pop.marker, pop.previousPosition.polyline);
+                    if (!this._routeIsValid) {
+                        // If the route is not valid, the marker must stay highlighted
+                        L.DomUtil.removeClass(pop.marker._icon, 'marker-snapped');
+                    }
+                } else {
+                    // If not, then it is a new pop: remove it
+                    self.removeViaStep(pop)
+                }
+                return
+            }
+            if (this.steps.length > 1)
+                this.enableLoadingMode()
+
+            pop.previousPosition = {ll: pop.ll, polyline: pop.polyline}
+
+            var currentStepIdx = self.getStepIdx(pop)
+
+            // Create the array of new step indexes after the route is updated
+            var newStepsIndexes = []
+            if (currentStepIdx > 0)
+                newStepsIndexes.push(currentStepIdx - 1)
+            newStepsIndexes.push(currentStepIdx)
+            if (currentStepIdx < self.steps.length - 1)
+                newStepsIndexes.push(currentStepIdx + 1)
+
+            // Create the array of step indexes before the route is updated
+            var oldStepsIndexes
+            if (this._currentStepsNb == this.steps.length)  // If a marker is being moved
+                oldStepsIndexes = [...newStepsIndexes]
+            else {  // If a marker is being added
+                if (this._currentStepsNb == 1)  // If it's the destination
+                    oldStepsIndexes = []
+                else
+                    oldStepsIndexes = newStepsIndexes.slice(0, -1)
+            }
+
+            this._previousStepsNb = this._currentStepsNb
+            this._currentStepsNb = this.steps.length
+
+            self.fetchRoute(oldStepsIndexes, newStepsIndexes, pop)
         });
 
         return pop;
@@ -434,8 +484,6 @@ L.Handler.MultiPath = L.Handler.extend({
 
     // add an in between step
     addViaStep: function(marker, step_idx) {
-        var self = this;
-
         // A via step idx must be inserted between first and last...
         if (! (step_idx >= 1 && step_idx <= this.steps.length - 1)) {
             throw "StepIndexError";
@@ -443,35 +491,36 @@ L.Handler.MultiPath = L.Handler.extend({
 
         var pop = this.createStep(marker, step_idx);
 
-        // remove marker on click
-        function removeViaStep() {
-            self.steps.splice(self.getStepIdx(pop), 1);
-            self.map.removeLayer(marker);
-            self.computePaths();
-        }
+        var removeOnClick = () => this.removeViaStepFromRoute(pop)
 
-        function removeOnClick() { marker.on('click', removeViaStep); }
-        pop.marker.activate_cbs.push(removeOnClick);
-        pop.marker.deactivate_cbs.push(function() { marker.off('click', removeViaStep); });
+        pop.marker.activate_cbs.push(() => marker.on('click', removeOnClick));
+        pop.marker.deactivate_cbs.push(() => marker.off('click', removeOnClick));
 
-        // marker is already activated, trigger manually removeOnClick
-        removeOnClick();
+        // marker is already activated, enable removeOnClick manually
+        marker.on('click', removeOnClick)
         pop.toggleActivate();
+        return pop
     },
 
-    canCompute: function() {
-        if (!this.graph)
-            return false;
+    // Remove an existing step by clicking on it
+    removeViaStepFromRoute: function(pop) {
+        this.enableLoadingMode()
+        var step_idx = this.getStepIdx(pop)
+        this.removeViaStep(pop)
+        this._previousStepsNb = this._currentStepsNb
+        this._currentStepsNb = this.steps.length
+        this.fetchRoute(
+            [step_idx - 1, step_idx, step_idx + 1],
+            [step_idx - 1, step_idx],
+            pop
+        );
+    },
 
-        if (this.steps.length < 2)
-            return false;
-
-        for (var i = 0; i < this.steps.length; i++) {
-            if (! this.steps[i].isValid())
-                return false;
-        }
-
-        return true;
+    // Remove a step from the steps list
+    removeViaStep: function(pop) {
+        var step_idx = this.getStepIdx(pop)
+        this.steps.splice(step_idx, 1)
+        this.map.removeLayer(pop.marker)
     },
 
     getStepIdx: function(step) {
@@ -486,179 +535,203 @@ L.Handler.MultiPath = L.Handler.extend({
         return -1;
     },
 
-    computePaths: function() {
-        if (this.canCompute()) {
-            var computed_paths = Geotrek.shortestPath(this.graph, this.steps);
-            this._onComputedPaths(computed_paths);
-        }
-    },
-
-
-    // Extract the complete edges list from the first to the last one
-    _eachInnerComputedPathsEdges: function(computed_paths, f) {
-        if (computed_paths) {
-            computed_paths.forEach(function(cpath) {
-                cpath.path.forEach(function(path_component) {
-                    f(path_component.edge);
-                });
-            });
-        }
-    },
-
-    // Extract the complete edges list from the first to the last one
-    _extractAllEdges: function(computed_paths) {
-        if (! computed_paths)
-            return [];
-
-        var edges = $.map(computed_paths, function(cpath) {
-
-            var dups = $.map(cpath.path, function(path_component) {
-                return path_component.real_edge || path_component.edge;
-            });
-
-            // Remove adjacent duplicates
-            var dedup = [];
-            for (var i=0; i<dups.length; i++) {
-                var e = dups[i];
-                if (i === 0)
-                    dedup.push(e);
-                else if (dups[i-1].id != e.id)
-                    dedup.push(e);
+    getCookie: function(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
             }
-            return [dedup];
-        });
-
-        return edges;
+        }
+        return cookieValue;
     },
 
-    _onComputedPaths: function(new_computed_paths) {
-        var self = this;
-        var old_computed_paths = this.computed_paths;
-        this.computed_paths = new_computed_paths;
-
-        // compute and store all edges of the new paths (usefull for further computation)
-        this.all_edges = this._extractAllEdges(new_computed_paths);
-
-        this.fire('computed_paths', {
-            'computed_paths': new_computed_paths,
-            'new_edges': this.all_edges,
-            'old': old_computed_paths,
-            'marker_source': this.marker_source,
-            'marker_dest': this.marker_dest
-        });
-    },
-
-    restoreTopology: function (topo) {
-
+    fetchRoute: function(oldStepsIndexes, newStepsIndexes, pop) {
         /*
-         * Topo is a list of sub-topologies.
-         *
-         *  X--+--+---O-------+----O--+---+--X
-         *
-         * Each sub-topoogy is a way between markers. The first marker
-         * of the first sub-topology is the beginning, the last of the last is the end.
-         * All others are intermediary points (via markers)
-         */
+            oldStepsIndexes: indexes of the steps for which to update the route
+            newStepsIndexes: indexes of these steps after the route is updated
+            pop (PointOnPolyline): step that is being added/modified/deleted
+        */
+
+        var stepsToRoute = []
+        newStepsIndexes.forEach(idx => {
+            stepsToRoute.push(this.steps[idx])
+        })
+
+        function canFetchRoute() {
+            if (stepsToRoute.length < 2)
+                return false;
+            for (var i = 0; i < stepsToRoute.length; i++) {
+                if (!stepsToRoute[i].isValid())
+                    return false;
+            }
+            return true;
+        }
+
+        if (!canFetchRoute()) {
+            this.disableLoadingMode()
+            return
+        }
+
+        var sentSteps = []
+        stepsToRoute.forEach((step) => {
+            var sentStep = {
+                path_id: step.polyline.properties.id,
+                lat: step.ll.lat,
+                lng: step.ll.lng,
+            }
+            sentSteps.push(sentStep)
+        })
+
+        fetch(window.SETTINGS.urls['route_geometry'], {
+            method: 'POST',
+            headers: {
+                "X-CSRFToken": this.getCookie('csrftoken'),
+                'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: JSON.stringify({
+                steps: sentSteps,
+            })
+        })
+        .then(response => {
+            if (response.status == 200)
+                return response.json()
+            return Promise.reject(response)
+        })
+        .then(
+            data => {  // Status code 200:
+                if (data) {
+                    var route = {
+                        'geojson': data.geojson,
+                        'serialized': data.serialized,
+                        'oldStepsIndexes': oldStepsIndexes,
+                        'newStepsIndexes': newStepsIndexes,
+                    }
+                    this.fire('fetched_route', route);
+                }
+            },
+            // If the promise was rejected:
+            response => {
+                console.log("fetchRoute:", response)
+                this.fire('invalid_route', pop)
+            }
+        )
+        .catch(e => {
+            console.log("fetchRoute", e)
+            this.disableLoadingMode()
+        })
+    },
+
+    enableLoadingMode: function () {
+        // Prevent from modifying steps while the route is fetched
+        this.spinner.spin(this._container);
+        this.disableMarkers()
+    },
+
+    disableLoadingMode: function () {
+        this.spinner.stop()
+        // If the route is invalid, don't reenable the markers: some have
+        // been disabled to guide the user through correcting the route.
+        if (this._routeIsValid)
+            this.enableMarkers()
+    },
+
+    restoreGeometry: function (serializedTopology) {
         var self = this;
 
-
-        // Only first and last positions
-        if (topo.length == 1 && topo[0].paths.length == 1) {
-            // There is only one path, both positions values are relevant
-            // and each one represents a marker
-            var topo = topo[0]
-              , paths = topo.paths
-              , positions = topo.positions;
-
-            var first_pos = positions[0][0];
-            var last_pos = positions[0][1];
-
-            var start_layer = this.idToLayer(paths[0]);
-            var end_layer = this.idToLayer(paths[paths.length - 1]);
-
-            var start_ll = L.GeometryUtil.interpolateOnLine(this.map, start_layer, first_pos).latLng;
-            var end_ll = L.GeometryUtil.interpolateOnLine(this.map, end_layer, last_pos).latLng;
-
-            var state = {
-                start_ll: start_ll,
-                end_ll: end_ll,
-                start_layer: start_layer,
-                end_layer: end_layer
-            };
-            this.setState(state);
-        }
-        else {
-            var start_layer_ll = {}
-              , end_layer_ll = {}
-              , via_markers = [];
-
-            var pos2latlng = function (pos, layer) {
-                var used_pos = pos;
-                if (pos instanceof Array) {
-                    used_pos = pos[1];  // Default is second position (think of last path of topology)
-                    if (pos[0] == 0.0 && pos[1] != 1.0)
-                        used_pos = pos[1];
-                    if (pos[0] == 1.0 && pos[1] != 0.0)
-                        used_pos = pos[1];
-                    if (pos[0] != 1.0 && pos[1] == 0.0)
-                        used_pos = pos[0];
-                    if (pos[0] != 0.0 && pos[1] == 1.0)
-                        used_pos = pos[0];
-                    console.log("Chose " + used_pos + " for " + pos);
-                }
-                var interpolated = L.GeometryUtil.interpolateOnLine(self.map, layer, used_pos);
-                if (!interpolated) {
-                    throw ('Could not interpolate ' + used_pos + ' on layer ' + layer.properties.id);
-                }
-                return interpolated.latLng;
-            };
-
-            for (var i=0; i<topo.length; i++) {
-                var subtopo = topo[i]
-                  , firsttopo = i==0
-                  , lasttopo = i==topo.length-1;
-
-                var paths = subtopo.paths
-                  , positions = subtopo.positions || {}
-                  , lastpath = paths.length-1;
-
-                // Safety check.
-                if (!('0' in positions)) positions['0'] = [0.0, 1.0];
-                if (!(lastpath in positions)) positions[lastpath] = [0.0, 1.0];
-
-                var firstlayer = self.idToLayer(paths[0])
-                  , lastlayer = self.idToLayer(paths[lastpath]);
-
-                if (firsttopo) {
-                    start_layer_ll.layer = firstlayer;
-                    start_layer_ll.ll = pos2latlng(positions['0'][0], firstlayer);
-                }
-                if (lasttopo) {
-                    end_layer_ll.layer = lastlayer;
-                    end_layer_ll.ll = pos2latlng(positions[lastpath][1], lastlayer);
-                }
-                else {
-                    var layer = lastlayer
-                      , ll = pos2latlng(positions[lastpath], layer);
-                    // Add a via marker
-                    via_markers.push({
-                        layer: layer,
-                        marker: self.markersFactory.drag(ll, null, true)
-                    });
-                }
+        function pos2latlng(pos, layer) {
+            var used_pos = pos;
+            if (pos instanceof Array) {
+                used_pos = pos[1];  // Default is second position (think of last path of topology)
+                if (pos[0] == 0.0 && pos[1] != 1.0)
+                    used_pos = pos[1];
+                if (pos[0] == 1.0 && pos[1] != 0.0)
+                    used_pos = pos[1];
+                if (pos[0] != 1.0 && pos[1] == 0.0)
+                    used_pos = pos[0];
+                if (pos[0] != 0.0 && pos[1] == 1.0)
+                    used_pos = pos[0];
             }
+            var interpolated = L.GeometryUtil.interpolateOnLine(self.map, layer, used_pos);
+            if (!interpolated) {
+                throw ('Could not interpolate ' + used_pos + ' on layer ' + layer.properties.id);
+            }
+            return interpolated.latLng;
+        };
 
-            var state = {
-                    start_ll: start_layer_ll.ll,
-                    end_ll: end_layer_ll.ll,
-                    start_layer: start_layer_ll.layer,
-                    end_layer: end_layer_ll.layer,
-                    via_markers: via_markers
-                };
+        // Create and show the route geometry
+        var restoredRouteLayer = L.featureGroup()
+        serializedTopology.forEach((topology, idx) => {
+            var groupLayer = this.buildGeometryFromTopology(topology);
+            groupLayer.step_idx = idx
+            restoredRouteLayer.addLayer(groupLayer)
+        })
+        this._routeLayer = restoredRouteLayer
+        this.showPathGeom(restoredRouteLayer);
 
-            // Restore state as if a user clicks.
-            this.setState(state);
+        this.setupNewRouteDragging(restoredRouteLayer)
+
+        // Add the start marker
+        var topology = serializedTopology[0]
+        var pathLayer = this.idToLayer(topology.paths[0])
+        var latlng = pos2latlng(topology.positions[0][0], pathLayer)
+        var popStart = this.addStartOrEndStep(pathLayer, latlng)
+        popStart.previousPosition = {ll: popStart.ll, polyline: popStart.polyline}
+
+        // Add the end marker
+        topology = serializedTopology[serializedTopology.length - 1]
+        var lastPosIdx = topology.paths.length - 1
+        pathLayer = this.idToLayer(topology.paths[lastPosIdx])
+        latlng = pos2latlng(topology.positions[lastPosIdx][1], pathLayer)
+        var popEnd = this.addStartOrEndStep(pathLayer, latlng)
+        popEnd.previousPosition = {ll: popEnd.ll, polyline: popEnd.polyline}
+
+        // Add the via markers: for each topology, use its first position,
+        // except for the first topology (it would be the start marker)
+        serializedTopology.forEach((topo, idx) => {
+            if (idx == 0)
+                return
+            pathLayer = this.idToLayer(topo.paths[0])
+            latlng = pos2latlng(topo.positions[0][0], pathLayer)
+            var viaMarker = {
+                layer: pathLayer,
+                marker: self.markersFactory.drag(latlng, null, true)
+            }
+            var pop = self.addViaStep(viaMarker.marker, idx);
+            self.forceMarkerToLayer(viaMarker.marker, viaMarker.layer);
+            pop.previousPosition = {ll: pop.ll, polyline: pop.polyline}
+        })
+
+        // Set the state
+        serializedTopology.forEach(topo => {
+            this._routeTopology.push({
+                positions: topo.positions,
+                paths: topo.paths,
+            })
+        })
+        this._currentStepsNb = this.steps.length
+        this._previousStepsNb = this.steps.length
+        this._routeIsValid = true
+    },
+
+    buildGeometryFromTopology: function (topology) {
+        var latlngs = [];
+        for (var i = 0; i < topology.paths.length; i++) {
+            var path = topology.paths[i],
+                positions = topology.positions[i],
+                polyline = this.idToLayer(path);
+            if (positions) {
+                latlngs.push(L.GeometryUtil.extract(polyline._map, polyline, positions[0], positions[1]));
+            }
+            else {
+                console.warn('Topology problem: ' + i + ' not in ' + JSON.stringify(topology.positions));
+            }
         }
+        return L.multiPolyline(latlngs);
     },
 
     showPathGeom: function (layer) {
@@ -680,16 +753,22 @@ L.Handler.MultiPath = L.Handler.extend({
                         if (new_path_layer) {
                             self.map.addLayer(new_path_layer);
                             new_path_layer.setStyle({'color': 'yellow', 'weight': 5, 'opacity': 0.8});
+                            let stepIdx = 0;
                             new_path_layer.eachLayer(function (l) {
                                 if (typeof l.setText == 'function') {
                                     l.setText('>  ', {repeat: true, attributes: {'fill': '#FF5E00'}});
+                                    l.eachLayer((layer) => {
+                                        layer._path.setAttribute('data-test', 'route-step-' + stepIdx);
+                                    })
                                 }
+                                stepIdx++;
                             });
                         }
                     }
                 }
             })();
-        this.markPath.updateGeom(layer);
+
+            this.markPath.updateGeom(layer);
     },
 
     getMarkers: function() {
@@ -755,12 +834,120 @@ L.Handler.MultiPath = L.Handler.extend({
         return markersFactory;
     },
 
-    onComputedPaths: function(data) {
-        var self = this;
-        var topology = Geotrek.TopologyHelper.buildTopologyFromComputedPath(this.idToLayer, data);
+    disableMarkers: function() {
+        // Disable all markers on the map
+        this.steps.forEach(step => {
+            step.marker.deactivate();
+        })
+        // Prevent from creating new markers
+        this.map.off('mousemove', this.drawOnMouseMove);
+        this.map.removeLayer(this.draggable_marker);
+    },
 
-        this.showPathGeom(topology.layer);
-        this.fire('computed_topology', {topology:topology.serialized});
+    enableMarkers: function() {
+        // Enable all markers on the map
+        this.steps.forEach(step => {
+            step.marker.activate();
+        })
+        // Allow creating new markers again
+        this.map.on('mousemove', this.drawOnMouseMove);
+    },
+
+    updateRouteLayers: function(geometries, oldStepsIndexes, newStepsIndexes) {
+        var nbOldSteps = oldStepsIndexes.length
+        var nbNewSteps = newStepsIndexes.length
+        var previousRouteLayer = this._routeLayer.getLayers()
+
+        // If a NEW via marker was unreachable, this invalid part of the path
+        // was not displayed. So at this point, there is one more step, but
+        // there isn't one more layer.
+        var isNewMarkerBeingCorrected = this._routeIsValid == false && this._previousStepsNb > previousRouteLayer.length + 1
+
+        // Remove out of date layers
+        oldStepsIndexes.slice(0, -1).forEach((index, i) => {
+            if (isNewMarkerBeingCorrected && i == nbOldSteps - 2)
+                return
+            var oldLayer = this.stepIndexToLayer(index, previousRouteLayer)
+            if (oldLayer)
+                this._routeLayer.removeLayer(oldLayer)
+        })
+
+        // Update the remaining layers' indexes
+        this._routeLayer.eachLayer(function(subRouteLayer) {
+            if (subRouteLayer.step_idx >= oldStepsIndexes.at(-1)) {
+                // Adding a step: increment the next layers' indexes
+                // Removing a step: decrement the next layers' indexes
+                // Moving a step: no changes except...
+                subRouteLayer.step_idx += (nbNewSteps - nbOldSteps)
+            } else if (subRouteLayer.step_idx >= oldStepsIndexes.at(-1) - (isNewMarkerBeingCorrected && nbOldSteps == nbNewSteps)) {
+                // ... if a new, unreachable marker is being moved and is now reachable, the
+                // nb of layers increases by 1 and the next layers' indexes must be incremented
+                subRouteLayer.step_idx += 1
+            }
+        })
+
+        // Add the new layers
+        newStepsIndexes.slice(0, -1).forEach((index, i) => {
+            var newLayer = L.geoJson(geometries[i])
+            newLayer.step_idx = index
+            newLayer.setStyle({'color': 'yellow', 'weight': 5, 'opacity': 0.8});
+            newLayer.eachLayer(function (l) {
+                if (typeof l.setText == 'function') {
+                    l.setText('>  ', {repeat: true, attributes: {'fill': '#FF5E00'}});
+                }
+            });
+            this._routeLayer.addLayer(newLayer)
+        })
+
+        this._routeLayer.eachLayer(function (l) {
+            if (typeof l.setText == 'function') {
+                l.eachLayer((layer) => {
+                    layer._path.setAttribute('data-test', 'route-step-' + l.step_idx);
+                })
+            }
+        });
+    },
+
+    onFetchedRoute: function(data) {
+        // Reset all the markers to 'snapped' appearance
+        this.steps.forEach(step => {
+            L.DomUtil.removeClass(step.marker._icon, 'marker-highlighted');
+            L.DomUtil.removeClass(step.marker._icon, 'marker-disabled');
+            L.DomUtil.addClass(step.marker._icon, 'marker-snapped');
+            step.marker.activate();
+        })
+        oldStepsIndexes = data.oldStepsIndexes
+        newStepsIndexes = data.newStepsIndexes
+
+        if (!this._routeLayer) {
+            this._routeLayer = L.featureGroup()
+            this.map.addLayer(this._routeLayer);
+            this.showPathGeom(this._routeLayer)
+        }
+        var previousRouteLayer = this._routeLayer.getLayers()
+        this.updateRouteLayers(data.geojson.geometries, oldStepsIndexes, newStepsIndexes)
+
+        var isNewMarkerBeingCorrected = this._routeIsValid == false && this._previousStepsNb > previousRouteLayer.length + 1
+
+        // Store the new topology
+        var nbSubToposToRemove = 0
+        if (isNewMarkerBeingCorrected) {
+            nbSubToposToRemove = 1
+        } else if (oldStepsIndexes.length > 0) {
+            // If it's not the first time displaying a layer
+            nbSubToposToRemove = oldStepsIndexes.length - 1
+        }
+        var spliceArgs = [newStepsIndexes[0], nbSubToposToRemove].concat(data.serialized)
+        this._routeTopology.splice.apply(this._routeTopology, spliceArgs)
+        this.fire('computed_topology', {topology: this._routeTopology});
+
+        this._routeIsValid = true
+        this.setupNewRouteDragging(this._routeLayer)
+        this.disableLoadingMode()
+    },
+
+    setupNewRouteDragging: function(routeLayer) {
+        var self = this;
 
         // ## ONCE ##
         if (this.drawOnMouseMove) {
@@ -778,7 +965,6 @@ L.Handler.MultiPath = L.Handler.extend({
             }
 
             dragTimer = date;
-
 
             for (var i = 0; i < self.steps.length; i++) {
                 // Compare point rather than ll
@@ -798,7 +984,7 @@ L.Handler.MultiPath = L.Handler.extend({
               , closest_point = null
               , matching_group_layer = null;
 
-            topology.layer && topology.layer.eachLayer(function(group_layer) {
+            routeLayer && routeLayer.eachLayer(function(group_layer) {
                 group_layer.eachLayer(function(layer) {
                     var p = layer.closestLayerPoint(layerPoint);
                     if (p && p.distance < min_dist && p.distance < MIN_DIST) {
@@ -821,26 +1007,52 @@ L.Handler.MultiPath = L.Handler.extend({
         };
 
         this.map.on('mousemove', this.drawOnMouseMove);
+    },
+
+    onInvalidRoute: function(pop) {
+        this._routeIsValid = false
+        this.fire('computed_topology', {topology: null});
+
+        // Display an alert message
+        this._isolatedMarkerToast.show()
+
+        if (this.steps.length <= 2) {
+            // If there are only two steps, both should be movable: enable them
+            this.enableMarkers()
+        } else {
+            // Highlight the invalid marker and enable it
+            L.DomUtil.removeClass(pop.marker._icon, 'marker-snapped');
+            L.DomUtil.addClass(pop.marker._icon, 'marker-highlighted');
+            pop.marker.activate()
+
+            // Set the other markers to grey and disable them
+            this.steps.forEach(step => {
+                if (step._leaflet_id != pop._leaflet_id) {
+                    L.DomUtil.removeClass(step.marker._icon, 'marker-snapped');
+                    L.DomUtil.addClass(step.marker._icon, 'marker-disabled');
+                    step.marker.deactivate();
+                }
+            })
+            // Prevent from creating new via-steps
+            this.map.off('mousemove', this.drawOnMouseMove);
+            this.map.removeLayer(this.draggable_marker);
+        }
+        this.disableLoadingMode()
     }
 
 });
 
-
-Geotrek.getNextId = (function() {
-    var next_id = 90000000;
-    return function() {
-        return next_id++;
-    };
-})();
-
 // pol: point on polyline
 Geotrek.PointOnPolyline = function (marker) {
     this.marker = marker;
-    // if valid
+
+    // If valid:
     this.ll = null;
     this.polyline = null;
-    this.path_length = null;
-    this.percent_distance = null;
+
+    // To reset the pop to its previous valid position when not dropped on a path:
+    this.previousPosition = null;
+
     this._activated = false;
 
     this.events = L.Util.extend({}, L.Mixin.Events);
@@ -853,14 +1065,15 @@ Geotrek.PointOnPolyline = function (marker) {
         'snap': function onSnap(e) {
             this.ll = e.latlng;
             this.polyline = e.layer;
-            this.path_length = L.GeometryUtil.length(this.polyline);
-            this.percent_distance = L.GeometryUtil.locateOnLine(this.polyline._map, this.polyline, this.ll);
             this.events.fire('valid');
         },
         'unsnap': function onUnsnap(e) {
             this.ll = null;
             this.polyline = null;
             this.events.fire('invalid');
+        },
+        'dragend': function onDragEnd(e) {
+            this.events.fire('placed');
         }
     };
 };
@@ -885,66 +1098,9 @@ Geotrek.PointOnPolyline.prototype.toggleActivate = function(activate) {
     marker[method]('move', markerEvents.move, this);
     marker[method]('snap', markerEvents.snap, this);
     marker[method]('unsnap', markerEvents.unsnap, this);
+    marker[method]('dragend', markerEvents.dragend, this);
 };
 
 Geotrek.PointOnPolyline.prototype.isValid = function(graph) {
     return (this.ll && this.polyline);
 };
-
-// Alter the graph: adding two edges and one node (the polyline gets break in two parts by the point)
-// The polyline MUST be an edge of the graph.
-Geotrek.PointOnPolyline.prototype.addToGraph = function(graph) {
-    if (! this.isValid())
-        return null;
-
-    var self = this;
-
-    var edge = graph.edges[this.polyline.properties.id]
-      , first_node_id = edge.nodes_id[0]
-      , last_node_id = edge.nodes_id[1];
-
-    // To which nodes dist start_point/end_point corresponds ?
-    // The edge.nodes_id are ordered, it corresponds to polylines: coords[0] and coords[coords.length - 1]
-    var dist_start_point = this.percent_distance * this.path_length
-      , dist_end_point = (1 - this.percent_distance) * this.path_length
-    ;
-
-    var new_node_id = Geotrek.getNextId();
-
-    var edge1 = {'id': Geotrek.getNextId(), 'length': dist_start_point, 'nodes_id': [first_node_id, new_node_id] };
-    var edge2 = {'id': Geotrek.getNextId(), 'length': dist_end_point, 'nodes_id': [new_node_id, last_node_id]};
-
-    var first_node = {}, last_node = {}, new_node = {};
-    first_node[new_node_id] = new_node[first_node_id] = edge1.id;
-    last_node[new_node_id] = new_node[last_node_id] = edge2.id;
-
-    // <Alter Graph>
-    var new_edges = {};
-    new_edges[edge1.id] = graph.edges[edge1.id] = edge1;
-    new_edges[edge2.id] = graph.edges[edge2.id] = edge2;
-
-    graph.nodes[new_node_id] = new_node;
-    $.extend(graph.nodes[first_node_id], first_node);
-    $.extend(graph.nodes[last_node_id], last_node);
-    // </Alter Graph>
-
-    function rmFromGraph() {
-        delete graph.edges[edge1.id];
-        delete graph.edges[edge2.id];
-
-        delete graph.nodes[new_node_id];
-        delete graph.nodes[first_node_id][new_node_id];
-        delete graph.nodes[last_node_id][new_node_id];
-    }
-
-    return {
-        self: self,
-        new_node_id: new_node_id,
-        new_edges: new_edges,
-        dist_start_point: dist_start_point,
-        dist_end_point: dist_end_point,
-        initial_edge: edge,
-        rmFromGraph: rmFromGraph
-    };
-};
-

@@ -73,6 +73,17 @@ class Path(CheckBoxActionMixin, ZoningPropertiesMixin, AddPropertyMixin, Geotrek
     draft = models.BooleanField(default=False, verbose_name=_("Draft"), db_index=True)
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
 
+    source_pgr = models.IntegerField(null=True,
+                                     blank=True,
+                                     help_text='Internal field used by pgRouting',
+                                     editable=False,
+                                     db_column='source')
+    target_pgr = models.IntegerField(null=True,
+                                     blank=True,
+                                     help_text='Internal field used by pgRouting',
+                                     editable=False,
+                                     db_column='target')
+
     objects = PathManager()
     include_invisible = PathInvisibleManager()
 

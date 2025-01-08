@@ -11,7 +11,7 @@ else
 	exit 1
 fi
 
-if [ "`locale charmap`" != "UTF-8" ]; then
+if [ "$(locale charmap)" != "UTF-8" ]; then
 	echo "ERROR! Your user locale charmap is not UTF-8"
 	exit 1
 fi
@@ -22,16 +22,16 @@ if ! `localectl status | grep -q "System Locale: LANG=.*UTF-8"`; then
 fi
 
 if [ "$*" == "--nodb" ]; then
-	postgis=""
+	postgis_and_routing=""
 elif [ -n "$*" ]; then
 	echo "Usage: $0 [--nodb]"
 	exit 1
 else
-	postgis="postgis"
+	postgis_and_routing="postgresql-pgrouting"
 fi
 
 sudo apt update
-sudo apt install -y $postgis wget software-properties-common
+sudo apt install -y $postgis_and_routing wget software-properties-common
 echo "deb [arch=amd64] https://packages.geotrek.fr/ubuntu $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/geotrek.list
 wget -O- "https://packages.geotrek.fr/geotrek.gpg.key" | sudo apt-key add -
 sudo apt update

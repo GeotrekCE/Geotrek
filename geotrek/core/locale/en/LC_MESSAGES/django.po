@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-03 15:39+0000\n"
+"POT-Creation-Date: 2024-05-28 14:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -309,6 +309,15 @@ msgid "Merge paths"
 msgstr ""
 
 msgid "Cancel"
+msgstr ""
+
+msgid "Warning"
+msgstr ""
+
+msgid "The marker was not dropped on a path."
+msgstr ""
+
+msgid "No routing found for this marker. Please move or delete it."
 msgstr ""
 
 msgid "No certification"

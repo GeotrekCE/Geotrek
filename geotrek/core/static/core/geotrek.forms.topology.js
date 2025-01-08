@@ -124,25 +124,13 @@ MapEntity.GeometryField.TopologyField = MapEntity.GeometryField.extend({
             return;
         }
 
-        // Path layer is ready, load graph !
+        // Path layer is ready, display the route
         this._pathsLayer.fire('data:loading');
-        var url = window.SETTINGS.urls.path_graph;
-        $.getJSON(url, this._onGraphLoaded.bind(this))
-         .error(graphError.bind(this));
-
-        function graphError(jqXHR, textStatus, errorThrown) {
-            this._pathsLayer.fire('data:loaded');
-            $(this._map._container).addClass('map-error');
-            console.error("Could not load url '" + window.SETTINGS.urls.path_graph + "': " + textStatus);
-            console.error(errorThrown);
-        }
-    },
-
-    _onGraphLoaded: function (graph) {
-        // Load graph
-        this._lineControl.setGraph(graph);
         this.load();
-        // Stop spinning !
+        // For each path layer, set its data-test attribute
+        this._pathsLayer.eachLayer((layer) => {
+            layer._path.setAttribute('data-test', 'pathLayer-' + layer.properties.id)
+        })
         this._pathsLayer.fire('data:loaded');
     },
 
@@ -159,7 +147,7 @@ MapEntity.GeometryField.TopologyField = MapEntity.GeometryField.extend({
             this.store.lock();
             console.debug("Deserialize topology: " + JSON.stringify(topo));
             if (this._lineControl && !topo.lat && !topo.lng) {
-                this._lineControl.handler.restoreTopology(topo);
+                this._lineControl.handler.restoreGeometry(topo)
             }
             if (this._pointControl && topo.lat && topo.lng) {
                 this._pointControl.handler.restoreTopology(topo);

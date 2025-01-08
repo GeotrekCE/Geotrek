@@ -1,5 +1,8 @@
 {% extends "leaflet/widget.html" %}
-
+{% block map %}
+    {{ block.super }}
+    {% include "core/toast_wrong_topology_route.html" %}
+{% endblock map %}
 
 {% block vars %}
     {{ block.super }}
