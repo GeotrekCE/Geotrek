@@ -1,3 +1,5 @@
+import re
+
 from django.contrib import admin
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
@@ -6,7 +8,9 @@ from treebeard.forms import movenodeform_factory
 
 from geotrek.flatpages import models as flatpages_models
 from geotrek.flatpages.forms import FlatPageForm, MenuItemForm
-
+from geotrek.flatpages.models import FlatPage
+from geotrek.common.models import FileType, Attachment
+from django.contrib.auth.models import User
 
 if 'modeltranslation' in settings.INSTALLED_APPS:
     from modeltranslation.admin import TabbedTranslationAdmin
@@ -60,6 +64,7 @@ class FlatPageAdmin(BaseAdmin):
         return form_class
 
     def save_related(self, request, form, formsets, change):
+
         # We override `ModelAdmin.save_related` to add/update/delete the attachment. Why not in
         # `ModelAdmin.save_form` which may have looked like a better place? This is because Django's ModelAdmin
         # does not commit the object in `save_form`, it waits for formsets' validations. We override
@@ -67,6 +72,29 @@ class FlatPageAdmin(BaseAdmin):
         # See `django.contrib.admin.options.py:L1578`
         super().save_related(request, form, formsets, change)
         form.save_cover_image()
+        all_attachments = form.instance.attachments.all()
+        attachments_url = []
+        for field in form.instance._meta.get_fields():
+            if field.get_internal_type() == "TextField":
+                field_value = getattr(form.instance, field.name)
+                if field_value is not None:
+                    matches = re.finditer(r'(src=\".+?/media/)(?P<url>.+?)\" ', field_value)
+                    for match in matches:
+                        if match["url"] not in all_attachments:
+                            page = FlatPage.add_root(title="tinymceAttachment")
+                            filetype = FileType.objects.get(type="Photographie")
+                            attachment = Attachment.objects.create(
+                                content_object=page,
+                                attachment_file=match["url"],
+                                author='',
+                                filetype=filetype,
+                                creator=request.user,
+                            )
+                            form.instance.attachments.add(attachment)
+                            attachments_url.append(match["url"])
+
+        # print("Attachements_URL => ", attachments_url)
+        # print("Attachements => ", form.instance.attachments.all())
 
 
 class MenuItemAdmin(BaseAdmin):
