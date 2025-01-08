@@ -91,6 +91,8 @@ DECLARE
     path record;
     tid_clone integer;
     t_count integer;
+    element RECORD;
+    num_order integer;
     existing_et integer[];
     t_geom geometry;
 
@@ -319,27 +321,38 @@ BEGIN
                             WHERE tr.path_id = path.id;
 
                         -- Copy topologies overlapping start/end
-                        INSERT INTO core_pathaggregation (path_id, topo_object_id, start_position, end_position, "order")
-                            SELECT
+                        FOR element IN SELECT
                                 tid_clone,
                                 et.topo_object_id,
                                 CASE WHEN start_position <= end_position THEN
                                     (greatest(a, start_position) - a) / (b - a)
                                 ELSE
                                     (least(b, start_position) - a) / (b - a)
-                                END,
+                                END AS start_position,
                                 CASE WHEN start_position <= end_position THEN
                                     (least(b, end_position) - a) / (b - a)
                                 ELSE
                                     (greatest(a, end_position) - a) / (b - a)
-                                END,
+                                END AS end_position,
                                 et."order"
                             FROM core_pathaggregation et,
                                  core_topology e
                             WHERE et.topo_object_id = e.id
                                   AND et.path_id = path.id
                                   AND ((least(start_position, end_position) < b AND greatest(start_position, end_position) > a) OR       -- Overlapping
-                                       (start_position = end_position AND start_position = a AND "offset" = 0)); -- Point
+                                       (start_position = end_position AND start_position = a AND "offset" = 0)) -- Point
+                        LOOP
+                            SELECT count(*) INTO num_order FROM core_pathaggregation et WHERE et.topo_object_id = element.topo_object_id AND et."order" = element."order";
+                            IF num_order = 1
+                            THEN
+                                 UPDATE core_pathaggregation SET "order" = "order" + 1 WHERE topo_object_id = element.topo_object_id AND "order" > element."order";
+                                 INSERT INTO core_pathaggregation (path_id, topo_object_id, start_position, end_position, "order")
+                                 VALUES (tid_clone, element.topo_object_id, element.start_position, element.end_position, element."order" + 1);
+                            ELSE
+                                INSERT INTO core_pathaggregation (path_id, topo_object_id, start_position, end_position, "order")
+                                VALUES (tid_clone, element.topo_object_id, element.start_position, element.end_position, element."order");
+                            END IF;
+                        END LOOP;
                         GET DIAGNOSTICS t_count = ROW_COUNT;
                         IF t_count > 0 THEN
                             -- RAISE NOTICE 'Duplicated % topologies of %-% (%) on [% ; %] for %-% (%)', t_count, path.id, path.name, ST_AsText(path.geom), a, b, tid_clone, path.name, ST_AsText(segment);

@@ -954,9 +954,17 @@ class SplitPathLineTopologyTest(TestCase):
 
         PathFactory.create(name="split", geom=LineString((9, -1), (9, 1)))
         topology.reload()
+
+        pathC1 = Path.objects.get(geom=LineString((8, 0), (9, 0)))
+        pathC1.name = "CC'"
+        pathC1.save()
+        path1D = Path.objects.get(geom=LineString((9, 0), (12, 0)))
+        path1D.name = "C'D"
+        path1D.save()
+        topology.reload()
         self.assertCountEqual(topology.aggregations.order_by('order').values_list('order', 'path__name'),
-                              [(0, 'AB'), (1, 'BC'), (2, 'CD'), (2, 'CD'), (3, 'CD'),
-                               (4, 'CD'), (4, 'CD'), (5, 'BC'), (6, 'AB')])
+                              [(0, 'AB'), (1, 'BC'), (2, "CC'"), (3, "C'D"), (4, "C'D"),
+                               (5, "C'D"), (7, "CC'"), (8, 'BC'), (9, 'AB')])
         self.assertTrue(topology.geom.equals(topogeom))
 
     def test_split_on_topology_with_offset(self):
@@ -973,15 +981,23 @@ class SplitPathLineTopologyTest(TestCase):
 
         PathFactory.create(name="split", geom=LineString((2, -2), (2, 2)))
 
+        ab.reload()
+        path_1 = Path.objects.get(geom=LineString((0, 0), (2, 0)))
+        path_1.name = "AA'"
+        path_1.save()
+        path_2 = Path.objects.get(geom=LineString((2, 0), (4, 0)))
+        path_2.name = "A'B"
+        path_2.save()
         topology.reload()
         self.assertCountEqual(topology.aggregations.order_by('order').values_list('order', 'path__name'),
-                              [(0, 'AB'), (0, 'AB')])
+                              [(0, "AA'"), (1, "A'B")])
         self.assertTrue(topology.geom.equals(topogeom))
 
     def test_split_on_topology_with_offset_and_point(self):
         """
+
             A               B
-            +---------------+
+            +-------1-------+
                 >=======+
         """
         ab = PathFactory.create(name="AB", geom=LineString((0, 0), (5, 0)))
@@ -994,8 +1010,18 @@ class SplitPathLineTopologyTest(TestCase):
         PathFactory.create(name="split", geom=LineString((2, -2), (2, 2)))
 
         topology.reload()
-        self.assertCountEqual(topology.aggregations.order_by('order').values_list('order', 'path__name'),
-                              [(0, 'AB'), (0, 'AB'), (1, 'AB'), (2, 'AB')])
+
+        path_1 = Path.objects.get(geom=LineString((0, 0), (2, 0)))
+        path_1.name = "AA'"
+        path_1.save()
+        path_2 = Path.objects.get(geom=LineString((2, 0), (5, 0)))
+        path_2.name = "A'B"
+        path_2.save()
+        self.assertCountEqual(topology.aggregations.order_by('order').values_list('order', 'path__name', 'start_position', 'end_position'),
+                              [(0, "AA'", 0.5, 1),
+                               (1, "A'B", 0, 0.333333333333333),
+                               (2, "A'B", 0.333333333333333, 0.333333333333333),
+                               (3, "A'B", 0.333333333333333, 0.666666666666667)])
         self.assertTrue(topology.geom.equals(topogeom))
 
 
@@ -1004,6 +1030,7 @@ class SplitPathPointTopologyTest(TestCase):
 
     def test_split_tee_1(self):
         """
+
                 C
         A +-----X----+ B
                 |
