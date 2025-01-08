@@ -255,9 +255,6 @@ jobs:
     name: Tests E2E docker
     runs-on: ubuntu-20.04
     needs: [build_docker_image]
-    env:
-      CYPRESS_BASE_URL: http://geotrek.local
-      CYPRESS_CACHE_FOLDER: ~/cypress/cache
 
     services:
       postgres:
@@ -314,20 +311,15 @@ jobs:
           sudo ln -s /home/runner/work/Geotrek-admin/Geotrek-admin/cypress/nginx.conf /etc/nginx/sites-enabled/geotrek.conf
           sudo systemctl restart nginx
 
-      - name: install Cypress
-        run: |
-          cd /home/runner/work/Geotrek-admin/Geotrek-admin/cypress
-          npm ci
-          npm list
-          echo "Waiting for container..."
-          while ! nc -z "127.0.0.1" "8001"; do
-            sleep 0.1
-          done
-
-      - name: E2E test
-        run: |
-          /home/runner/work/Geotrek-admin/Geotrek-admin/cypress/node_modules/.bin/cypress run -P /home/runner/work/Geotrek-admin/Geotrek-admin/cypress --record --key 64a5a9b3-9869-4a2f-91e4-e3cd27c2f564
-        continue-on-error: false
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+            working-directory: cypress
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CYPRESS_BASE_URL: http://geotrek.local
+          CYPRESS_CACHE_FOLDER: ~/cypress/cache
 
       - name: Archive results as artifacts
         uses: actions/upload-artifact@v4
@@ -341,10 +333,6 @@ jobs:
     name: Tests E2E 20.04
     runs-on: ubuntu-20.04
     needs: [ build_deb ]
-
-    env:
-      CYPRESS_BASE_URL: http://geotrek.local
-      CYPRESS_CACHE_FOLDER: ~/cypress/cache
 
     services:
       postgres:
@@ -400,16 +388,16 @@ jobs:
           	sudo cp -r * /opt/geotrek-admin/var/media/upload/
           done
 
-      - name: Install cypress
-        run: |
-          cd /home/runner/work/Geotrek-admin/Geotrek-admin/cypress
-          npm ci
-          npm list
-
-      - name: E2E test
-        run: |
-          /home/runner/work/Geotrek-admin/Geotrek-admin/cypress/node_modules/.bin/cypress run -P /home/runner/work/Geotrek-admin/Geotrek-admin/cypress --record --key 64a5a9b3-9869-4a2f-91e4-e3cd27c2f564
-        continue-on-error: false
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+            working-directory: cypress
+            record: true
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CYPRESS_BASE_URL: http://geotrek.local
+          CYPRESS_CACHE_FOLDER: ~/cypress/cache
 
       - name: Archive results as artifacts
         uses: actions/upload-artifact@v4
