@@ -180,6 +180,7 @@ CHANGELOG
 - Fix: missing default values in SQL template for Report model (#4085)
 - Fix: users cannot add attachment to Report model (#4085)
 - Fix: remove legacy default value for `external_uuid` in database for Report model (#4085)
+- Fix: Parser loading with import command (#3538)
 
 
 2.107.0 (2024-06-07)

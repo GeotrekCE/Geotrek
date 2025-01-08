@@ -3,6 +3,7 @@ from os.path import join
 
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
+from django.utils.module_loading import import_string
 
 from geotrek.common.parsers import ImportError
 
@@ -23,24 +24,23 @@ class Command(BaseCommand):
 
         if '.' in options['parser']:
             # Python import syntax
-            module_name, class_name = options['parser'].rsplit('.', 1)
-            module_path = module_name.replace('.', '/') + '.py'
+            try:
+                Parser = import_string(options['parser'])
+            except Exception:
+                raise CommandError("Failed to import parser class '{0}'".format(options['parser']))
         else:
             # just a class name
-            module_path = join(settings.VAR_DIR, 'conf/parsers.py')
-            module_name = 'parsers'
-            class_name = options['parser']
+            try:
+                module_path = join(settings.VAR_DIR, 'conf/parsers.py')
+                module_name = 'parsers'
+                class_name = options['parser']
+                spec = importlib.util.spec_from_file_location(module_name, module_path)
+                module = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(module)
+                Parser = getattr(module, class_name)
+            except FileNotFoundError:
+                raise CommandError("Failed to import parser file '{0}'".format(module_path))
 
-        spec = importlib.util.spec_from_file_location(module_name, module_path)
-        module = importlib.util.module_from_spec(spec)
-        try:
-            spec.loader.exec_module(module)
-        except FileNotFoundError:
-            raise CommandError("Failed to import parser file '{0}'".format(module_path))
-        try:
-            Parser = getattr(module, class_name)
-        except AttributeError:
-            raise CommandError("Failed to import parser class '{0}'".format(class_name))
         if not Parser.filename and not Parser.url and not options['filename']:
             raise CommandError("File path missing")
 
