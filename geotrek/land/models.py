@@ -122,6 +122,7 @@ class LandEdge(GeotrekMapEntityMixin, Topology):
     owner = models.TextField(verbose_name=_("Owner"), blank=True)
     agreement = models.BooleanField(verbose_name=_("Agreement"), default=False)
     eid = models.CharField(verbose_name=_("External id"), max_length=1024, blank=True, null=True)
+    identification = models.CharField(verbose_name=_("Land id"), max_length=40, blank=True)
 
     geometry_types_allowed = ["LINESTRING"]
 

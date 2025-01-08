@@ -21,7 +21,7 @@ class PhysicalEdgeForm(EdgeForm):
 class LandEdgeForm(EdgeForm):
     class Meta(EdgeForm.Meta):
         model = LandEdge
-        fields = EdgeForm.Meta.fields + ['land_type', 'owner', 'agreement']
+        fields = EdgeForm.Meta.fields + ['land_type', 'owner', 'agreement', 'identification']
 
 
 class CirculationEdgeForm(EdgeForm):
