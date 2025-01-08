@@ -7,9 +7,9 @@ on:
       - '.github/workflows/lint.yml'  # if lint workflow change
       - 'dev-requirements.txt'  # if dev-requirements.txt change
       - 'setup.cfg'   # if lint tools configuration change
-
 env:
-  DEBIAN_FRONTEND: noninteractive
+  VAR_DIR: /home/runner/work/Geotrek-admin/Geotrek-admin/var
+  ENV: dev
 
 jobs:
   migrations:
@@ -36,3 +36,38 @@ jobs:
       - name: Flake8
         run: |
           flake8 geotrek
+
+  translations:
+    name: Checking translations files are up-to-date
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/python-cache-requirements
+        with:
+          requirements: requirements.txt
+      - name: Install dependencies
+        run: |
+          sudo apt-get install -y gettext
+          pip3 install -r dev-requirements.txt
+          mkdir -p var/static var/conf/extra_static var/media/upload var/cache/sessions var/cache/api_v2 var/cache/fat var/log var/conf/extra_templates var/conf/extra_locale var/tmp
+
+      - name: Check translations
+        run: |
+          ./manage.py makemessages -a --no-location --no-obsolete -v 3
+          ./manage.py compilemessages
+          ls -als
+
+      - uses: tj-actions/verify-changed-files@v20
+        id: verify-changed-files
+        with:
+          files: |
+            **/*.po
+
+      - name: Verify translation files changed
+        if: steps.verify-changed-files.outputs.files_changed == 'true'
+        env:
+          CHANGED_FILES: ${{ steps.verify-changed-files.outputs.changed_files }}
+        run: |
+          echo "Changed files: $CHANGED_FILES"
+          git diff
+          core.setFailed('Please fix your translation files with ./manage.py makemessages -a --no-location --no-obsolete')
