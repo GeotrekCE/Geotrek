@@ -743,7 +743,7 @@ class GeotrekTrekQueryParamsFilter(BaseFilterBackend):
                 Q(name__icontains=q) | Q(description__icontains=q)
                 | Q(description_teaser__icontains=q) | Q(ambiance__icontains=q)
             )
-        return qs
+        return qs.distinct()
 
     def get_schema_fields(self, view):
         return (

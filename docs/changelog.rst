@@ -15,6 +15,10 @@ CHANGELOG
 - Move Treks' accessibility pictures into the attached files tab (refs #2967)
 - Removes the display of an object's structure in its properties tab title
 
+**Bug fixes**
+
+- Prevent objects from being returned several times in APIv2 by filtering on ManyToMany (#4448)
+
 **Documentation**
 
 - Update theme color
