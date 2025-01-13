@@ -381,7 +381,7 @@ vine==5.1.0
     #   kombu
 wcwidth==0.2.13
     # via prompt-toolkit
-weasyprint==52.5
+weasyprint==61.2
     # via
     #   django-weasyprint
     #   geotrek (setup.py)
