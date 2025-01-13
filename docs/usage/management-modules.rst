@@ -14,7 +14,7 @@ Les modules signalétique et aménagement ont initialement été conçus dans un
 
 Les modules interventions et chantiers ont été conçus de façon à permettre à la fois un inventaire et un suivi des travaux (prévisionnel, administratif et financier).
 
-Pour les territoires qui le souhaitent, sur le volet gestion, les valeurs des listes déroulantes peuvent être différenciées  par structure, afin que chaque structure travaillant sur une même instance Geotrek-admin puisse avoir des typologies différentes si nécéssaire (types de signalétique, d’aménagements, d’organismes...).
+Pour les territoires qui le souhaitent, sur le volet gestion, les valeurs des listes déroulantes peuvent être différenciées  par structure, afin que chaque structure travaillant sur une même instance Geotrek-admin puisse avoir des typologies différentes si nécessaire (types de signalétique, d’aménagements, d’organismes...).
 
 Néanmoins, pour les territoires qui souhaitent mutualiser les mêmes valeurs dans les listes sans avoir à les renseigner pour chaque structure, il est possible de partager des typologies entre les différentes structures en ne renseignant tout simplement pas ce champ.
 Un compte utilisateur appartenant à une structure X n'aura accès qu'aux typologies associées à celle-ci, ainsi qu'aux typologies partagées. De même, ce compte utilisateur ne pourra pas modifier ou supprimer des objets appartenant à une autre structure (c'est-à-dire créés par un compte utilisateur appartenant à une autre structure), sauf à avoir des permissions particulières.
@@ -76,7 +76,7 @@ Les aménagements
 
 Ils permettent d'inventorier les aménagements sur les sentiers (passerelles, mains courantes, cunettes, soutènements, bancs, parkings...) en les localisant, les typant, les décrivant, renseignant leur état et leur année d'implantation.
 
-Les types d'aménagement sont découpés en 2 catégories (Ouvrages et Equipements). Ce découpage n'est utilisé que pour filtrer les aménagements.
+Les types d'aménagement sont découpés en 2 catégories (Ouvrages et Équipements). Ce découpage n'est utilisé que pour filtrer les aménagements.
 
 Il est possible de créer une intervention directement depuis la fiche détail d'un aménagement.
 

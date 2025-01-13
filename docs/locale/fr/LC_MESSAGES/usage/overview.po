@@ -1,0 +1,395 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2013-2024, Makina Corpus
+# This file is distributed under the same license as the Geotrek package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Geotrek \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-14 11:31+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr\n"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.14.0\n"
+
+#: ../../usage/overview.rst:3
+msgid "Présentation générale"
+msgstr ""
+
+#: ../../usage/overview.rst:10
+msgid "Architecture"
+msgstr ""
+
+#: ../../usage/overview.rst:12
+msgid "L’application est composée :"
+msgstr ""
+
+#: ../../usage/overview.rst:14
+msgid ""
+"d’une **page d'authentification**, demandant la saisie d’un login et d’un"
+" mot de passe"
+msgstr ""
+
+#: ../../usage/overview.rst:15
+msgid "d’une **interface de consultation des objets de chaque module**"
+msgstr ""
+
+#: ../../usage/overview.rst:17
+msgid ""
+"avec la liste de sélection déroulante des modules avec compteur des "
+"résultats"
+msgstr ""
+
+#: ../../usage/overview.rst:18
+msgid "un onglet latéral de sélection des modules"
+msgstr ""
+
+#: ../../usage/overview.rst:19
+msgid "un accès aux paramètres de configuration"
+msgstr ""
+
+#: ../../usage/overview.rst:20
+msgid "un bouton déconnexion de l’application"
+msgstr ""
+
+#: ../../usage/overview.rst:22
+msgid ""
+"de **paramètres d’administration** (gestion des droits, des listes "
+"déroulantes…)"
+msgstr ""
+
+#: ../../usage/overview.rst:25
+msgid "Page d'authentification"
+msgstr ""
+
+#: ../../usage/overview.rst:31
+msgid "Accès à Geotrek-admin via un login et un mot de passe"
+msgstr ""
+
+#: ../../usage/overview.rst:35
+msgid "Les modules de Geotrek"
+msgstr ""
+
+#: ../../usage/overview.rst:37
+msgid ""
+"Geotrek-admin est composé de deux types de modules pour la gestion et la "
+"valorisation des contenus."
+msgstr ""
+
+#: ../../usage/overview.rst:40 ../../usage/overview.rst:42
+msgid "Modules de gestion"
+msgstr ""
+
+#: ../../usage/overview.rst:46 ../../usage/overview.rst:90
+msgid "Icône"
+msgstr ""
+
+#: ../../usage/overview.rst:47 ../../usage/overview.rst:91
+msgid "Module"
+msgstr ""
+
+#: ../../usage/overview.rst:48 ../../usage/overview.rst:92
+msgid "Description"
+msgstr ""
+
+#: ../../usage/overview.rst:50
+msgid ":ref:`Tronçon <les-troncons>`"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid ""
+"C'est l’équivalent du réseau routier : ils constituent le support des "
+"tracés"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid ""
+"des objets linéaires (itinéraires, statuts, interventions, "
+"aménagements...)."
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "Leur modification est relativement rare (fermeture d’un chemin,"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "éboulement...)."
+msgstr ""
+
+#: ../../usage/overview.rst:56
+msgid ":ref:`Sentier <les-sentiers>`"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "Les itinéraires, non pas de randonnée, mais de gestion, correspondent au"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "départ et à l'arrivée d'un sentier."
+msgstr ""
+
+#: ../../usage/overview.rst:60
+msgid ":ref:`Statut <les-statuts>`"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "Gestion des organismes ayant la compétence sentiers,"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "gestionnaires des travaux et de la signalétique."
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "Type physique (route, piste, sente, etc.)"
+msgstr ""
+
+#: ../../usage/overview.rst:65
+msgid ":ref:`Aménagement <les-amenagements>`"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "Décrit et localise les ouvrages, le mobilier, les équipements."
+msgstr ""
+
+#: ../../usage/overview.rst:68
+msgid ":ref:`Signalétique <la-signaletique>`"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "Reprend l'ensemble de la signalétique d'accueil, d'information et"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "d'orientation à destination des randonneurs."
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "Gestion des fichiers associés comme les BAT, les maquettes…"
+msgstr ""
+
+#: ../../usage/overview.rst:73
+msgid ":ref:`Intervention <les-interventions>`"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "Répertorie les travaux liés à l'entretien courant des ouvrages,"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "l'entretien sur les sentiers, la mise en place et l'entretien"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "de la signalétique, etc..."
+msgstr ""
+
+#: ../../usage/overview.rst:78
+msgid ":ref:`Chantier <les-chantiers>`"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "Correspond à des ensembles d'interventions. Cela permet d'avoir une"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "approche globale de chantiers significatifs et des informations"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "administratives associées."
+msgstr ""
+
+#: ../../usage/overview.rst:84 ../../usage/overview.rst:86
+msgid "Modules de valorisation"
+msgstr ""
+
+#: ../../usage/overview.rst:94
+msgid ":ref:`Itinéraire <itineraires>`"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "Randonnées présentées au grand public : l’itinéraire est"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "défini selon la géométrie des tronçons empruntés. L’ajout,"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "la modification sont fréquents. La dé-publication est fortement"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "déconseillée pour le référencement et les passerelles"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "avec d'autres outils."
+msgstr ""
+
+#: ../../usage/overview.rst:101
+msgid ":ref:`Points d'intérêts (POI) <points-d-interets-poi>`"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "Ponctuels à découvrir associés aux randonnées : en fonction"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "de leur  emplacement, ils sont associés automatiquement aux"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "randonnées. Leur catégorie détermine leur pictogramme (faune,"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "flore, patrimoine, équipements...)."
+msgstr ""
+
+#: ../../usage/overview.rst:107
+msgid ":ref:`Services <services>`"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "Informations pratiques comme les points d'eau, passages"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "délicats... selon la typologie souhaitée. Ils n'ont pas de"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "description ni de nom, ni de photo et sont uniquement affichés"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "sur la carte de l'itinéraire sous forme de pictogramme."
+msgstr ""
+
+#: ../../usage/overview.rst:113
+msgid ":ref:`Contenus touristiques <contenus-touristiques>`"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "Correspond aux services touristiques pouvant être importés"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "depuis des Systèmes d'Informations Touristiques (SIT),"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "qui permettent d'alimenter automatiquement la base de"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "données Geotrek. Celles-ci sont regroupées dans des"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "catégories de type : hébergements, musées, restaurants,"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "produits du terroir..."
+msgstr ""
+
+#: ../../usage/overview.rst:121
+msgid ":ref:`Évènements touristiques <evenements-touristiques>`"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "Correspond aux animations pouvant être importées depuis"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "des Systèmes d'Informations Touristiques (SIT), qui permettent"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "d'alimenter automatiquement la base de données Geotrek."
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "Celles-ci sont regroupées dans des catégories de type :"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "conférences, expositions, sorties…"
+msgstr ""
+
+#: ../../usage/overview.rst:128
+msgid ":ref:`Signalements <signalements>`"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "Contient les problèmes remontés par les internautes, par"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "exemple via le formulaire dédié sur Geotrek-rando"
+msgstr ""
+
+#: ../../usage/overview.rst:132
+msgid ":ref:`Zones sensibles <zones-sensibles>`"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "Module non activé par défaut permettant de saisir et de gérer"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "des zones de sensibilité de la faune sauvage pour les afficher"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "sur Geotrek-rando ou les diffuser avec l'API de Geotrek-admin)."
+msgstr ""
+
+#: ../../usage/overview.rst:137
+msgid ":ref:`Sites outdoor <pleinenature>`"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "Permet de définir des sites d'activités de pleine nature"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "(sites d'escalade, rivières, aires de vol libre)"
+msgstr ""
+
+#: ../../usage/overview.rst:141
+msgid ":ref:`Parcours outdoor <pleinenature>`"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "Couplé au module « site outdoor», permet de les détailler en"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "renseignant des activités de pleine nature diverses (kayak,"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "rafting, parapente, course d'orientation, voie d'escalade,"
+msgstr ""
+
+#: ../../usage/overview.rst
+msgid "parcours d'eau vive…etc.)"
+msgstr ""
+
+#: ../../usage/overview.rst:147
+msgid ""
+"Chaque module est accessible depuis le bandeau vertical situé à gauche de"
+" l'écran."
+msgstr ""
+

@@ -553,7 +553,7 @@ Eau vive
 ~~~~~~~~~
 
 Le site est généralement constitué par une rivière ou une portion de rivière. Il est possible d'y adjoindre des affluents.
-La géométrie du site est donc un linéraire correspondant à un réseau hydrographique.
+La géométrie du site est donc un linéaire correspondant à un réseau hydrographique.
 
 Les aires d'embarquement/débarquement sont définies par des sous-sites. Leur géométrie peut être définie sous forme d'un point
 ou d'un polygone.

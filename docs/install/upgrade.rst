@@ -10,7 +10,7 @@ Upgrade
 From Geotrek-admin >= 2.33
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Beforehand you shoud update your system's catalog:
+Beforehand you should update your system's catalog:
 
 ::
 

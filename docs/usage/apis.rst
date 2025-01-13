@@ -42,7 +42,7 @@ Il est possible de filtrer les POI du flux par structure. Pour cela, ajouter le 
 Vous pouvez filtrer avec plusieurs structures : en séparant les identifiants par des virgules (``http://XXXXX/api/cirkwi/pois.xml?structures=2,5,3``).
 
 Il est également possible de filtrer les randonnées du flux par structure et par portail. 
-Pour cela, ajouter le paramètre ``?structures=<identifiant_de_la_structure>`` ou ``?portals=<identifian_de_la_structure>`` à la fin de l'URL (``http://XXXXX/api/cirkwi/circuits.xml?portals=3``).
+Pour cela, ajouter le paramètre ``?structures=<identifiant_de_la_structure>`` ou ``?portals=<identifiant_de_la_structure>`` à la fin de l'URL (``http://XXXXX/api/cirkwi/circuits.xml?portals=3``).
 
 Il est également possible d'exclure du flux les randonnées provenant de sources externes à Geotrek-Admin. Ce filtre est notamment nécessaire pour
 ne pas renvoyer à Cirkwi les randonnées qui en proviennent déjà. Pour cela, ajouter le paramètre ``?include_externals=false`` à la fin de l'URL (``http://XXXXX/api/cirkwi/circuits.xml?include_externals=false``).

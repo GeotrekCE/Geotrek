@@ -18,7 +18,7 @@ env:
 
 jobs:
   doc:
-    name: Documentation
+    name: Doc structure
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -30,3 +30,27 @@ jobs:
         run: |
           cd docs/
           make html SPHINXOPTS="-W"
+
+      - name: Check translations build
+        run: |
+          cd docs/
+          make gettext
+          rm ./_build/locale/changelog.pot
+          sphinx-intl update -l fr
+          sphinx-intl build
+          sphinx-build -b html -D language='fr' -d _build/doctrees . _build/html/fr
+
+      - name: Check missing translations
+        uses: tj-actions/verify-changed-files@v17
+        id: verify-changed-files
+        with:
+          files: |
+             **/*.po
+
+      - name: Check no translation file has changed
+        if: steps.verify-changed-files.outputs.files_changed == 'true'
+        run: |
+          echo "Translation file(s) changed: ${{ steps.verify-changed-files.outputs.changed_files }}"
+          git diff
+          core.setFailed('Please update doc translation y running `make gettext` and `sphinx-intl update -l fr`, then fix or update translation, and commit the changes.')
+

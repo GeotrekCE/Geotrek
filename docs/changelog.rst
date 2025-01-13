@@ -388,7 +388,7 @@ Do not use - Causes bug in Geotrek-Rando-v3 exposing Outdoor data
 **New features**
 
 - Add `include_externals` filter to Cirkwi trek exports, to allow excluding treks with an external id (eid) (#3947)
-- Tourism : add price to TouristicEvent model - ref #3587
+- Tourism: add price to TouristicEvent model - ref #3587
 - Add `check_versions` command to check Geotrek, Python, Django, PostgreSQL and PostGIS versions.
 - Add ``GeotrekCourseParser`` and ``GeotrekSiteParser`` in Aggregator to retrieve Outdoor models (refs #3569)
 - Add trail on leaflet overlay
@@ -708,7 +708,7 @@ Do not use - Causes bug in Geotrek-Rando-v3 exposing Outdoor data
 
 **Improvements**
 
-- Add arguments loadsignage : sealing / manager (#3377)
+- Add arguments loadsignage: sealing / manager (#3377)
 - Various minor improvements for APIDAE Trek parser
 - The "near_xxx" API filters now use the topological link regarding topological objects. This will provide better performances for those endpoints when topologies are enabled. See Issues `#3472 <https://github.com/GeotrekCE/Geotrek-admin/issues/3472>`_ and `#3505 <https://github.com/GeotrekCE/Geotrek-admin/issues/3505>`_.
 - Enable using Suricate workflow without moderation steps
@@ -1068,8 +1068,8 @@ In preparation for HD Views developments (PR #3298)
 **Bug fixes**
 
 - Blade list view now takes into account custom columns from ``COLUMNS_LISTS`` setting
-- Fix Suricate Workflow : do not unlock reports when resolving them
-- Fix Suricate Workflow : display clickable links in report related emails
+- Fix Suricate Workflow: do not unlock reports when resolving them
+- Fix Suricate Workflow: display clickable links in report related emails
 
 
 2.88.0 (2022-10-11)
@@ -1780,11 +1780,11 @@ Disabled infrastructure's block have been removed
 
 **New features**
 
-- APIv2 : Add ``attachment`` field to Touristic Event serialization
+- APIv2: Add ``attachment`` field to Touristic Event serialization
 
 **Minor improvements**
 
-- Add possibility to fill ``code`` field in Signage model when using ``loadsignage`` command. Two parameters added : ``code_field`` and ``code_default``
+- Add possibility to fill ``code`` field in Signage model when using ``loadsignage`` command. Two parameters added: ``code_field`` and ``code_default``
 
 **Bug fixes**
 
@@ -1798,11 +1798,11 @@ Disabled infrastructure's block have been removed
 
 **New features**
 
-- APIv2 : Add filter by portal on outdoor practices and ratings
+- APIv2: Add filter by portal on outdoor practices and ratings
 
 **Bug fixes**
 
-- APIv2 : Fix exceptions on filter by portals or themes in Outdoor Course route
+- APIv2: Fix exceptions on filter by portals or themes in Outdoor Course route
 
 
 2.70.0 (2021-11-02)
@@ -1810,12 +1810,12 @@ Disabled infrastructure's block have been removed
 
 **New features**
 
-- Add UUIDS to the following objects, and to APIv2 serialization for those included :
+- Add UUIDS to the following objects, and to APIv2 serialization for those included:
   Path, TouristicContent, TouristicEvent, Outdoor Site, Outdoor Course, Attachment, and Topology (inherited by POI, Trek, Service, Trail, Signage, Infrastructure, PhysicalEdge, CompetenceEdge, LandEdge)
-- APIv2 : Add pictograms to outdoor practice routes
-- APIv2 : Add cities to outdoor sites and outdoor courses routes
-- APIv2 : Add filter by themes, cities, districts, types, and structures to outdoor sites and outdoor courses routes
-- APIv2 : Change Web Links serialization on outdoor sites routes, to detailed instead of just an id
+- APIv2: Add pictograms to outdoor practice routes
+- APIv2: Add cities to outdoor sites and outdoor courses routes
+- APIv2: Add filter by themes, cities, districts, types, and structures to outdoor sites and outdoor courses routes
+- APIv2: Change Web Links serialization on outdoor sites routes, to detailed instead of just an id
 
 **Breaking changes**
 
@@ -1873,8 +1873,8 @@ Disabled infrastructure's block have been removed
 
 **New features**
 
-- APIv2 : Add 'children' and 'parent' fields to Outdoor Site serialization
-- APIv2 : Add filter by pratices on outdoor courses
+- APIv2: Add 'children' and 'parent' fields to Outdoor Site serialization
+- APIv2: Add filter by pratices on outdoor courses
 - Filter interventions by Outdoor model targets in Intervention module's list view
 
 **User Interface**
@@ -1894,11 +1894,11 @@ Disabled infrastructure's block have been removed
 
 **New features**
 
-- APIv2 : Add filter by ratings on outdoor courses and sites
-- APIv2 : Add filter by pratices in hierarchy on outdoor courses and sites
-- APIv2 : Add filter by ratings in hierarchy on outdoor courses and sites
+- APIv2: Add filter by ratings on outdoor courses and sites
+- APIv2: Add filter by pratices in hierarchy on outdoor courses and sites
+- APIv2: Add filter by ratings in hierarchy on outdoor courses and sites
 - Display children sites' ratings in site page
-- APIv2 : Add 'sector' and 'attachment' fields to Outdoor Site serialization
+- APIv2: Add 'sector' and 'attachment' fields to Outdoor Site serialization
 - Add DISPLAY_COORDS_AS_DECIMALS setting to format coordinates as decimal degrees instead of degrees minutes seconds
 - Enable translations on 'equipment' field on Outdoor Course
 
@@ -1919,14 +1919,14 @@ Disabled infrastructure's block have been removed
 
 **New features**
 
-- APIv2 : Add filter on Outdoor Site route to only retrieve root sites from hierarchy
+- APIv2: Add filter on Outdoor Site route to only retrieve root sites from hierarchy
 - Add fields 'duration', 'type', 'gear', 'ratings_description' to Outdoor Course
-- Add fields on APIv2 for Course model : 'min_elevation', 'max_elevation', 'children', 'parents', 'attachments'
+- Add fields on APIv2 for Course model: 'min_elevation', 'max_elevation', 'children', 'parents', 'attachments'
 - Add excluded_pois on Course and Site models.
 - Add filter on APIVv2 POI endpoint to retrieve pois related to Course or Site
 - Replace Outdoor Site 'ratings_min' and 'ratings_max' fields with 'ratings'
 - Make Outdoor Site and Course 'ratings' form fields dynamically change on practice selection
-- APIv2 : Add children courses to sites' serialization
+- APIv2: Add children courses to sites' serialization
 - Add Course Type management to admin site
 
 
@@ -1958,13 +1958,13 @@ Disabled infrastructure's block have been removed
 - Add helper to make requests to Suricate
 - Add parser to retrieve statuses, activities, and reports (in bounding box) from Suricate
 - Add sync_suricate command to retrieve Suricate data
-- Change Report model to use one of 3 modes : No Suricate, Suricate Report or Suricate Management (SURICATE_REPORT_ENABLED and SURICATE_MANAGEMENT_ENABLED settings)
+- Change Report model to use one of 3 modes: No Suricate, Suricate Report or Suricate Management (SURICATE_REPORT_ENABLED and SURICATE_MANAGEMENT_ENABLED settings)
 - Generalize existing filters in APIv2
 - Add 'near_outdoorsite' and 'near_outdoorcourse' filters in APIv2
 - Add 'created_before', 'updated_before', 'created_after' and 'updated_after' filters in APIv2
 - Add route to APIv2 to retrieve Geotrek version
 - Add API_V2_DESCRIPTION setting to change description text in API v2 Swagger page
-- Add endpoints for services in APIv2 : service, service type
+- Add endpoints for services in APIv2: service, service type
 - Add link between reports and interventions
 
 
@@ -2013,7 +2013,7 @@ Disabled infrastructure's block have been removed
 
 **New features**
 
-- Add endpoints for user feedback in APIv2 : report category, report activity, report problem magnitude, and report status
+- Add endpoints for user feedback in APIv2: report category, report activity, report problem magnitude, and report status
 - Ensure APIv2 returns treks list and touristic contents list as ordered by localized name
 
 **Bug fixes**
@@ -2042,7 +2042,7 @@ Disabled infrastructure's block have been removed
 First, if you changed file `/opt/geotrek-admin/var/conf/nginx.conf.in`, back it up somewhere.
 1 - While installing, choose 'Y' to get the new version.
 2 - Copy your changes from the backed up file to the new version.
-3 - Execute : `dpkg-reconfigure geotrek-admin` to reapply your customization.
+3 - Execute: `dpkg-reconfigure geotrek-admin` to reapply your customization.
 
 **User Interface**
 
@@ -2574,7 +2574,7 @@ HAPPY NEW YEAR!
 **Doc improvements**
 
 - Fix doc development command line
-- Improving docs : advanced configuration / synchronisation
+- Improving docs: advanced configuration / synchronisation
 
 
 2.38.6 (2020-10-20)
@@ -3149,7 +3149,7 @@ No changes. Just force a new build in CI
 
 **Bug fixes**
 
-- Fix sync_rando : sensitive area with multi polygons
+- Fix sync_rando: sensitive area with multi polygons
 
 
 2.29.8 (2019-09-26)
@@ -3769,11 +3769,11 @@ No changes. Just force a new build in CI
 - Allow to exclude POIs from a trek
 - New access rights to edit draft path
 - New access rights to edit attributes and not the geometry
-- Allow to remove duplicate path in database : command remove_duplicate_paths
+- Allow to remove duplicate path in database: command remove_duplicate_paths
 
 **Bug fixes**
 
-- Fix snap on crossing point : take all paths easier
+- Fix snap on crossing point: take all paths easier
 - Fix a clash between current url and SYNC_RANDO_OPTIONS
 - Fix screamshotter when SSL is enabled
 
@@ -4029,7 +4029,7 @@ No changes. Just force a new build in CI
 **Bug fixes**
 
 * Fix download of python packages for pypi.python.org (SSL is now required)
-* API v2 : Fix full URL pictures in nested serializers
+* API v2: Fix full URL pictures in nested serializers
 * Fix network SVG (add viewbox) to make them visible in Geotrek-rando
 * Hide file parsers form if no one is available
 
@@ -4945,7 +4945,7 @@ No changes. Just force a new build in CI
 
 **Breaking changes**
 
-* Before running install, run this SQL command to add a column for file attachments :
+* Before running install, run this SQL command to add a column for file attachments:
 
 ::
 
@@ -5049,7 +5049,7 @@ In order to enable those features under construction, add ``experimental = True`
 
 :notes:
 
-    After upgrading, mark all POIs as published in the languages of your choice ::
+    After upgrading, mark all POIs as published in the languages of your choice::
 
         UPDATE o_t_poi SET public_fr = TRUE;
         UPDATE o_t_poi SET date_publication = now();
@@ -5132,7 +5132,7 @@ In order to enable those features under construction, add ``experimental = True`
 
 **Upgrades notes**
 
-Since the map export have changed, empty the cache :
+Since the map export have changed, empty the cache:
 
 ::
 
@@ -5248,11 +5248,11 @@ Support edition of several fields on the same map, via django-leaflet new featur
 
 :notes:
 
-    Just before upgrading, delete the following folders ::
+    Just before upgrading, delete the following folders::
 
         rm -rf lib/src/django-modeltranslation
 
-    After upgrading, mark all treks as published in the languages of your choice ::
+    After upgrading, mark all treks as published in the languages of your choice::
 
         UPDATE o_t_itineraire SET public_fr = TRUE;
         UPDATE o_t_itineraire SET date_publication = now();
@@ -5291,10 +5291,10 @@ Support edition of several fields on the same map, via django-leaflet new featur
 * Improved details in trek form, use Chosen for many-to-many widgets
 * Documented the configuration of map layers apparence
 * Show layers colors in layer switcher
-* Detail page : replace "Maintenance" by "Works" (fixes #889)
-* Detail page : interventions on paths are now grouped together,
+* Detail page: replace "Maintenance" by "Works" (fixes #889)
+* Detail page: interventions on paths are now grouped together,
   and a small icon is shown (fixes #735)
-* Detail page : show intervention costs (ref #958, fixes #764)
+* Detail page: show intervention costs (ref #958, fixes #764)
 * Show project intervention total costs (fixes #958)
 * Allow to override the Trek public document template
   (see *advanced configuration* in docs)
@@ -5403,7 +5403,7 @@ Special thanks to Noël Martinon, Félix Merzeau, Gil Deluermoz and Camille Mont
 
     It is a good thing, since it paves the way for the last Ubuntu LTS release (14.04). However, it breaks the *Long Term Support* philosophy of the previous one (12.04), supposed to be supported until 2019.
 
-    **Morality** : we cannot trust the *Ubuntu GIS stable* repository anymore.
+    **Morality**: we cannot trust the *Ubuntu GIS stable* repository anymore.
 
     Regarding *Geotrek*, such upgrades of Ubuntu packages is not supposed to be covered
     by its installation script. If you face any problems, please refer to the
@@ -5444,7 +5444,7 @@ Read all release notes carefully.
 
 * Command to import shapefile with points into POI as topologies (fixes #952)
 * Add views to serve DEM on object area as JSON (*Geotrek-Rando 3D*)
-* New tourism module : external datasources can be configured from Adminsite (*GeoJSON, TourInFrance, ...*)
+* New tourism module: external datasources can be configured from Adminsite (*GeoJSON, TourInFrance, ...*)
   and added to maps (by module, or published on *Geotrek-rando*...)
 * Show number of attached files in tab (fixes #743)
 * New permission to control download of attachments
@@ -5460,7 +5460,7 @@ Read all release notes carefully.
 * Add fullscreen button on maps (fixes #904)
 * Add all controls on detail map (fixes #907)
 * Add a button to close filters (fixes #424)
-* Added new sections in documention : *FAQ*, *User-manal* and *Advanced configuration*
+* Added new sections in documention: *FAQ*, *User-manal* and *Advanced configuration*
 
 ** Internal changes **
 
@@ -5476,7 +5476,7 @@ Read all release notes carefully.
 
 :notes:
 
-    * Before upgrading, backup your trail records and geometries, using pgAdmin ::
+    * Before upgrading, backup your trail records and geometries, using pgAdmin::
 
         CREATE TABLE backup_sentiers AS SELECT * FROM l_v_sentier;
         CREATE TABLE backup_troncons_sentiers AS (
@@ -5489,14 +5489,14 @@ Read all release notes carefully.
       a new line ``mailmanagers`` in ``etc/settings.ini``. See *Email settings*
       section in documentation.
 
-    * Just before upgrading, delete the following folders  ::
+    * Just before upgrading, delete the following folders ::
 
         rm -rf lib/src/django-modeltranslation lib/src/mapentity
 
 :notes:
 
     * After upgrading, load the default permissions of the previous groups, otherwise
-      users won't have access to their modules ::
+      users won't have access to their modules::
 
         bin/django loaddata geotrek/authent/fixtures/minimal.json
         bin/django loaddata geotrek/authent/fixtures/basic.json
@@ -5504,13 +5504,13 @@ Read all release notes carefully.
     * After upgrading, make sure *Active* is checked for the user *__internal__*
       otherwise screenshotting won't work.
 
-    * After upgrading, load basic data for the new module ::
+    * After upgrading, load basic data for the new module::
 
         bin/django loaddata geotrek/feedback/fixtures/basic.json
 
     * After upgrading, make sure the user specified in *Geotrek-rando* is
       in the group *Geotrek-rando*, or has at least the following permissions
-      in the AdminSite :
+      in the AdminSite:
 
       - ``paperclip | attachment | Can read attachments``
       - ``trekking | Trek | Can read Trek``
@@ -5750,12 +5750,12 @@ Installation script
 0.20.8 (2013-10-22)
 -------------------
 
-* Public trek export : Fix various layout regressions (ref #848)
-* Public trek export : Show POI theme pictogram (fixes #858)
-* Public trek export : full width for information desk frame (fixes #856)
-* Public trek export : add footer with trek title and page numbers (fixes #861)
-* Public trek export : add floating picture in POI detail (fixes #860)
-* Public trek export : fix POI thumbnails missing (fixes #869)
+* Public trek export: Fix various layout regressions (ref #848)
+* Public trek export: Show POI theme pictogram (fixes #858)
+* Public trek export: full width for information desk frame (fixes #856)
+* Public trek export: add footer with trek title and page numbers (fixes #861)
+* Public trek export: add floating picture in POI detail (fixes #860)
+* Public trek export: fix POI thumbnails missing (fixes #869)
 * Fix point offset lost on path update (fixes #867)
 * Fix reconnect point topologies with offset to closest path (fixes #868)
 
@@ -5763,12 +5763,12 @@ Installation script
 -------------------
 
 * Fix topology geometry 3D being draped twice (fixes #863)
-* Altimetric profile : Show max distance and round values (fixes #853)
-* Altimetric profile : Add settings for colors (fixes #854)
-* Public trek export : POIs list in two columns (fixes #855)
-* Public trek export : POIs details without column break (fixes #857)
-* Public trek export : Show pictures attributions (fixes #859)
-* Public trek export : Use 10pt fonts in every text blocks (fixes #848)
+* Altimetric profile: Show max distance and round values (fixes #853)
+* Altimetric profile: Add settings for colors (fixes #854)
+* Public trek export: POIs list in two columns (fixes #855)
+* Public trek export: POIs details without column break (fixes #857)
+* Public trek export: Show pictures attributions (fixes #859)
+* Public trek export: Use 10pt fonts in every text blocks (fixes #848)
 
 :notes:
 

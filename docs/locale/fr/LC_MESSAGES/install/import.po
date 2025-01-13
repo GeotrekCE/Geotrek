@@ -1,0 +1,1406 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2013-2024, Makina Corpus
+# This file is distributed under the same license as the Geotrek package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Geotrek \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-13 11:25+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr\n"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: ../../install/import.rst:3
+msgid "Import data"
+msgstr ""
+
+#: ../../install/import.rst:11
+msgid "Import paths"
+msgstr ""
+
+#: ../../install/import.rst:13 ../../install/import.rst:314
+#: ../../install/import.rst:318 ../../install/import.rst:395
+#: ../../install/import.rst:1270 ../../install/import.rst:1342
+#: ../../install/import.rst:1368
+msgid "Danger"
+msgstr ""
+
+#: ../../install/import.rst:14
+msgid ""
+"With dynamic segmentation, importing paths is very risky if paths are "
+"already present in the same area in Geotrek, it is only safe for an area "
+"where no path is already created."
+msgstr ""
+
+#: ../../install/import.rst:17
+msgid ""
+"Indeed, if you import paths where there are existing paths, treks, POIs "
+"or trails linked topology might be impacted."
+msgstr ""
+
+#: ../../install/import.rst:19
+msgid "Before import paths layer, it is important to prepare them. Paths must be:"
+msgstr ""
+
+#: ../../install/import.rst:21
+msgid "valid geometry"
+msgstr ""
+
+#: ../../install/import.rst:22
+msgid "simple geometry (no intersection)"
+msgstr ""
+
+#: ../../install/import.rst:23
+msgid "all intersections must cut the paths"
+msgstr ""
+
+#: ../../install/import.rst:24
+msgid "not double or covering others"
+msgstr ""
+
+#: ../../install/import.rst:26
+msgid ""
+"We use QGis to clean a path layer, with plugin Grass. Here are the "
+"operations:"
+msgstr ""
+
+#: ../../install/import.rst:29
+msgid "check the SRID (must be the same as in Geotrek)"
+msgstr ""
+
+#: ../../install/import.rst:31
+msgid "vectors → geometric tools → \"collect geometries\""
+msgstr ""
+
+#: ../../install/import.rst:33
+msgid "vectors → geometric tools → \"group\""
+msgstr ""
+
+#: ../../install/import.rst:38
+msgid "clean geometries"
+msgstr ""
+
+#: ../../install/import.rst:36
+msgid "search \"v_clean\" in \"Processing toolbox\""
+msgstr ""
+
+#: ../../install/import.rst:37
+msgid ""
+"select following options in cleaning tool: break, snap, duplicate (ou "
+"rmdup), rmline, rmdangle, chdangle, bpol, prune"
+msgstr ""
+
+#: ../../install/import.rst:38
+msgid "in threshold enter 2,2,2,2,2,2,2,2 (2 meters for each option)"
+msgstr ""
+
+#: ../../install/import.rst:41
+msgid "delete duplicate geometries"
+msgstr ""
+
+#: ../../install/import.rst:41
+msgid "search \"duplicate\" in \"Processing toolbox\""
+msgstr ""
+
+#: ../../install/import.rst:45
+msgid "regroup lines"
+msgstr ""
+
+#: ../../install/import.rst:44
+msgid "search \"v.build.polyline\" in \"Processing toolbox\")"
+msgstr ""
+
+#: ../../install/import.rst:45
+msgid "select \"first\" in \"Category number mode\""
+msgstr ""
+
+#: ../../install/import.rst:47
+msgid ""
+"There are two ways to import path : importing your shapefile with command"
+" line, or `via QGis following this blog post <https://makina-corpus.com"
+"/sig-webmapping/importer-une-couche-de-troncons-dans-geotrek>`_."
+msgstr ""
+
+#: ../../install/import.rst:50
+msgid ""
+"**To import a shapefile containing your paths, use the command** "
+"``loadpaths``"
+msgstr ""
+
+#: ../../install/import.rst:52
+msgid "``sudo geotrek help loadpaths``"
+msgstr ""
+
+#: ../../install/import.rst:102 ../../install/import.rst:667
+#: ../../install/import.rst:797 ../../install/import.rst:976
+#: ../../install/import.rst:1054 ../../install/import.rst:1141
+#: ../../install/import.rst:1215
+msgid "Note"
+msgstr ""
+
+#: ../../install/import.rst:104 ../../install/import.rst:978
+msgid "**Optional fields** : Name, Comment, SRID, Encoding"
+msgstr ""
+
+#: ../../install/import.rst:105 ../../install/import.rst:979
+msgid "**Required fields** : Structure"
+msgstr ""
+
+#: ../../install/import.rst:106
+msgid "**Geometric type** : Linestring"
+msgstr ""
+
+#: ../../install/import.rst:107 ../../install/import.rst:672
+#: ../../install/import.rst:802 ../../install/import.rst:981
+#: ../../install/import.rst:1059 ../../install/import.rst:1146
+#: ../../install/import.rst:1220
+msgid "**Expected formats** (supported by GDAL) : Shapefile, Geojson, Geopackage"
+msgstr ""
+
+#: ../../install/import.rst:108
+msgid "**Template** : :download:`paths.geojson <../files/import/paths.geojson>`"
+msgstr ""
+
+#: ../../install/import.rst:113 ../../install/import.rst:677
+#: ../../install/import.rst:808 ../../install/import.rst:986
+#: ../../install/import.rst:1064 ../../install/import.rst:1151
+#: ../../install/import.rst:1226
+msgid "**Good to know** :"
+msgstr ""
+
+#: ../../install/import.rst:110 ../../install/import.rst:984
+#: ../../install/import.rst:1062 ../../install/import.rst:1149
+#: ../../install/import.rst:1223
+msgid "The default SRID code is 4326"
+msgstr ""
+
+#: ../../install/import.rst:111 ../../install/import.rst:676
+#: ../../install/import.rst:806 ../../install/import.rst:985
+#: ../../install/import.rst:1063 ../../install/import.rst:1150
+#: ../../install/import.rst:1224
+msgid "The default encoding is UTF-8"
+msgstr ""
+
+#: ../../install/import.rst:112
+msgid "Imported paths are unpublished by default"
+msgstr ""
+
+#: ../../install/import.rst:113 ../../install/import.rst:678
+#: ../../install/import.rst:808 ../../install/import.rst:987
+#: ../../install/import.rst:1065 ../../install/import.rst:1152
+#: ../../install/import.rst:1226
+msgid "When importing a Geopackage, the first layer is always used"
+msgstr ""
+
+#: ../../install/import.rst:114
+msgid ""
+"The `--structure` requires an existing value and cannot retrieve it from "
+"a field in the file."
+msgstr ""
+
+#: ../../install/import.rst:116
+msgid "**Import command examples :**"
+msgstr ""
+
+#: ../../install/import.rst:118
+msgid "Docker"
+msgstr ""
+
+#: ../../install/import.rst:130
+msgid "Debian"
+msgstr ""
+
+#: ../../install/import.rst:145
+msgid "Import data from touristic data systems (SIT)"
+msgstr ""
+
+#: ../../install/import.rst:150
+msgid "Configure APIDAE (ex-SITRA) import"
+msgstr ""
+
+#: ../../install/import.rst:152
+msgid ""
+"To import touristic content from APIDAE (ex-SITRA), edit ``/opt/geotrek-"
+"admin/var/conf/parsers.py`` file with the following content:"
+msgstr ""
+
+#: ../../install/import.rst:167 ../../install/import.rst:222
+msgid "Then set up appropriate values:"
+msgstr ""
+
+#: ../../install/import.rst:169
+msgid "``label`` at your convenience,"
+msgstr ""
+
+#: ../../install/import.rst:170
+msgid ""
+"``api_key``, ``project_id`` and ``selection_id`` according to your APIDAE"
+" (ex-SITRA) configuration"
+msgstr ""
+
+#: ../../install/import.rst:171
+msgid ""
+"``category``, ``type1`` and ``type2`` (optional) to select in which "
+"Geotrek category/type imported objects should go"
+msgstr ""
+
+#: ../../install/import.rst:172
+msgid ""
+"You can add ``delete = True`` in your class if you want to delete objects"
+" in Geotrek databases that has been deleted in your Apidae selection. It "
+"will only delete objects that match with your class settings (category, "
+"types, portal, provider...)"
+msgstr ""
+
+#: ../../install/import.rst:173
+msgid ""
+"You can also use the class ``HebergementParser`` if you only import "
+"accomodations"
+msgstr ""
+
+#: ../../install/import.rst:174
+msgid ""
+"See https://github.com/GeotrekCE/Geotrek-"
+"admin/blob/master/geotrek/tourism/parsers.py for details about Parsers"
+msgstr ""
+
+#: ../../install/import.rst:176 ../../install/import.rst:226
+msgid ""
+"You can duplicate the class. Each class must have a different name. Don't"
+" forget the u character before strings if they contain non-ascii "
+"characters."
+msgstr ""
+
+#: ../../install/import.rst:179
+msgid "To apply changes, you may have to run ``sudo service geotrek restart``."
+msgstr ""
+
+#: ../../install/import.rst:183
+msgid "Import Treks from APIDAE"
+msgstr ""
+
+#: ../../install/import.rst:185
+msgid ""
+"A parser implementation is available to import Treks from APIDAE. Use it "
+"by defining a subclass of ```geotrek.trekking.parsers.ApidaeTrekParser`` "
+"in your ``var/conf/parsers.py`` configuration file as shown above."
+msgstr ""
+
+#: ../../install/import.rst:187
+msgid ""
+"You'll have to configure how to access your APIDAE data: ``api_key``, "
+"``project_id`` and ``selection_id`` (those are setting attributes from "
+"the APIDAE base parser)."
+msgstr ""
+
+#: ../../install/import.rst:189
+msgid ""
+"The ``practices_mapped_with_activities_ids`` and "
+"``practices_mapped_with_default_activities_ids`` attributes define "
+"default mapping with the trekking module data fixture. You may override "
+"this to match your own types of Trek Practice."
+msgstr ""
+
+#: ../../install/import.rst:193
+msgid "Import from LEI"
+msgstr ""
+
+#: ../../install/import.rst:195
+msgid ""
+"To import touristic content or touristic event from LEI , create (or "
+"update) ``/opt/geotrek-admin/var/conf/parsers.py`` file with the "
+"following content:"
+msgstr ""
+
+#: ../../install/import.rst:210
+msgid "Configure Marque Esprit Parc import"
+msgstr ""
+
+#: ../../install/import.rst:212
+msgid ""
+"To import touristic content from Esprit Parc national database, create "
+"(or update) ``/opt/geotrek-admin/var/conf/parsers.py`` file with the "
+"following content:"
+msgstr ""
+
+#: ../../install/import.rst:224
+msgid "``XXX`` by unique national park code (ex: PNE)"
+msgstr ""
+
+#: ../../install/import.rst:229
+msgid ""
+"In this case categories and types in Geotrek database have to be the same"
+" as in Esprit parc database. Otherwise missing categories and types will "
+"be created in Geotrek database."
+msgstr ""
+
+#: ../../install/import.rst:231
+msgid "Imported contents will be automatically published and approved."
+msgstr ""
+
+#: ../../install/import.rst:233
+msgid ""
+"If you use an url that filters a unique category, you can change its "
+"name. Example to get only Honey products and set the Geotrek category and"
+" type in which import them:"
+msgstr ""
+
+#: ../../install/import.rst:250
+msgid ""
+"URL to get Esprit parc types: "
+"`https://gestion.espritparcnational.com/ws/?f=getTypologieProduits`."
+msgstr ""
+
+#: ../../install/import.rst:254
+msgid "Sensitive areas import"
+msgstr ""
+
+#: ../../install/import.rst:256
+msgid ""
+"When sensitive areas module is enabled, Geotrek provides 3 parsers to "
+"import data:"
+msgstr ""
+
+#: ../../install/import.rst:258
+msgid ""
+"**Import sensitive areas from http://biodiv-sports.fr** "
+"(``geotrek.sensitivity.parsers.BiodivParser``). By default this parser "
+"imports all sensitive areas in configured spatial extent."
+msgstr ""
+
+#: ../../install/import.rst:260
+msgid ""
+"**Import species sensitive areas from a zipped shapefile**. Imported "
+"field names are: ``espece`` (required), ``contact`` and ``description``. "
+"Species with corresponding names have to be created manually before "
+"import."
+msgstr ""
+
+#: ../../install/import.rst:262
+msgid ""
+"**Import regulatory sensitive areas from a zipped shapefile**. Imported "
+"field names are: ``nom`` (required), ``contact``, ``descriptio``, "
+"``periode`` (month numbers separated with comas), ``pratiques`` "
+"(separated with comas), and ``url``. Practices with corresponding names "
+"have to be created manually before import."
+msgstr ""
+
+#: ../../install/import.rst:264
+msgid ""
+"You can start imports from \"Import\" menu or from command line. You can "
+"override them in your ``var/conf/parsers.py`` file."
+msgstr ""
+
+#: ../../install/import.rst:269
+msgid "Multiple imports"
+msgstr ""
+
+#: ../../install/import.rst:271
+msgid ""
+"When you need to import data for the same object found in 2 different "
+"parsers, you can to force the aggregation of both values in many to many "
+"relationship case. It can be interesting with portals for example."
+msgstr ""
+
+#: ../../install/import.rst:274
+msgid "Param for the aggregation : ``m2m_aggregate_fields``"
+msgstr ""
+
+#: ../../install/import.rst:276
+msgid "Here is an example with 2 parsers :"
+msgstr ""
+
+#: ../../install/import.rst:287
+msgid ""
+"Then, when you import the first parser ``Portal_1Parser``, you get "
+"multiple objects with ``portal_1`` as portal. If any object of the "
+"``Portal_1Parser`` is also in ``AggregateParser``, fields in "
+"``m2m_aggregate_fields`` will have their values not be replaced but "
+"aggregated. Then your object in both portals will have as portal: "
+"``portal_1, portal_2``"
+msgstr ""
+
+#: ../../install/import.rst:291
+msgid ""
+"Here in this example whenever you import the first parser "
+"``Portal_1Parser``, portals are replaced because ``m2m_aggregate_fields``"
+" is not filled. Then, be careful to import parsers in the right order or "
+"add the param ``m2m_aggregate_fields`` on all parsers."
+msgstr ""
+
+#: ../../install/import.rst:293
+msgid ""
+"If you need to cancel the aggregation of portals, remove param "
+"``m2m_aggregate_fields``."
+msgstr ""
+
+#: ../../install/import.rst:297
+msgid "Importing from multiple sources with deletion"
+msgstr ""
+
+#: ../../install/import.rst:299
+msgid ""
+"When importing data for the same model using two (or more) different "
+"sources, the ``provider`` field should be used to differentiate between "
+"sources, allowing to enable object deletion with ``delete = True`` "
+"without causing the last parser to delete objects created by preceding "
+"parsers."
+msgstr ""
+
+#: ../../install/import.rst:301
+msgid ""
+"In the following example, ``Provider_1Parser`` and ``Provider_2Parser`` "
+"will each import their objects, set the ``provider`` field on these "
+"objects, and only delete objects that disappeared from their respective "
+"source since last parsing."
+msgstr ""
+
+#: ../../install/import.rst:315
+msgid ""
+"It is recommended to use ``provider`` from the first import - Do not add "
+"a ``provider`` field to preexisting parsers that already imported "
+"objects, or you will have to manually set the same value for ``provider``"
+" on all objects already created by this parser."
+msgstr ""
+
+#: ../../install/import.rst:319
+msgid ""
+"If a parser does not have a ``provider`` value, it will not take "
+"providers into account, meaning that it could delete objects from "
+"preceding parsers even if these other parsers do have a ``provider`` "
+"themselves."
+msgstr ""
+
+#: ../../install/import.rst:322
+msgid ""
+"The following example would cause ``NoProviderParser`` to delete objects "
+"from ``Provider_2Parser`` and ``Provider_1Parser``."
+msgstr ""
+
+#: ../../install/import.rst:340
+msgid "Generic settings for your parser"
+msgstr ""
+
+#: ../../install/import.rst:342
+msgid "This settings may be overridden when you define a new parser:"
+msgstr ""
+
+#: ../../install/import.rst:344
+msgid "``label`` parser display name (default: ``None``)"
+msgstr ""
+
+#: ../../install/import.rst:345
+msgid "``model`` import content with this model (default: ``None``)"
+msgstr ""
+
+#: ../../install/import.rst:346
+msgid "``filename`` file imported if no url (default: ``None``)"
+msgstr ""
+
+#: ../../install/import.rst:347
+msgid "``url`` flow url imported from if no filename (default: ``None``)"
+msgstr ""
+
+#: ../../install/import.rst:348
+msgid "``simplify_tolerance`` (default: ``0``)  # meters"
+msgstr ""
+
+#: ../../install/import.rst:349
+msgid "``update_only`` don't create new contents (default: ``False``)"
+msgstr ""
+
+#: ../../install/import.rst:350
+msgid "``delete`` (default: ``False``)"
+msgstr ""
+
+#: ../../install/import.rst:351
+msgid ""
+"``duplicate_eid_allowed`` if True, allows different contents with same "
+"eid (default: ``False``)"
+msgstr ""
+
+#: ../../install/import.rst:352
+msgid ""
+"``fill_empty_translated_fields`` if True, fills empty translated fields "
+"with same value  (default: ``False``)"
+msgstr ""
+
+#: ../../install/import.rst:353
+msgid "``warn_on_missing_fields`` (default: ``False``)"
+msgstr ""
+
+#: ../../install/import.rst:354
+msgid "``warn_on_missing_objects`` (default: ``False``)"
+msgstr ""
+
+#: ../../install/import.rst:355
+msgid "``separator`` (default: ``'+'``)"
+msgstr ""
+
+#: ../../install/import.rst:356
+msgid "``eid`` field name for eid (default: ``None``)"
+msgstr ""
+
+#: ../../install/import.rst:357
+msgid "``provider`` (default: ``None``)"
+msgstr ""
+
+#: ../../install/import.rst:358
+msgid "``fields`` (default: ``None``)"
+msgstr ""
+
+#: ../../install/import.rst:359
+msgid "``m2m_fields``  (default: ``{}``)"
+msgstr ""
+
+#: ../../install/import.rst:360
+msgid "``constant_fields`` (default: ``{}``)"
+msgstr ""
+
+#: ../../install/import.rst:361
+msgid "``m2m_constant_fields`` (default: ``{}``)"
+msgstr ""
+
+#: ../../install/import.rst:362
+msgid "``m2m_aggregate_fields`` (default: ``[]``)"
+msgstr ""
+
+#: ../../install/import.rst:363
+msgid "``non_fields`` (default: ``{}``)"
+msgstr ""
+
+#: ../../install/import.rst:364
+msgid "``natural_keys`` (default: ``{}``)"
+msgstr ""
+
+#: ../../install/import.rst:365
+msgid "``field_options`` (default: ``{}``)"
+msgstr ""
+
+#: ../../install/import.rst:366
+msgid ""
+"``default_language`` use another default language for this parser "
+"(default: ``None``)"
+msgstr ""
+
+#: ../../install/import.rst:370
+msgid "Start import from command line"
+msgstr ""
+
+#: ../../install/import.rst:372
+msgid "Just run:"
+msgstr ""
+
+#: ../../install/import.rst:378
+msgid ""
+"Change ``HebergementParser`` to match one of the class names in "
+"``var/conf/parsers.py`` file. You can add ``-v2`` parameter to make the "
+"command more verbose (show progress). Thank to ``cron`` utility you can "
+"configure automatic imports."
+msgstr ""
+
+#: ../../install/import.rst:384
+msgid "Start import from Geotrek-admin UI"
+msgstr ""
+
+#: ../../install/import.rst:386
+msgid "Open the top right menu and clic on ``imports``."
+msgstr ""
+
+#: ../../install/import.rst:390
+msgid "Import data from a remote Geotrek instance"
+msgstr ""
+
+#: ../../install/import.rst:392
+msgid ""
+"Importing from a Geotrek instance works the same way as from SIT. A use-"
+"case for this is to aggregate data from several Geotrek-admin instance."
+msgstr ""
+
+#: ../../install/import.rst:396
+msgid ""
+"Importing data from a remote Geotrek instance does not work with dynamic "
+"segmentation, your instance where you import data must have dynamic "
+"segmentation disabled."
+msgstr ""
+
+#: ../../install/import.rst:400
+msgid ""
+"For example, to import treks from another instance, edit ``/opt/geotrek-"
+"admin/var/conf/parsers.py`` file with the following content:"
+msgstr ""
+
+#: ../../install/import.rst:419
+msgid "Then run in command line"
+msgstr ""
+
+#: ../../install/import.rst:425
+msgid "Treks are now imported into your own instance."
+msgstr ""
+
+#: ../../install/import.rst:430
+msgid "Import sensitive areas"
+msgstr ""
+
+#: ../../install/import.rst:433
+msgid "Import from https://biodiv-sports.fr"
+msgstr ""
+
+#: ../../install/import.rst:435
+msgid ""
+"It is possible to import automatically data from Biodiv'Sport. To do so, "
+"you just need to follow those steps:"
+msgstr ""
+
+#: ../../install/import.rst:437 ../../install/import.rst:487
+msgid "Click on the **user link** at top right, then on **Imports**,"
+msgstr ""
+
+#: ../../install/import.rst:438
+msgid ""
+"Under the section **Data to import from network**, select "
+"**Biodiv'Sports**"
+msgstr ""
+
+#: ../../install/import.rst:439 ../../install/import.rst:491
+msgid "Click on **Import**,"
+msgstr ""
+
+#: ../../install/import.rst:440 ../../install/import.rst:492
+msgid "Wait a few seconds,"
+msgstr ""
+
+#: ../../install/import.rst:441
+msgid "The import progress is displayed on the right"
+msgstr ""
+
+#: ../../install/import.rst:443
+msgid ""
+"When the import is done, you can check the Sensitivity module in Geotrek "
+"and you'll find data inside."
+msgstr ""
+
+#: ../../install/import.rst:445
+msgid "It is also possible to import sensitive areas through command line:"
+msgstr ""
+
+#: ../../install/import.rst:451 ../../install/import.rst:464
+#: ../../install/import.rst:473 ../../install/import.rst:515
+msgid "Warning"
+msgstr ""
+
+#: ../../install/import.rst:452
+msgid ""
+"If you don't see any data in your area, it means that Biodiv'Sports does "
+"not contains data for your territory. Then it is widely recommended to "
+"add your data directly into Biodiv'Sports, as it will be available for "
+"multiple users, and then retrieve them into your Geotrek instance. To "
+"import data in Biodiv'Sports go visit its website: https://biodiv-"
+"sports.fr"
+msgstr ""
+
+#: ../../install/import.rst:459
+msgid "Import from shapefile"
+msgstr ""
+
+#: ../../install/import.rst:461
+msgid ""
+"Imported data must be in standard ESRI shapefile format. The various "
+"Shapefile files (``.shp``, ``.shx``, ``.dbf``, ``.prj``, *etc*.) must be "
+"assembled in a zip archive."
+msgstr ""
+
+#: ../../install/import.rst:465
+msgid ""
+"Please note! The description field name ``descriptio`` does not include "
+"the final ``n``, as field names are limited to 10 characters in "
+"shapefiles."
+msgstr ""
+
+#: ../../install/import.rst:467
+msgid "Attribute data for sensitive areas species"
+msgstr ""
+
+#: ../../install/import.rst:469
+msgid ""
+"``espece``: Species name. Mandatory. A species with this name must first "
+"have been created in Biodiv'sports. Otherwise, import of the line will "
+"fail."
+msgstr ""
+
+#: ../../install/import.rst:470
+msgid "``contact``: Contact in text or HTML format. *Optional*."
+msgstr ""
+
+#: ../../install/import.rst:471
+msgid "``descriptio``: Description in text or HTML format. *Optional*."
+msgstr ""
+
+#: ../../install/import.rst:474
+msgid ""
+"Species name must strictly respect the species name string (accentuation,"
+" case and punctuation)."
+msgstr ""
+
+#: ../../install/import.rst:476
+msgid "Attribute data for regulatory sensitive areas:"
+msgstr ""
+
+#: ../../install/import.rst:478
+msgid "``name`` : Area name"
+msgstr ""
+
+#: ../../install/import.rst:479
+msgid "``contact`` : Contact in text or HTML format. *Optional*."
+msgstr ""
+
+#: ../../install/import.rst:480
+msgid "``descriptio`` : Description in text or HTML format. *Optional*."
+msgstr ""
+
+#: ../../install/import.rst:481
+msgid ""
+"``periode``: Numbers of the months in which the area is occupied, **comma"
+" separated** and **without spaces** (e.g. ``6,7,8`` for June, July and "
+"August)."
+msgstr ""
+
+#: ../../install/import.rst:482
+msgid ""
+"``practices``: Names of practices, separated by commas, without spaces "
+"(e.g. ``Terrestre,Aerien,Vertical``), see :envvar:`Sport practices`. "
+"Otherwise, the line import will fail."
+msgstr ""
+
+#: ../../install/import.rst:483
+msgid "``url`` : Record url. *Optional*."
+msgstr ""
+
+#: ../../install/import.rst:485
+msgid "Import from web interface"
+msgstr ""
+
+#: ../../install/import.rst:488
+msgid ""
+"Select the type of data to be imported (**species** or **regulatory "
+"area**),"
+msgstr ""
+
+#: ../../install/import.rst:489
+msgid "Select the *.zip* file to be imported,"
+msgstr ""
+
+#: ../../install/import.rst:490
+msgid "Select the correct encoding (``UTF8`` or ``Windows-1252``)"
+msgstr ""
+
+#: ../../install/import.rst:493
+msgid "The import progress is displayed on the right,"
+msgstr ""
+
+#: ../../install/import.rst:494
+msgid "Click on **Display report** to see any unimported lines."
+msgstr ""
+
+#: ../../install/import.rst:500
+msgid "Import shapefile in user interface"
+msgstr ""
+
+#: ../../install/import.rst:502
+msgid "On command line, run:"
+msgstr ""
+
+#: ../../install/import.rst:508
+msgid "or:"
+msgstr ""
+
+#: ../../install/import.rst:516
+msgid "Relaunching an import **with the same file** will create duplicates."
+msgstr ""
+
+#: ../../install/import.rst:520
+msgid "Import other datas from a file"
+msgstr ""
+
+#: ../../install/import.rst:522
+msgid ""
+"You can add parsers in your custom `parsers.py` file (``/opt/geotrek-"
+"admin/var/conf/parsers.py``) which will allow you to import data from "
+"files directly in your admin (superusers only). For example, some parsers"
+" are not available by default but you can use them adding some lines in "
+"your parsers file :"
+msgstr ""
+
+#: ../../install/import.rst:533
+msgid ""
+"You can also use some of Geotrek commands to import data from a vector "
+"file handled by GDAL (https://gdal.org/drivers/vector/index.htm) (e.g.: "
+"ESRI Shapefile, GeoJSON, GeoPackage etc.)"
+msgstr ""
+
+#: ../../install/import.rst:535
+msgid ""
+"Possible data are e.g.: POI, infrastructures, signages, cities, "
+"districts, restricted areas, paths."
+msgstr ""
+
+#: ../../install/import.rst:537
+msgid ""
+"You must use these commands to import spatial data because of the dynamic"
+" segmentation, which will not be computed if you enter the data manually."
+msgstr ""
+
+#: ../../install/import.rst:539
+msgid "Here are the Geotrek commands available to import data from file:"
+msgstr ""
+
+#: ../../install/import.rst:541
+msgid "``loaddem``"
+msgstr ""
+
+#: ../../install/import.rst:542
+msgid "``loadpoi``"
+msgstr ""
+
+#: ../../install/import.rst:543
+msgid "``loadinfrastructure``"
+msgstr ""
+
+#: ../../install/import.rst:544
+msgid "``loadsignage``"
+msgstr ""
+
+#: ../../install/import.rst:545
+msgid "``loadcities``"
+msgstr ""
+
+#: ../../install/import.rst:546
+msgid "``loaddistricts``"
+msgstr ""
+
+#: ../../install/import.rst:547
+msgid "``loadrestrictedareas``"
+msgstr ""
+
+#: ../../install/import.rst:549
+msgid ""
+"Usually, these commands come with ability to match file attributes to "
+"model fields."
+msgstr ""
+
+#: ../../install/import.rst:551
+msgid "To get help about a command:"
+msgstr ""
+
+#: ../../install/import.rst:561
+msgid "Import DEM (altimetry)"
+msgstr ""
+
+#: ../../install/import.rst:563
+msgid "``sudo geotrek help loaddem``"
+msgstr ""
+
+#: ../../install/import.rst:599 ../../install/import.rst:680
+#: ../../install/import.rst:850 ../../install/import.rst:989
+#: ../../install/import.rst:1067 ../../install/import.rst:1154
+#: ../../install/import.rst:1229
+msgid "**Import command example :**"
+msgstr ""
+
+#: ../../install/import.rst:611
+msgid "Import POIs"
+msgstr ""
+
+#: ../../install/import.rst:613
+msgid "``sudo geotrek help loadpoi``"
+msgstr ""
+
+#: ../../install/import.rst:669
+msgid "**Optional fields** : Description, SRID, Encoding"
+msgstr ""
+
+#: ../../install/import.rst:670
+msgid "**Required fields** : Name, Type"
+msgstr ""
+
+#: ../../install/import.rst:671 ../../install/import.rst:801
+#: ../../install/import.rst:980
+msgid "**Geometric type** : Point"
+msgstr ""
+
+#: ../../install/import.rst:673
+msgid "**Template** : :download:`poi.geojson <../files/import/poi.geojson>`"
+msgstr ""
+
+#: ../../install/import.rst:675 ../../install/import.rst:805
+msgid "The SRID must be 4326"
+msgstr ""
+
+#: ../../install/import.rst:677
+msgid "Imported POIs are unpublished by default"
+msgstr ""
+
+#: ../../install/import.rst:694
+msgid "Import Infrastructure"
+msgstr ""
+
+#: ../../install/import.rst:696
+msgid "``sudo geotrek help loadinfrastructure``"
+msgstr ""
+
+#: ../../install/import.rst:799
+msgid ""
+"**Optional fields** : Structure, Description, Status, Year, External ID, "
+"SRID, Encoding"
+msgstr ""
+
+#: ../../install/import.rst:800
+msgid "**Required fields** : Name, Type, Category"
+msgstr ""
+
+#: ../../install/import.rst:803
+msgid ""
+"**Template** : :download:`infrastructure.geojson "
+"<../files/import/infrastructure.geojson>`"
+msgstr ""
+
+#: ../../install/import.rst:807
+msgid "Imported infrastructures are unpublished by default"
+msgstr ""
+
+#: ../../install/import.rst:809
+msgid ""
+"The command will select or create InfrastructureType values based on the "
+"`type-field` argument, taking the default value \"A\" for the category"
+msgstr ""
+
+#: ../../install/import.rst:811
+msgid "**Required fields**"
+msgstr ""
+
+#: ../../install/import.rst:813
+msgid ""
+"The following fields are mandatory to create an Infrastructure object: "
+"`name`, `type` and `category`. For each of those fields either an import "
+"field and/or a default value MUST be provided. If the command is unable "
+"to determine values for those fields for a given layer, the layer is "
+"skipped with an error message."
+msgstr ""
+
+#: ../../install/import.rst:815
+msgid "**Default values**"
+msgstr ""
+
+#: ../../install/import.rst:817
+msgid ""
+"When a default value is provided without a fieldname to import the "
+"default value is set for all Infrastructure objects."
+msgstr ""
+
+#: ../../install/import.rst:818
+msgid ""
+"When a default value is provided in addition to a fieldname to import it "
+"is used as a fallback for entries without the specified import field."
+msgstr ""
+
+#: ../../install/import.rst:820
+msgid "**Selection and addition of parameterized values**"
+msgstr ""
+
+#: ../../install/import.rst:822
+msgid ""
+"Infrastructure objects have several values from Geotrek's parameterized "
+"values sets :"
+msgstr ""
+
+#: ../../install/import.rst:824
+msgid ""
+"`type` from InfrastructureType values (and `category` which is implied by"
+" the `type` value),"
+msgstr ""
+
+#: ../../install/import.rst:825
+msgid "`condition` from InfrastructureCondition values."
+msgstr ""
+
+#: ../../install/import.rst:827
+msgid ""
+"New parameterized values are created and added to Geotrek Admin if "
+"necessary. The command checks if the imported `type` value already exists"
+" by looking for an InfrastructureType with the right `type` + `category`."
+msgstr ""
+
+#: ../../install/import.rst:833
+msgid "**Selected or added InfrastructureType value :**"
+msgstr ""
+
+#: ../../install/import.rst:835
+msgid "label <- value of `type` import field"
+msgstr ""
+
+#: ../../install/import.rst:836
+msgid "type <- value of `cat` import field"
+msgstr ""
+
+#: ../../install/import.rst:837 ../../install/import.rst:848
+msgid ""
+"optionally if `--use-structure`: structure <- the structure value (import"
+" field or default)"
+msgstr ""
+
+#: ../../install/import.rst:839
+msgid "For InfrastructureCondition the check uses the `condition` argument."
+msgstr ""
+
+#: ../../install/import.rst:845
+msgid "**Selected or added InfrastructureCondition value :**"
+msgstr ""
+
+#: ../../install/import.rst:847
+msgid "label <- value of `cond` field"
+msgstr ""
+
+#: ../../install/import.rst:869
+msgid "Import Signage"
+msgstr ""
+
+#: ../../install/import.rst:872
+msgid "``sudo geotrek help loadsignage``"
+msgstr ""
+
+#: ../../install/import.rst:982
+msgid ""
+"**Template** : :download:`signage.geojson "
+"<../files/import/signage.geojson>`"
+msgstr ""
+
+#: ../../install/import.rst:986
+msgid "Imported signage are unpublished by default"
+msgstr ""
+
+#: ../../install/import.rst:1008
+msgid "Import Cities"
+msgstr ""
+
+#: ../../install/import.rst:1010
+msgid "``sudo geotrek help loadcities``"
+msgstr ""
+
+#: ../../install/import.rst:1056
+msgid "**Optional fields** : Code, SRID, Encoding"
+msgstr ""
+
+#: ../../install/import.rst:1057 ../../install/import.rst:1144
+msgid "**Required fields** : Name"
+msgstr ""
+
+#: ../../install/import.rst:1058 ../../install/import.rst:1145
+#: ../../install/import.rst:1219
+msgid "**Geometric type** : Polygon"
+msgstr ""
+
+#: ../../install/import.rst:1060
+msgid "**Template** : :download:`cities.geojson <../files/import/cities.geojson>`"
+msgstr ""
+
+#: ../../install/import.rst:1064
+msgid "Imported cities are unpublished by default"
+msgstr ""
+
+#: ../../install/import.rst:1079
+msgid "Import Districts"
+msgstr ""
+
+#: ../../install/import.rst:1081
+msgid "``sudo geotrek help loaddistricts``"
+msgstr ""
+
+#: ../../install/import.rst:1143 ../../install/import.rst:1217
+msgid "**Optional fields** : SRID, Encoding"
+msgstr ""
+
+#: ../../install/import.rst:1147
+msgid ""
+"**Template** : :download:`districts.geojson "
+"<../files/import/districts.geojson>`"
+msgstr ""
+
+#: ../../install/import.rst:1151
+msgid "Imported districts are unpublished by default"
+msgstr ""
+
+#: ../../install/import.rst:1165
+msgid "Import Restricted areas"
+msgstr ""
+
+#: ../../install/import.rst:1167
+msgid "``sudo geotrek help loadrestrictedareas``"
+msgstr ""
+
+#: ../../install/import.rst:1218
+msgid "**Required fields** : Name, Type zone"
+msgstr ""
+
+#: ../../install/import.rst:1221
+msgid ""
+"**Template** : :download:`restrictedareas.geojson "
+"<../files/import/restrictedareas.geojson>`"
+msgstr ""
+
+#: ../../install/import.rst:1225
+msgid "Imported restricted areas are unpublished by default"
+msgstr ""
+
+#: ../../install/import.rst:1227
+msgid "Only objects within the project bounding box can be imported"
+msgstr ""
+
+#: ../../install/import.rst:1241
+msgid "Exploitation commands"
+msgstr ""
+
+#: ../../install/import.rst:1244
+msgid "Delete attachment from disk"
+msgstr ""
+
+#: ../../install/import.rst:1246
+msgid ""
+"When an attachment (eg. pictures) is removed, its file is not "
+"automatically removed from disk. You have to run ``sudo geotrek "
+"clean_attachments`` manually or in a cron to remove old files. After "
+"that, you should run ``sudo geotrek thumbnail_cleanup`` to remove old "
+"thumbnails."
+msgstr ""
+
+#: ../../install/import.rst:1252
+msgid "Remove duplicate paths"
+msgstr ""
+
+#: ../../install/import.rst:1254
+msgid ""
+"Duplicate paths can appear while adding paths with commands or directly "
+"in the application. Duplicate paths can cause some problems of routing "
+"for topologies, it can generate corrupted topologies (that become "
+"MultiLineStrings instead of LineStrings)."
+msgstr ""
+
+#: ../../install/import.rst:1257
+msgid "You have to run ``sudo geotrek remove_duplicate_paths``"
+msgstr ""
+
+#: ../../install/import.rst:1259
+msgid ""
+"During the process of the command, every topology on a duplicate path "
+"will be set on the original path, and the duplicate path will be deleted."
+msgstr ""
+
+#: ../../install/import.rst:1263
+msgid "Merge segmented paths"
+msgstr ""
+
+#: ../../install/import.rst:1265
+msgid ""
+"A path network is most optimized when there is only one path between "
+"intersections. If the path database includes many fragmented paths, they "
+"could be merged to improve performances."
+msgstr ""
+
+#: ../../install/import.rst:1268
+msgid "You can run ``sudo geotrek merge_segmented_paths``."
+msgstr ""
+
+#: ../../install/import.rst:1271
+msgid ""
+"This command can take several hours to run. During the process, every "
+"topology on a path will be set on the path it is merged with, but it "
+"would still be more efficient (and safer) to run it before creating "
+"topologies."
+msgstr ""
+
+#: ../../install/import.rst:1273
+msgid "Before : ::"
+msgstr ""
+
+#: ../../install/import.rst:1290
+msgid "After : ::"
+msgstr ""
+
+#: ../../install/import.rst:1309
+msgid "Unset structure on categories"
+msgstr ""
+
+#: ../../install/import.rst:1311
+msgid ""
+"Use this command if you wish to undo linking categories to structures for"
+" some models."
+msgstr ""
+
+#: ../../install/import.rst:1314
+msgid "You have to run ``sudo geotrek unset_structure``"
+msgstr ""
+
+#: ../../install/import.rst:1343
+msgid ""
+"You can't chose for each choice which set of category you want to unset "
+"structures, it will happen for all categories"
+msgstr ""
+
+#: ../../install/import.rst:1346
+msgid ""
+"Firstly, if a category is linked to a structure, it creates the same "
+"category but with no structure associated. Secondly, every element with "
+"this old category gets assigned to this new category. Finally all old "
+"categories are removed."
+msgstr ""
+
+#: ../../install/import.rst:1353
+msgid "Reorder topologies"
+msgstr ""
+
+#: ../../install/import.rst:1355
+msgid ""
+"All topologies have information about which path they go through on and "
+"in which order. Actually, when a path is split in 2 by another path, a "
+"new path is added to the database. We need to add information for all "
+"topologies that need to go through this new path. This is badly managed "
+"at the moment, especially for the order of passage of the paths. ``sudo "
+"geotrek reorder_topologies``"
+msgstr ""
+
+#: ../../install/import.rst:1361
+msgid ""
+"It removes a lot of useless information which can accelerate the process "
+"of editing topologies afterward."
+msgstr ""
+
+#: ../../install/import.rst:1364
+msgid ""
+"During the process of this command, it tries to find a good order of "
+"passage on the paths which creates only one Linestring from start to end."
+" It stays as close as possible to the corrupted order. This command uses "
+"the same algorithm to generate one Linestring when the order is not well "
+"managed during topologies' display."
+msgstr ""
+
+#: ../../install/import.rst:1369
+msgid ""
+"It can happens that this algorithm can't find any solution and will "
+"generate a MultiLineString. This will be displayed at the end of the "
+"reorder"
+msgstr ""
+
+#: ../../install/import.rst:1375
+msgid "Automatic commands"
+msgstr ""
+
+#: ../../install/import.rst:1378
+msgid ""
+"You can set up automatic commands by creating a `cron` file under "
+"``/etc/cron.d/geotrek_command`` that contains:"
+msgstr ""
+
+#: ../../install/import.rst:1384
+msgid "example :"
+msgstr ""
+
+#: ../../install/import.rst:1391
+msgid "This example will automatically reorder topologies at 4 am every day."
+msgstr ""
+
+#~ msgid ""
+#~ "To import a shapefile containing your"
+#~ " paths, use the command ``loadpaths``::"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Possible data are e.g.: POI, "
+#~ "infrastructures, signages, cities, districts, "
+#~ "restricted areas, dives, paths."
+#~ msgstr ""
+
+#~ msgid "``loaddive``"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Load a layer with point geometries "
+#~ "and import entities as infrastructures "
+#~ "objects."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "expected formats for the `point_layer` "
+#~ "file are shapefile or geojson (other "
+#~ "geodjango supported-formats may work but"
+#~ " untested),"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "the command updates existing Infrastructure"
+#~ " objects based on the `eid` field "
+#~ "(external ID),"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "if the Infrastructure object does not"
+#~ " exist (or if `eid` is not "
+#~ "specified) it is created."
+#~ msgstr ""
+
+#~ msgid "**Usage example**"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "The command expects entries from "
+#~ "`point_layer` file to have the the "
+#~ "following fields: `shpname`, `shptype`, "
+#~ "`shpdesc`, `shpyear` and `shpid`."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "A default value is provided for "
+#~ "the condition. It will be set for"
+#~ " all imported infrastructures."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "A default value is provided for "
+#~ "the year in addition to the field"
+#~ " mapping. In case the shapefile entry"
+#~ " does not have a year attribute "
+#~ "the command will take the default "
+#~ "value instead."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "The command will select or create "
+#~ "InfrastructureType values based on the "
+#~ "`type` argument, taking the default "
+#~ "value \"A\" for the category."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Infrastructure objects have several values "
+#~ "from Geotrek's parameterized values sets:"
+#~ msgstr ""
+
+#~ msgid "Selected or added InfrastructureType value:"
+#~ msgstr ""
+
+#~ msgid "Selected or added InfrastructureCondition value:"
+#~ msgstr ""
+
+#~ msgid "Import Dive"
+#~ msgstr ""
+
+#~ msgid "``sudo geotrek help loaddive``"
+#~ msgstr ""
+

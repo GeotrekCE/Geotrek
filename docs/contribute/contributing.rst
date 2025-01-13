@@ -39,7 +39,7 @@ Check TODO in the source tree:
 Pull requests
 -------------
 
-Before creating a pull request, ensure you follow thoses rules :
+Before creating a pull request, ensure you follow those rules :
 
 * Follow the guidelines of this page
 * Self-review your code

@@ -1,0 +1,313 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2013-2024, Makina Corpus
+# This file is distributed under the same license as the Geotrek package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Geotrek \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-13 11:25+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr\n"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: ../../about/geotrek.rst:3
+msgid "Geotrek"
+msgstr ""
+
+#: ../../about/geotrek.rst:12
+msgid "Qu'est ce que Geotrek ?"
+msgstr ""
+
+#: ../../about/geotrek.rst:14
+msgid ""
+"Geotrek est un ensemble d'outils web dédiés à la **gestion et la "
+"valorisation** des activités de randonnées, de sports de pleine nature et"
+" des informations touristiques."
+msgstr ""
+
+#: ../../about/geotrek.rst:16
+msgid ""
+"Ils sont open source et peuvent ainsi être déployés librement par les "
+"structures et territoires qui le souhaitent, mais aussi les faire "
+"évoluer, ou bénéficier des évolutions réalisées par d'autres structures "
+"sans avoir à les re-financer."
+msgstr ""
+
+#: ../../about/geotrek.rst:18
+msgid ""
+"Ces outils permettent la gestion de **nombreuses pratiques sportives** "
+"liées à des linéaires (randonnée pédestre, à vélo, en VTT, à cheval, avec"
+" poussette, etc.) mais également à des **contenus outdoor** non linéaires"
+" (escalade, vol libre, sports d’eau vive, etc.)."
+msgstr ""
+
+#: ../../about/geotrek.rst:20
+msgid ""
+"C’est l’**application de référence** des parcs naturels, mais aussi de "
+"nombreuses structures publiques (conseils départementaux, communautés de "
+"communes, comités régionaux du tourisme, offices du tourisme, etc.)."
+msgstr ""
+
+#: ../../about/geotrek.rst:22
+msgid "**Utiliser Geotrek vous permettra** :"
+msgstr ""
+
+#: ../../about/geotrek.rst:24
+msgid "d’intégrer une **communauté de gestionnaires de randonnées très active**"
+msgstr ""
+
+#: ../../about/geotrek.rst:25
+msgid ""
+"de **bénéficier de l’ensemble des évolutions** réalisées par les autres "
+"utilisateurs. Le projet est vivant et les outils s’améliorent sans cesse"
+msgstr ""
+
+#: ../../about/geotrek.rst:26
+msgid ""
+"de disposer d’une **offre complète** qui pourra également être utilisée "
+"par d’autres acteurs du territoire"
+msgstr ""
+
+#: ../../about/geotrek.rst:27
+msgid ""
+"de facilement pouvoir **accéder à d’autres fonctionnalités** quand le "
+"besoin s’en fera ressentir : site web, impression de fiches de parcours, "
+"gestion de la signalétique, organisation des travaux…"
+msgstr ""
+
+#: ../../about/geotrek.rst:28
+msgid ""
+"d’exporter facilement vos contenus valorisables (itinéraires, POIs, "
+"contenus touristiques …) vers d’autres **plateformes touristiques "
+"nationales** (IGNrando', Visorando, Outdooractive, Apidae, Cirkwi, etc.)"
+msgstr ""
+
+#: ../../about/geotrek.rst:31
+msgid "Les quatre briques"
+msgstr ""
+
+#: ../../about/geotrek.rst:33
+msgid ""
+"La suite logicielle Geotrek dispose de quatre briques à la fois distincts"
+" et complémentaires :"
+msgstr ""
+
+#: ../../about/geotrek.rst:35
+msgid ""
+":ref:`Geotrek-admin <qu-est-ce-que-geotrek>`: outil de gestion et de "
+"saisie de l’ensemble des informations, intégrant les données des Systèmes"
+" d’Informations Touristiques (SIT) et pouvant être connecté à votre SIG "
+"ou à des systèmes d’information transport"
+msgstr ""
+
+#: ../../about/geotrek.rst:36
+msgid ""
+"`Geotrek-rando <https://github.com/GeotrekCE/Geotrek-"
+"rando-v3/blob/main/docs/presentation-fr.md>`_ : site web, reprenant les "
+"informations saisies dans Geotrek-admin, à destination des internautes "
+"grand public"
+msgstr ""
+
+#: ../../about/geotrek.rst:37
+msgid ""
+"`Geotrek-mobile <https://github.com/GeotrekCE/Geotrek-mobile#geotrek-"
+"mobile>`_ : application mobile fonctionnant sous Android et iOS, "
+"reprenant des informations saisies dans Geotrek-admin et optimisées pour "
+"l’usage mobile (volume, impact sur la batterie, hors-ligne, "
+"géolocalisation…)"
+msgstr ""
+
+#: ../../about/geotrek.rst:38
+msgid ""
+"`Geotrek-rando-widget <https://geotrek-rando-widget.readthedocs.io/>`_ : "
+"nouveau composant web permettant de valoriser une offre de contenus "
+"touristiques et de randonnées auprès des usagers du territoire, en "
+"l'intégrant dans un site internet existant"
+msgstr ""
+
+#: ../../about/geotrek.rst:40
+msgid "Note"
+msgstr ""
+
+#: ../../about/geotrek.rst:41
+msgid ""
+"Cette documentation ne traite que de **Geotrek-Admin**, chaque brique "
+"ayant sa propre documentation."
+msgstr ""
+
+#: ../../about/geotrek.rst:44
+msgid "Utilisateurs"
+msgstr ""
+
+#: ../../about/geotrek.rst:46
+msgid ""
+"L’application Geotrek, **destinée à deux types de public**, est une "
+"solution web qui apporte :"
+msgstr ""
+
+#: ../../about/geotrek.rst:48
+msgid ""
+"des fonctionnalités de gestion des informations (itinéraires, sites "
+"outdoor, points d’intérêts, description, interprétation, médias…) et de "
+"gestion des infrastructures (signalétique, aménagements, travaux, "
+"réglementation…) pour les utilisateurs gérant un territoire (**Geotrek-"
+"admin**)"
+msgstr ""
+
+#: ../../about/geotrek.rst:49
+msgid ""
+"des fonctionnalités simples et ludiques de recherche et de consultation "
+"d’itinéraires pour les internautes et les mobinautes (**Geotrek-rando "
+"V3**, **Geotrek-mobile** et **Geotrek-rando-widget**)."
+msgstr ""
+
+#: ../../about/geotrek.rst:51
+msgid ""
+"Pour retrouver plus d'informations sur la suite applicative Geotrek, "
+"rendez-vous sur `geotrek.fr <https://geotrek.fr>`_."
+msgstr ""
+
+#: ../../about/geotrek.rst:54
+msgid "A qui appartient Geotrek ?"
+msgstr ""
+
+#: ../../about/geotrek.rst:56
+msgid ""
+"Geotrek est un produit libre et open source avec une importante "
+"communauté d'utilisateurs."
+msgstr ""
+
+#: ../../about/geotrek.rst:58
+msgid ""
+"Retrouvez toutes les infos sur la genèse du produit, son modèle "
+"communautaire ainsi que les principales structures contributrices sur le "
+"`site geotrek.fr <https://geotrek.fr/apropos.html>`_."
+msgstr ""
+
+#: ../../about/geotrek.rst:61
+msgid "Comment rejoindre la communauté ?"
+msgstr ""
+
+#: ../../about/geotrek.rst:63
+msgid ""
+"Rejoignez la `mailing list <https://groups.google.com/forum/#!forum"
+"/geotrek-fr>`_! Envoyez un mail à ``geotrek-"
+"fr+subscribe@googlegroups.com`` et vous recevrez automatiquement une "
+"invitation."
+msgstr ""
+
+#: ../../about/geotrek.rst:64
+msgid ""
+"`Ouvrir un ticket <https://github.com/GeotrekCE/Geotrek-"
+"admin/issues/new>`_ lorsqu'un bug est détecté"
+msgstr ""
+
+#: ../../about/geotrek.rst:65
+msgid ""
+"`Ouvrir un ticket <https://github.com/GeotrekCE/Geotrek-"
+"admin/issues/new>`_ pour proposer une suggestion ou une nouvelle "
+"fonctionnalité"
+msgstr ""
+
+#: ../../about/geotrek.rst:66
+msgid ""
+"Rejoindre le `canal de discussion Matrix "
+"<https://matrix.to/#/#geotrek:matrix.org>`_ afin d'échanger directement "
+"avec des membres de la communauté Geotrek"
+msgstr ""
+
+#: ../../about/geotrek.rst:69
+msgid "Composants libres"
+msgstr ""
+
+#: ../../about/geotrek.rst:71
+msgid "L’application Geotrek utilise les technologies open source suivantes :"
+msgstr ""
+
+#: ../../about/geotrek.rst:74
+msgid "Geotrek-admin"
+msgstr ""
+
+#: ../../about/geotrek.rst:76
+msgid ""
+"**Python / Django**, l'épine dorsale de l'application qui prend en charge"
+" les principales fonctionnalités comme le module de configuration, "
+"l'exploitation de la base de données, la gestion des utilisateurs et de "
+"leurs droits ou l'intégration avec les bibliothèques cartographiques. La "
+"richesse de son écosystème permet de concevoir des applications aux "
+"possibilités infinies, en favorisant la production d'applications "
+"sécurisées, solides (tests automatiques) et robustes (Python)."
+msgstr ""
+
+#: ../../about/geotrek.rst:77
+msgid ""
+"**PostgreSQL / PostGIS** pour la base de données. La totalité des données"
+" de l'application est stockée dans une instance PostgreSQL avec "
+"l'extension spatiale PostGIS :"
+msgstr ""
+
+#: ../../about/geotrek.rst:79
+msgid "attributs, comptes utilisateurs…,"
+msgstr ""
+
+#: ../../about/geotrek.rst:80
+msgid "géométries,"
+msgstr ""
+
+#: ../../about/geotrek.rst:81
+msgid "raster (Modèle Numérique Terrain)."
+msgstr ""
+
+#: ../../about/geotrek.rst:84
+msgid "Geotrek-rando"
+msgstr ""
+
+#: ../../about/geotrek.rst:86
+msgid "**Next.js** (*React, Typescript*),"
+msgstr ""
+
+#: ../../about/geotrek.rst:87 ../../about/geotrek.rst:93
+msgid "**Leaflet**, utilisé comme librairie cartographique"
+msgstr ""
+
+#: ../../about/geotrek.rst:90
+msgid "Geotrek-rando-widget"
+msgstr ""
+
+#: ../../about/geotrek.rst:92
+msgid ""
+"**Stencil**, framework permettant de créer des composants web "
+"personnalisables et légers."
+msgstr ""
+
+#: ../../about/geotrek.rst:96
+msgid "Geotrek-mobile"
+msgstr ""
+
+#: ../../about/geotrek.rst:98
+msgid "**Angular**, framework utilisé pour l'application Geotrek-mobile."
+msgstr ""
+
+#: ../../about/geotrek.rst:99
+msgid "**Ionic**, composant UI"
+msgstr ""
+
+#: ../../about/geotrek.rst:100
+msgid ""
+"**Capacitor**, boîte à outils nécessaires à la création d'applications "
+"mobiles"
+msgstr ""
+
+#: ../../about/geotrek.rst:101
+msgid "**MapLibre**, utilisé comme librairie cartographique"
+msgstr ""
+

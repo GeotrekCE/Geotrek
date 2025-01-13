@@ -11,14 +11,14 @@ Loading data
 Prerequisites for your data
 ---------------------------
 
-Layers
-~~~~~~
+External Layers
+~~~~~~~~~~~~~~~
 
 * WMTS protocol
 * WebMercator Projection
 
-Core
-~~~~
+Paths
+~~~~~
 
 * Only LineString geometries
 * Simple geometries
@@ -26,19 +26,20 @@ Core
 
 If possible:
 
-* Connex graph
+* Clean topologies
 * Name column
 * Data source
 
-Formats: Shapefile or pure SQL dump (CREATE TABLE + INSERT)
+Formats: Geographic file or pure SQL dump (CREATE TABLE + INSERT)
 
 
-Land
-~~~~
+Zoning
+~~~~~~
 
-* Cities polygons (Shapefile or SQL, simple and valid Multi-Polygons)
-* Districts (Shapefile ou SQL, simple and valid Multi-Polygons)
-* Restricted Areas (Shapefile ou SQL, simple and valid Multi-Polygons)
+* Cities: Geographic file or SQL, simple and valid MultiPolygon
+* Districts: Geographic file ou SQL, simple and valid MultiPolygon
+* Restricted Areas: Geographic file ou SQL, simple and valid MultiPolygon
+
 
 Extras
 ~~~~~~
@@ -47,14 +48,14 @@ Extras
 * Structures list (and default one)
 
 
-Load MNT raster
+Load DEM raster
 ---------------
 
 In `QGIS <http://docs.qgis.org/latest/en/docs/training_manual/processing/cutting_merging.html>`_,
 you can visualize your DEM, or merge several tiles together (in *Raster* > *Misc* > *Merge*).
 
 Generate a GeoTIFF, and upload both files (``.tif`` + ``.tfw``) on the server.
-And use the Geotrek-admin command to load it into PostGIS :
+And use the Geotrek-admin command to load it into PostGIS:
 
 ::
 
@@ -67,11 +68,11 @@ And use the Geotrek-admin command to load it into PostGIS :
     therefore supports all GDAL raster input formats. You can list these formats
     with the command ``raster2pgsql -G``.
 
-.. note::
+.. warning::
     
     The elevation data of DEM must be integer values. If the elevation data are floating
     numbers, you can convert them in integer values with the Raster calculator processing
-    of `SAGA in QGis <https://docs.qgis.org/3.28/en/docs/user_manual/processing/3rdParty.html#saga>`_
+    of `SAGA in QGis <https://docs.qgis.org/latest/en/docs/user_manual/processing/3rdParty.html#saga>`_
     (Processing > Toolbox > SAGA > Raster calculus > Raster calculator) with formula parameter set to ``int(a)``.
 
 .. note::
@@ -81,4 +82,4 @@ And use the Geotrek-admin command to load it into PostGIS :
 
 .. note::
 
-   If you want to  update the altimetry of the topologies you need to use the option : --update-altimery
+   If you want to update the altimetry of the topologies you need to use the option : --update-altimery

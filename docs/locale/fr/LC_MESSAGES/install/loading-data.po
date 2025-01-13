@@ -1,0 +1,197 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2013-2024, Makina Corpus
+# This file is distributed under the same license as the Geotrek package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version:  Geotrek\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-13 11:25+0000\n"
+"PO-Revision-Date: 2024-03-14 15:16+0100\n"
+"Last-Translator: Jean-Etienne Castagnede <jecastagnede@vivaldi.net>\n"
+"Language: fr\n"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: ../../install/loading-data.rst:5
+msgid "Loading data"
+msgstr "Chargement des données"
+
+#: ../../install/loading-data.rst:12
+msgid "Prerequisites for your data"
+msgstr "Conditions préalables pour vos données"
+
+#: ../../install/loading-data.rst:15
+msgid "External Layers"
+msgstr "Couches externes"
+
+#: ../../install/loading-data.rst:17
+msgid "WMTS protocol"
+msgstr "Protocole WMTS"
+
+#: ../../install/loading-data.rst:18
+msgid "WebMercator Projection"
+msgstr "Projection Web Mercator"
+
+#: ../../install/loading-data.rst:21
+msgid "Paths"
+msgstr "Tronçons"
+
+#: ../../install/loading-data.rst:23
+msgid "Only LineString geometries"
+msgstr "Seulement de géométries LineString"
+
+#: ../../install/loading-data.rst:24
+msgid "Simple geometries"
+msgstr "Géométries simples"
+
+#: ../../install/loading-data.rst:25
+msgid "Not overlapping"
+msgstr "Sans superposition"
+
+#: ../../install/loading-data.rst:27
+msgid "If possible:"
+msgstr "Si possible :"
+
+#: ../../install/loading-data.rst:29
+msgid "Clean topologies"
+msgstr "Topologies propres"
+
+#: ../../install/loading-data.rst:30
+msgid "Name column"
+msgstr "Avec un nom"
+
+#: ../../install/loading-data.rst:31
+msgid "Data source"
+msgstr "Source de donnée"
+
+#: ../../install/loading-data.rst:33
+msgid "Formats: Geographic file or pure SQL dump (CREATE TABLE + INSERT)"
+msgstr "Formats : Fichier geogrpahique ou dump SQL pur (CREATE TABLE + INSERT)"
+
+#: ../../install/loading-data.rst:37
+msgid "Zoning"
+msgstr "Zonage"
+
+#: ../../install/loading-data.rst:39
+msgid "Cities: Geographic file or SQL, simple and valid MultiPolygon"
+msgstr "Communes : Fichier géographique ou SQL, MultiPolygon simples et valides"
+
+#: ../../install/loading-data.rst:40
+msgid "Districts: Geographic file ou SQL, simple and valid MultiPolygon"
+msgstr "Secteurs : Fichier géographique ou SQL, MultiPolygon simples et valides"
+
+#: ../../install/loading-data.rst:41
+msgid "Restricted Areas: Geographic file ou SQL, simple and valid MultiPolygon"
+msgstr "Zonages : Fichier géographique ou SQL, MultiPolygon simples et valides"
+
+#: ../../install/loading-data.rst:45
+msgid "Extras"
+msgstr "Extras"
+
+#: ../../install/loading-data.rst:47
+msgid "Languages list"
+msgstr "Liste des langues"
+
+#: ../../install/loading-data.rst:48
+msgid "Structures list (and default one)"
+msgstr "Liste des structures (et une par défaut)"
+
+#: ../../install/loading-data.rst:52
+msgid "Load DEM raster"
+msgstr "Charger un MNT rasterisé"
+
+#: ../../install/loading-data.rst:54
+msgid ""
+"In `QGIS "
+"<http://docs.qgis.org/latest/en/docs/training_manual/processing/cutting_merging.html>`_,"
+" you can visualize your DEM, or merge several tiles together (in *Raster*"
+" > *Misc* > *Merge*)."
+msgstr ""
+"Dans `QGIS "
+"<http://docs.qgis.org/latest/en/docs/training_manual/processing/cutting_merging.html>`_,"
+" vous pouvez visualiser votre MNT, ou fusionner plusieurs tuiles ensemble"
+" (dans *Raster* > *Misc* > *Merge*)."
+
+#: ../../install/loading-data.rst:57
+msgid ""
+"Generate a GeoTIFF, and upload both files (``.tif`` + ``.tfw``) on the "
+"server. And use the Geotrek-admin command to load it into PostGIS:"
+msgstr ""
+"Générer un GeoTIFF, et télécharger les deux fichiers (``.tif`` + "
+"``.tfw``) sur le serveur. Utilisez ensuite la commande Geotrek-admin pour"
+" le charger dans PostGIS :"
+
+#: ../../install/loading-data.rst:65 ../../install/loading-data.rst:78
+#: ../../install/loading-data.rst:83
+msgid "Note"
+msgstr ""
+
+#: ../../install/loading-data.rst:67
+msgid ""
+"This command makes use of *GDAL* and ``raster2pgsql`` internally. It "
+"therefore supports all GDAL raster input formats. You can list these "
+"formats with the command ``raster2pgsql -G``."
+msgstr ""
+"Cette commande utilise *GDAL* et ``raster2pgsql`` en interne. Elle "
+"supporte donc tous les formats de données matricielles GDAL. Vous pouvez "
+"lister ces formats avec la commande ``raster2pgsql -G``."
+
+#: ../../install/loading-data.rst:71
+#, fuzzy
+msgid "Warning"
+msgstr "Zonage"
+
+#: ../../install/loading-data.rst:73
+msgid ""
+"The elevation data of DEM must be integer values. If the elevation data "
+"are floating numbers, you can convert them in integer values with the "
+"Raster calculator processing of `SAGA in QGis "
+"<https://docs.qgis.org/latest/en/docs/user_manual/processing/3rdParty.html#saga>`_"
+" (Processing > Toolbox > SAGA > Raster calculus > Raster calculator) with"
+" formula parameter set to ``int(a)``."
+msgstr ""
+"Les données d'élévation du MNT doivent être des valeurs entières. Si les "
+"données d'élévation sont des nombres flottants, vous pouvez les convertir"
+" en valeurs entières à l'aide de la calculatrice matricielle de `SAGA "
+"dans QGis "
+"<https://docs.qgis.org/latest/en/docs/user_manual/processing/3rdParty.html#saga>`_"
+" (Processing > Toolbox > SAGA > Raster calculus > Raster calculator) avec"
+" le paramètre de formule réglé sur ``int(a)``."
+
+#: ../../install/loading-data.rst:80
+msgid ""
+"If you only have a ``.tif`` file, you can generate the ``.tfw`` file with"
+" the command ``gdal_translate -co \"TFW=YES\" in.tif out.tif``. It will "
+"generate a new ``.tif`` file with its ``.tfw`` metadata file."
+msgstr ""
+"Si vous n'avez qu'un fichier ``.tif``, vous pouvez générer le fichier "
+"``.tfw`` avec la commande ``gdal_translate -co \"TFW=YES\" in.tif "
+"out.tif``. Cela générera un nouveau fichier ``.tif`` avec son fichier de "
+"métadonnées ``.tfw``."
+
+#: ../../install/loading-data.rst:85
+msgid ""
+"If you want to update the altimetry of the topologies you need to use the"
+" option : --update-altimery"
+msgstr ""
+"Si vous souhaitez mettre à jour l'altimétrie des topologies, vous devez "
+"utiliser l'option : --update-altimery"
+
+#~ msgid "Layers"
+#~ msgstr "Couches"
+
+#~ msgid ""
+#~ "Cities polygons (Geographic file or SQL,"
+#~ " simple and valid Multi-Polygons)"
+#~ msgstr ""
+#~ "Polygones des communes (Shapefile ou "
+#~ "SQL, polygones multiples simples et "
+#~ "valides)"
+

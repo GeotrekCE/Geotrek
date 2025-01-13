@@ -1,0 +1,166 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2013-2024, Makina Corpus
+# This file is distributed under the same license as the Geotrek package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version:  Geotrek\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-14 15:11+0100\n"
+"PO-Revision-Date: 2024-03-14 14:40+0100\n"
+"Last-Translator: Jean-Etienne Castagnede <jecastagnede@vivaldi.net>\n"
+"Language: fr\n"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.14.0\n"
+
+#: ../../install/maintenance.rst:3
+msgid "Maintenance"
+msgstr "Maintenance"
+
+#: ../../install/maintenance.rst:10
+msgid "Backup"
+msgstr "Sauvegarde"
+
+#: ../../install/maintenance.rst:12
+msgid "Database"
+msgstr "Base de donnée"
+
+#: ../../install/maintenance.rst:18
+msgid "Media files"
+msgstr "Fichiers contribués"
+
+#: ../../install/maintenance.rst:24
+msgid "Configuration"
+msgstr "Configuration"
+
+#: ../../install/maintenance.rst:32
+msgid "Restore"
+msgstr "Restauration"
+
+#: ../../install/maintenance.rst:34
+msgid ""
+"If you restore Geotrek-admin on a new server, you will have to install "
+"PostgreSQL and PostGIS and create a database user first. Otherwise go "
+"directly to the database creation step."
+msgstr ""
+
+#: ../../install/maintenance.rst:37
+msgid "Example for Ubuntu:"
+msgstr "Exemple pour Ubuntu :"
+
+#: ../../install/maintenance.rst:45
+msgid "Create an empty database (``geotrekdb`` in this example):"
+msgstr ""
+
+#: ../../install/maintenance.rst:55
+msgid "Restore backup:"
+msgstr "Restaurer la sauvegarde :"
+
+#: ../../install/maintenance.rst:61
+msgid ""
+"If errors persist, rename your database and recreate a fresh one, then "
+"restore."
+msgstr ""
+
+#: ../../install/maintenance.rst:63
+msgid "Extract media and configuration files:"
+msgstr "Extraire les fichiers contribués et la configuration :"
+
+#: ../../install/maintenance.rst:70
+msgid "Follow *Fresh installation* method. Choose to manage database by yourself."
+msgstr ""
+
+#: ../../install/maintenance.rst:74
+msgid "PostgreSQL optimization"
+msgstr "Optimisation de PostgreSQL"
+
+#: ../../install/maintenance.rst:76
+msgid "Increase ``shared_buffers`` and ``work_mem`` according to your RAM"
+msgstr ""
+
+#: ../../install/maintenance.rst:78
+msgid ""
+"`Log long queries "
+"<http://wiki.postgresql.org/wiki/Logging_Difficult_Queries>`_"
+msgstr ""
+
+#: ../../install/maintenance.rst:80
+msgid ""
+"Use `pg activity <https://github.com/julmon/pg_activity#readme>`_ for "
+"monitoring"
+msgstr ""
+
+#: ../../install/maintenance.rst:82
+msgid ""
+"Use `pgtune <http://pgtune.leopard.in.ua/#/>`_ to optimize your "
+"configuration"
+msgstr ""
+
+#: ../../install/maintenance.rst:86
+msgid "Access your database securely on your local machine (QGIS)"
+msgstr ""
+
+#: ../../install/maintenance.rst:88
+msgid ""
+"Instead of opening your database to the world (by opening the 5432 port "
+"for example), you can use `SSH tunnels "
+"<http://www.postgresql.org/docs/9.3/static/ssh-tunnels.html>`_."
+msgstr ""
+
+#: ../../install/maintenance.rst:93
+msgid "Manage Cache"
+msgstr "Gérer le cache"
+
+#: ../../install/maintenance.rst:95
+msgid "You can purge application cache with command or in admin interface"
+msgstr ""
+
+#: ../../install/maintenance.rst:103
+msgid "Major evolutions from version 2.33"
+msgstr "Évolutions majeures depuis la 2.33"
+
+#: ../../install/maintenance.rst:105
+msgid ""
+"From version 2.33, Geotrek-admin is packaged in a debian package. This "
+"mean several things :"
+msgstr ""
+
+#: ../../install/maintenance.rst:107
+msgid "a system user ``geotrek`` is created on install ;"
+msgstr "un utilisateur système ``geotrek`` est créé à l'installation ;"
+
+#: ../../install/maintenance.rst:109
+msgid "base code is located in ``/opt/geotrek-admin`` folder ;"
+msgstr ""
+
+#: ../../install/maintenance.rst:111
+msgid ""
+"``geotrek`` is the new command, replacing ``bin/django``, and must be run"
+" in root (system user ``geotrek`` is used after) ;"
+msgstr ""
+
+#: ../../install/maintenance.rst:113
+msgid ""
+"there is no more ``settings.ini`` but an ``env`` file with environment "
+"variables ;"
+msgstr ""
+
+#: ../../install/maintenance.rst:115
+msgid ""
+"configuration files (custom.py et env), parsers and all customisation "
+"files (templates and translations) are now located in ``/opt/geotrek-"
+"admin/var/conf`` ;"
+msgstr ""
+
+#: ../../install/maintenance.rst:117
+msgid ""
+"we advise you to configure data synchronization in ``/opt/geotrek-"
+"admin/var``"
+msgstr ""
+

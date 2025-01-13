@@ -156,7 +156,7 @@ Languages of your project. It will be used to generate fields for translations. 
 Spatial extents
 ~~~~~~~~~~~~~~~
 
-Boundingbox of your project : x minimum , y minimum , x max, y max::
+Bounding box of your project : x minimum , y minimum , x max, y max::
 
         4 ^
           |
@@ -200,8 +200,7 @@ With *pgAdmin*, you can create database users like this:
 ::
 
 
-    CREATE ROLE lecteur LOGIN;
-    ALTER USER lecteur PASSWORD 'passfacile';
+    CREATE USER lecteur WITH ENCRYPTED PASSWORD 'passfacile';
     GRANT CONNECT ON DATABASE geotrekdb TO lecteur;
 
 And give them permissions by schema :
@@ -209,9 +208,7 @@ And give them permissions by schema :
 ::
 
     GRANT USAGE ON SCHEMA public TO lecteur;
-    GRANT USAGE ON SCHEMA geotrek TO lecteur;
     GRANT SELECT ON ALL TABLES IN SCHEMA public TO lecteur;
-    GRANT SELECT ON ALL TABLES IN SCHEMA geotrek TO lecteur;
 
 
 You can also create groups, etc. See PostgreSQL documentation.

@@ -106,7 +106,7 @@ or `via QGis following this blog post <https://makina-corpus.com/sig-webmapping/
     * **Geometric type** : Linestring
     * **Expected formats** (supported by GDAL) : Shapefile, Geojson, Geopackage
     * **Template** : :download:`paths.geojson <../files/import/paths.geojson>`
-    * **Good to know** : 
+    * **Good to know** :
        * The default SRID code is 4326
        * The default encoding is UTF-8
        * Imported paths are unpublished by default
@@ -258,7 +258,7 @@ When sensitive areas module is enabled, Geotrek provides 3 parsers to import dat
 * **Import sensitive areas from http://biodiv-sports.fr** (``geotrek.sensitivity.parsers.BiodivParser``). By default this
   parser imports all sensitive areas in configured spatial extent.
 * **Import species sensitive areas from a zipped shapefile**. 
-  Imported field names are: ``espece`` (required), ``contact`` and ``descriptio``. Species with corresponding names have to be created manually before import.
+  Imported field names are: ``espece`` (required), ``contact`` and ``description``. Species with corresponding names have to be created manually before import.
 * **Import regulatory sensitive areas from a zipped shapefile**. Imported field names are: ``nom`` (required), ``contact``, ``descriptio``, ``periode`` (month numbers separated with comas), ``pratiques`` (separated with comas), and ``url``. Practices with corresponding names have to be created manually before import.
 
 You can start imports from "Import" menu or from command line. You can override them in your ``var/conf/parsers.py``
@@ -296,7 +296,7 @@ If you need to cancel the aggregation of portals, remove param ``m2m_aggregate_f
 Importing from multiple sources with deletion
 ---------------------------------------------
 
-When importing data for the same model using two (or more) different sources, the ``provider`` field should be used to differenciate between sources, allowing to enable object deletion with ``delete = True`` without causing the last parser to delete objects created by preceeding parsers.
+When importing data for the same model using two (or more) different sources, the ``provider`` field should be used to differentiate between sources, allowing to enable object deletion with ``delete = True`` without causing the last parser to delete objects created by preceding parsers.
 
 In the following example, ``Provider_1Parser`` and ``Provider_2Parser`` will each import their objects, set the ``provider`` field on these objects, and only delete objects that disappeared from their respective source since last parsing.
 
@@ -316,7 +316,7 @@ In the following example, ``Provider_1Parser`` and ``Provider_2Parser`` will eac
 
 
 .. danger::
-    If a parser does not have a ``provider`` value, it will not take providers into account, meaning that it could delete objects from preceeding parsers even if these other parsers do have a ``provider`` themselves.
+    If a parser does not have a ``provider`` value, it will not take providers into account, meaning that it could delete objects from preceding parsers even if these other parsers do have a ``provider`` themselves.
 
 
 The following example would cause ``NoProviderParser`` to delete objects from ``Provider_2Parser`` and ``Provider_1Parser``.
@@ -339,7 +339,7 @@ The following example would cause ``NoProviderParser`` to delete objects from ``
 Generic settings for your parser
 --------------------------------
 
-This settings may be overriden when you define a new parser:
+This settings may be overridden when you define a new parser:
 
 - ``label`` parser display name (default: ``None``)
 - ``model`` import content with this model (default: ``None``)
@@ -348,7 +348,7 @@ This settings may be overriden when you define a new parser:
 - ``simplify_tolerance`` (default: ``0``)  # meters
 - ``update_only`` don't create new contents (default: ``False``)
 - ``delete`` (default: ``False``)
-- ``duplicate_eid_allowed`` if True, allows differents contents with same eid (default: ``False``)
+- ``duplicate_eid_allowed`` if True, allows different contents with same eid (default: ``False``)
 - ``fill_empty_translated_fields`` if True, fills empty translated fields with same value  (default: ``False``)
 - ``warn_on_missing_fields`` (default: ``False``)
 - ``warn_on_missing_objects`` (default: ``False``)
@@ -390,7 +390,7 @@ Import data from a remote Geotrek instance
 ==========================================
 
 Importing from a Geotrek instance works the same way as from SIT.
-A usecase for this is to aggregate data from several Geotrek-admin instance.
+A use-case for this is to aggregate data from several Geotrek-admin instance.
 
 .. danger::
     Importing data from a remote Geotrek instance does not work with dynamic segmentation, your instance where you import data
@@ -448,17 +448,17 @@ It is also possible to import sensitive areas through command line:
 
     sudo geotrek import geotrek.sensitivity.parsers.BiodivParser
 
-.. warning:: 
-  If you don't see any data in your area, it means that Biodiv'Sports does not contains data for your territory. 
-  Then it is widely recommended to add your data directly into Biodiv'Sports, as it will be available for 
-  multiple users, and then retrieve them into your Geotrek instance. To import data in Biodiv'Sports 
+.. warning::
+  If you don't see any data in your area, it means that Biodiv'Sports does not contains data for your territory.
+  Then it is widely recommended to add your data directly into Biodiv'Sports, as it will be available for
+  multiple users, and then retrieve them into your Geotrek instance. To import data in Biodiv'Sports
   go visit its website: https://biodiv-sports.fr
 
 
 Import from shapefile
 ---------------------
 
-Imported data must be in standard ESRI shapefile format. 
+Imported data must be in standard ESRI shapefile format.
 The various Shapefile files (``.shp``, ``.shx``, ``.dbf``, ``.prj``, *etc*.) must be assembled in a zip archive.
 
 .. warning::
@@ -468,7 +468,7 @@ Attribute data for sensitive areas species
 
 - ``espece``: Species name. Mandatory. A species with this name must first have been created in Biodiv'sports. Otherwise, import of the line will fail.
 - ``contact``: Contact in text or HTML format. *Optional*.
-- ``descriptio``: Description in text or HTML format. *Optional*. 
+- ``descriptio``: Description in text or HTML format. *Optional*.
 
 .. warning::
   Species name must strictly respect the species name string (accentuation, case and punctuation).
@@ -512,7 +512,7 @@ or:
     sudo geotrek  import geotrek.sensitivity.parsers.RegulatorySensitiveAreaShapeParser <file.shp>.
 
 
-.. warning:: 
+.. warning::
   Relaunching an import **with the same file** will create duplicates.
 
 
@@ -671,7 +671,7 @@ Import POIs
     * **Geometric type** : Point
     * **Expected formats** (supported by GDAL) : Shapefile, Geojson, Geopackage
     * **Template** : :download:`poi.geojson <../files/import/poi.geojson>`
-    * **Good to know** : 
+    * **Good to know** :
        * The SRID must be 4326
        * The default encoding is UTF-8
        * Imported POIs are unpublished by default
@@ -801,7 +801,7 @@ Import Infrastructure
     * **Geometric type** : Point
     * **Expected formats** (supported by GDAL) : Shapefile, Geojson, Geopackage
     * **Template** : :download:`infrastructure.geojson <../files/import/infrastructure.geojson>`
-    * **Good to know** : 
+    * **Good to know** :
        * The SRID must be 4326
        * The default encoding is UTF-8
        * Imported infrastructures are unpublished by default
@@ -834,7 +834,7 @@ New parameterized values are created and added to Geotrek Admin if necessary. Th
 
     - label <- value of `type` import field
     - type <- value of `cat` import field
-    - optionnally if `--use-structure`: structure <- the structure value (import field or default)
+    - optionally if `--use-structure`: structure <- the structure value (import field or default)
 
 For InfrastructureCondition the check uses the `condition` argument.
 
@@ -845,7 +845,7 @@ For InfrastructureCondition the check uses the `condition` argument.
 **Selected or added InfrastructureCondition value :**
 
     - label <- value of `cond` field
-    - optionnally if `--use-structure`: structure <- the structure value (import field or default)
+    - optionally if `--use-structure`: structure <- the structure value (import field or default)
 
 **Import command example :**
 
@@ -980,7 +980,7 @@ Import Signage
     * **Geometric type** : Point
     * **Expected formats** (supported by GDAL) : Shapefile, Geojson, Geopackage
     * **Template** : :download:`signage.geojson <../files/import/signage.geojson>`
-    * **Good to know** : 
+    * **Good to know** :
        * The default SRID code is 4326
        * The default encoding is UTF-8
        * Imported signage are unpublished by default
@@ -1058,7 +1058,7 @@ Import Cities
     * **Geometric type** : Polygon
     * **Expected formats** (supported by GDAL) : Shapefile, Geojson, Geopackage
     * **Template** : :download:`cities.geojson <../files/import/cities.geojson>`
-    * **Good to know** : 
+    * **Good to know** :
        * The default SRID code is 4326
        * The default encoding is UTF-8
        * Imported cities are unpublished by default
@@ -1145,7 +1145,7 @@ Import Districts
     * **Geometric type** : Polygon
     * **Expected formats** (supported by GDAL) : Shapefile, Geojson, Geopackage
     * **Template** : :download:`districts.geojson <../files/import/districts.geojson>`
-    * **Good to know** : 
+    * **Good to know** :
        * The default SRID code is 4326
        * The default encoding is UTF-8
        * Imported districts are unpublished by default
@@ -1219,7 +1219,7 @@ Import Restricted areas
     * **Geometric type** : Polygon
     * **Expected formats** (supported by GDAL) : Shapefile, Geojson, Geopackage
     * **Template** : :download:`restrictedareas.geojson <../files/import/restrictedareas.geojson>`
-    * **Good to know** : 
+    * **Good to know** :
        * The default SRID code is 4326
        * The default encoding is UTF-8
        * Imported restricted areas are unpublished by default
@@ -1343,7 +1343,7 @@ You have to run ``sudo geotrek unset_structure``
     You can't chose for each choice which set of category you want to unset structures, it will happen for all categories
 
 
-Firstly, if a categroy is linked to a structure, it creates the same category but with no structure associated.
+Firstly, if a category is linked to a structure, it creates the same category but with no structure associated.
 Secondly, every element with this old category gets assigned to this new category.
 Finally all old categories are removed.
 
@@ -1366,7 +1366,7 @@ only one Linestring from start to end. It stays as close as possible to the corr
 when the order is not well managed during topologies' display.
 
 .. danger::
-    It can happen that this algorithm can't find any solution and will genereate a MultiLineString.
+    It can happens that this algorithm can't find any solution and will generate a MultiLineString.
     This will be displayed at the end of the reorder
 
 

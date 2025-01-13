@@ -1,0 +1,813 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2013-2024, Makina Corpus
+# This file is distributed under the same license as the Geotrek package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Geotrek \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-13 11:25+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr\n"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: ../../usage/configuration-ttw.rst:3
+msgid "Paramétrage"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:11
+msgid "Accès interface de configuration"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:13
+msgid "Menu à droite > admin"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:19
+msgid "Lien vers le module de configuration"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:24
+msgid "Paramétrages des modules"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:26
+msgid ""
+"Cette section présente quelques exemples de paramétrages des catégories "
+"au sein des modules."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:29
+msgid "Itinéraires"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:35
+msgid "Ensemble des champs paramétrables du module Itinéraires"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:38
+msgid "Exemple : ajouter une pratique"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:40
+msgid ""
+"Dans le module de configuration, à la ligne “Pratiques” cliquer sur “+ "
+"ajouter”"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:41
+msgid "Remplir les champs (en gras les champs obligatoires)"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:43 ../../usage/configuration-ttw.rst:179
+#: ../../usage/configuration-ttw.rst:252 ../../usage/configuration-ttw.rst:256
+msgid "Note"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:44
+msgid "La couleur n’est utilisée que pour le mobile actuellement."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:50
+msgid "Ajout d'une nouvelle pratique"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:53
+msgid "Exemple : ajouter une étiquette"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:55
+msgid ""
+"Les étiquettes sont des encarts \"pré-configurés\" pouvant être "
+"réutilisés sur de multiples itinéraires. Elles présentent plusieurs "
+"avantages : - ne pas avoir à saisir à chaque itinéraire les même "
+"informations - permet de filtrer les itinéraires dans la vue liste "
+"(catégorie \"Autres\") sur Geotrek-Rando."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:59
+msgid ""
+"Pour les configurer, vous devez : - vous rendre dans le module de "
+"configuration - dans la section Étiquettes du groupe **COMMUN** cliquer "
+"sur :guilabel:`+ Ajouter`"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:63
+msgid ""
+"Via cette interface vous pourrez créer des étiquettes puis, une fois "
+"créées, les rattacher à des itinéraires."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:65
+msgid "Créer une étiquette :"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:71
+msgid "Création d'une étiquette"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:73
+msgid ""
+"Pour mettre en forme le contenu de l'étiquette, il est possible "
+"d'utiliser du ``HTML``. Pour cela, il est recommandé d'utiliser des "
+"outils permettant de formater du contenu et d'obtenir le résultat en HTML"
+" directement. Par exemple via l'outil libre `Summernote "
+"<https://summernote.org/>`_."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:75
+msgid "Associer une étiquette à un itinéraire :"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:77
+msgid ""
+"Une fois l'étiquette créée il faut l'associer à un itinéraire pour "
+"qu'elle soit visible sur le site. Une fois dans votre instance Geotrek "
+"Admin, éditez l'itinéraire concerné. Cliquez ensuite sur l'onglet "
+":guilabel:`Avancé` et dans le champ Étiquettes choisissez dans le menu "
+"déroulant l'étiquette de votre choix (si vous en avez défini plusieurs)."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:84
+msgid "Ajout d'une étiquette à un itinéraire"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:86
+msgid "Tip"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:88
+msgid ""
+"L'ajout d'un pictogramme est facultatif, par défaut le pictogramme de "
+"l'étiquette sera le même que celui des recommandations dans les \"Infos "
+"pratiques\" de la fiche d'une randonnées (Geotrek Rando)."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:89
+msgid ""
+"Si le champ \"Filtre\" est coché, l'étiquette sera proposée comme filtre "
+"dans Geotrek-Rando."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:90
+msgid ""
+"Les images (hors pictogramme) utilisées dans le contenu de l'étiquette "
+"doivent être des liens web."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:92
+msgid ""
+"Rendu dans **Geotrek Rando** (onglet :guilabel:`Infos pratiques` d'une "
+"fiche randonnée) :"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:98
+msgid "Rendu d'une étiquette dans Geotrek-rando"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:100
+msgid "Rendu dans **Geotrek Rando** (partie :guilabel:`Filtres`) :"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:106
+msgid "Rendu des étiquettes dans les filtres de Geotrek-rando"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:110
+msgid "Tourisme"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:116
+msgid ""
+"Ensemble des champs paramétrables des modules Contenus et Évènements "
+"touristiques"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:119
+msgid "Exemple : catégorie de contenu touristique et ses sous-types"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:126
+msgid "Création de catégorie de contenu touristique et ses sous-types"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:128
+msgid ""
+"Pour chaque catégorie il est possible de définir deux listes de sous-"
+"types et leur nom."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:131
+msgid "Édition des sous-types de la catégorie “Hébergements”"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:137
+msgid "Sous-types de la catégorie “Hébergements”"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:142
+msgid "Gestion des utilisateurs"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:144
+msgid ""
+"Geotrek-admin s'appuie sur le `système d'authentification et de "
+"permissions Django "
+"<https://docs.djangoproject.com/en/4.2/topics/auth/default>`_ ."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:146
+msgid ""
+"Les utilisateurs appartiennent à des groupes et les permissions peuvent "
+"être attribuées au niveau de l'utilisateur ou du groupe."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:148
+msgid ""
+"Avec les groupes, vous pouvez créer et configurer un profil utilisateur, "
+"chacun possédant des permissions spécifiques."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:150
+msgid ""
+"Toute la configuration des utilisateurs, groupes et permissions est "
+"disponible depuis le module de configuration, si vous n'avez pas activé "
+"*Authentification externe* (voir ci-dessous)."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:156
+msgid "Interface de configuration des utilisateurs/groupes"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:159
+msgid "Utilisateurs et permissions"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:161
+msgid ""
+"L’application permet d’attribuer des droits à autant de groupes que "
+"souhaité. Nous recommandons cependant de privilégier la diffusion la plus"
+" large par défaut et de ne restreindre l’application que pour des raisons"
+" impératives."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:170
+msgid ""
+"L’application permet de définir des rôles disposant chacun de certains "
+"droits."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:165
+msgid "visiteurs anonymes (par exemple : tous les internautes)"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:166
+msgid "partenaires, élus"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:167
+msgid "agents techniques"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:168
+msgid "prestataires externes"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:169
+msgid "administrateurs de l’application"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:170
+msgid "…"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:172
+msgid ""
+"À chaque rôle est associé un ensemble de permissions (consulter telle "
+"donnée, la modifier…) qui peuvent être attribuées à un document ou à une "
+"catégorie. Les utilisateurs sont ensuite associés à un ou plusieurs "
+"rôles."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:175
+msgid "Un utilisateur donné peut avoir trois niveaux permissions basiques :"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:177
+msgid ""
+"**Actif** : si cette case est cochée, l’utilisateur peut se connecter à "
+"Geotrek-admin"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:180
+msgid ""
+"Il est préférable de désactiver un compte lorsqu’un utilisateur "
+"n’intervient plus sur Geotrek, plutôt que de le supprimer. En effet "
+"supprimer le compte supprimera également par exemple toutes les entrées "
+"dans l’historique de Geotrek associées à ce compte."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:182
+msgid ""
+"**Équipe** : si la case est cochée l’utilisateur pourra accéder au module"
+" de configuration de Geotrek-Admin"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:184
+msgid ""
+"**Super-utilisateur** : permet d’octroyer toutes les permissions à un "
+"utilisateur sans avoir à les définir explicitement"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:186
+msgid ""
+"Un utilisateur peut avoir des permissions spécifiques, définies par type "
+"d’objet."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:188
+msgid ""
+"Pour cela, sélectionner les permissions dans l’écran de gauche pour les "
+"positionner dans l’écran de droite. Par exemple sur la capture ci-dessous"
+" l’utilisateur possède les permissions pour consulter uniquement et "
+"exporter les informations relatives aux signalétiques sans possibilité "
+"d’accéder aux autres modules ou de modifier les contenus."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:194
+msgid "Choix des permissions de l'utilisateur"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:196
+msgid "Il existe quatre principaux types de permissions :"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:198
+msgid "add"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:199
+msgid "change"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:200
+msgid "delete"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:201
+msgid "read / view"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:203
+msgid ""
+"Chaque type de donnée est au moins associée à ces quatres actions de base"
+" (*ajout*, *modification*, *suppression*, *lecture*). Un type de donnée "
+"correspond à un table dans la base de données (*signage_signage*, "
+"*trekking_trek*…) »"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:206
+msgid "Voici la signification des actions autorisées dans les permissions :"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:208
+msgid ""
+"*view* : voir les données dans le module de configuration (pour les "
+"données dans « category », comme les types de POI, ou les niveaux de "
+"difficulté)"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:209
+msgid "*read* : voir les données dans Geotrek-admin (détail et liste)"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:210
+msgid "*add* : ajouter une nouvelle donnée (itinéraire, thème…)"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:211
+msgid "*change* : modifier une donnée"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:212
+msgid "*change_geom* : modifier la géométrie d’une donnée"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:213
+msgid "*publish* : publier la donnée"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:214
+msgid ""
+"*export* : exporter les données via l’interface de Geotrek-admin (CSV, "
+"JSON…)"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:217
+msgid "Groupes"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:219
+msgid ""
+"Les groupes facilitent la gestion des utilisateurs et des "
+"permissions.Chaque groupe est configuré avec un certain nombre de "
+"permissions."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:221
+msgid ""
+"Dans la vue de modification d’un utilisateur, il est possible d’associer "
+"un utilisateur à un ou plusieurs groupes pour bénéficier des permissions "
+"correspondantes."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:223
+msgid "Par défaut, six groupes sont disponibles :"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:225
+msgid "Readers (\"Lecteurs\")"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:226
+msgid "Path managers (\"Référents sentiers\")"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:227
+msgid "Trek managers (\"Référents communication\")"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:228
+msgid "Editors (\"Rédacteurs\")"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:229
+msgid "Geotrek-rando (\"Geotrek-rando\")"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:230
+msgid "Trek and management editors (\"Rédacteurs rando et gestion\")"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:232
+msgid ""
+"Lorsque l’application est installée, il est possible de modifier les "
+"permissions par défaut de ces groupes, d’en créer de nouveaux, etc."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:234
+msgid ""
+"Pour autoriser les utilisateurs à accéder à l’interface AdminSite, "
+"accordez-leur le statut équipe. L’interface AdminSite permet aux "
+"utilisateurs d’éditer les catégories comme *niveaux de difficulté*, "
+"*types de POI*, etc"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:236
+msgid ""
+"Il est possible de créer ou de supprimer des comptes administrateurs ou "
+"éditeurs. De même qu’il est possible d’ajouter, modifier ou supprimer des"
+" itinéraires, tout comme pour les contenus additionnels."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:239
+msgid ""
+"Les éditeurs et les administrateurs peuvent travailler en simultané sur "
+"des fiches balades, mais pas en même temps sur la même fiche, car il y "
+"aurait sinon un risque de perte d’informations lors de la validation / "
+"enregistrement des informations saisies."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:242
+msgid "Structures"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:244
+msgid ""
+"Chaque utilisateur est obligatoirement rattaché à une structure. Lors de "
+"l’installation, Geotrek crée une structure par défaut à laquelle les "
+"utilisateurs seront rattachés. Il est possible d’ajouter de nouvelles "
+"structures, reflétant des partenaires territoriaux, entreprises, entités "
+"qui seront amenés à travailler à vos côtés sur Geotrek."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:246
+msgid ""
+"Les utilisateurs d’une structure ne peuvent travailler que sur les objets"
+" dans Geotrek liés à leur structure. Ils pourront consulter les objets "
+"des autres structures mais n’auront pas le droit de les modifier."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:248
+msgid ""
+"*Exemple : si on imagine un Geotrek déployé sur l’ensemble du territoire "
+"français, il pourrait y avoir des structures correspondant à chaque "
+"région. Chaque utilisateur serait rattaché à sa région. Il y aurait alors"
+" la garantie qu’un utilisateur de Bretagne ne puisse pas modifier les "
+"objets saisis par un utilisateur de Normandie.*"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:250
+msgid ""
+"Cette notion de structures permet de segmenter les périmètres d’action "
+"des utilisateurs et de permettre à différentes entités de travailler sur "
+"un même Geotrek-Admin, tout en garantissant une cohérence des données."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:254
+msgid ""
+"Un utilisateur d’une structure pourra tout de même tracer des itinéraires"
+" sur des tronçons tracés par une autre structure"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:258
+msgid ""
+"Pour qu’un utilisateur puisse modifier les objets d’une autre structure "
+"il y a deux possibilités :"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:260
+msgid "celui-ci est super-utilisateur"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:262
+msgid ""
+"celui-ci possède la permission « Can bypass structure », qui permet "
+"d’outrepasser la restriction des structures."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:264
+msgid ""
+"Pour définir la structure par défaut, se référer à la section "
+":ref:`Default structure <default-structure>`"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:267
+msgid "Gestion multilingue"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:269
+msgid ""
+"La configuration des langues de la plate-forme est réalisée au travers du"
+" fichier de configuration principal. Lors de sa mise à jour, la commande "
+"de déploiement créé les champs nécessaires qui manquent dans la base de "
+"données (exemple : nom_fr, nom_es, nom_it…). Ceci est à distinguer des "
+"langues dans lesquelles sont traduits les éléments de l'interface de "
+"l'application (Français, Anglais, Italien, Espagnol)."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:273
+msgid ""
+"Il est par exemple possible d'intégrer des textes dans différentes "
+"langues (à minima français, anglais) dans Geotrek-Admin."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:279
+msgid "Gestion multilingue dans la fiche détail"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:282 ../../usage/configuration-ttw.rst:296
+msgid "Configuration des portails"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:284
+msgid ""
+"Geotrek permet de configurer un ou plusieurs portails. Ce terme est "
+"utilisé pour référencer un site grand public sur lequel seront visibles "
+"les objets publiés de Geotrek."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:286
+msgid ""
+"Ainsi, il est possible d'avoir plusieurs Geotrek-Rando branchés sur un "
+"seul Geotrek-Admin. Grâce à leur distinction sous forme de portail, il "
+"sera alors aisé de choisir sur quel Geotrek-Rando on souhaite faire "
+"apparaitre une information."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:288
+msgid ""
+"Avec le widget Geotrek (https://github.com/GeotrekCE/geotrek-rando-"
+"widget) il est également possible d'utiliser cette fonctionnalité pour "
+"distinguer les contenus à afficher dans un widget ou dans un autre (https"
+"://makina-corpus.com/logiciel-libre/developpement-geotrek-widget-finance-"
+"parc-naturel-regional-haut-jura)."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:290
+msgid ""
+"Pour configurer un ou plusieurs portails, il faut se rendre dans le "
+"module de configuration sur la section \"Portails cibles\"."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:298
+msgid ""
+"Il est possible de choisir de publier sur un ou plusieurs portails les "
+"objets suivants : itinéraires, contenus et évènements touristiques, pages"
+" statiques. Pour cela il suffit de sélectionner la valeur souhaitée dans "
+"le champ \"portail\" à l'édition de l'objet."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:301
+msgid "Intégration des données SIT"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:303
+msgid ""
+"Des développements ont déjà été réalisés dans Geotrek pour intégrer des "
+"données de divers SIT (Système d’Informations Touristiques), notamment "
+"APIDAE, Tourinsoft, LEI, SITLOR... si les flux sont disponibles dans des "
+"formats ouverts."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:305
+msgid ""
+"Il convient ensuite de configurer chaque flux dans Geotrek-Admin afin que"
+" ceux-ci soient synchronisé avec la plateforme touristique."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:307
+msgid ""
+"La fonctionnalité consiste à absorber le flux XML, afin de le remettre à "
+"disposition sous une forme optimisée et épurée. Les données sont alors "
+"exposées sous la forme d’une web API, au format GeoJSON. L’obtention d’un"
+" flux de données GeoJSON (agnostique et standard) présente de nombreux "
+"avantages pour l’intégration dans les applications tierces. Ce format est"
+" compatible nativement avec Rando V3, mais également avec la plupart des "
+"bibliothèques de cartographie (web et natives mobile)."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:310
+msgid ""
+"Pour configurer l'import de SIT, référez vous à cette section "
+":ref:`Import data from touristic data systems (SIT) <import-data-from-"
+"touristic-data-systems-sit>`"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:313
+msgid "Intégration des fonds de cartes"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:315
+msgid "Il est possible d'intégrer dans Geotrek différents fonds de carte comme :"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:317
+msgid "OpenStreetMap : https://www.openstreetmap.org/#map=6/46.449/2.210"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:318
+msgid "OpenTopoMap : https://opentopomap.org/#map=6.49.000/10.000"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:319
+msgid ""
+"ou les données IGN : https://geoservices.ign.fr/services-geoplateforme-"
+"diffusion"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:321
+msgid ""
+"Pour configurer l'ajout de fonds de plan, référez vous à cette section "
+":ref:`Map settings <map-settings>`"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:324
+msgid "Intégration de pictogrammes"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:326
+msgid "Les pictogrammes contribués dans Geotrek doivent être au format :"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:328
+msgid ""
+"SVG (de préférence, cela permet de conserver la qualité en cas de "
+"redimensionnement) ou PNG,"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:329
+msgid ""
+"SVG pour les thèmes (afin de permettre un changement de couleur pour les "
+"thèmes sélectionnés),"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:331
+msgid "Il doivent :"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:333
+msgid "Avoir un viewport carré afin de ne pas être déformés sur le portail,"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:334
+msgid ""
+"Ne pas déborder du cercle inscrit pour les pratiques et les catégories de"
+" contenus touristiques, en prévoyant une marge si nécessaire."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:336
+msgid "Avoir une dimension minimale de 56x56 pixels en ce qui concerne les PNG"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:338
+msgid ""
+"Si vous utilisez Inkscape, vous devez définir une viewBox. Voir `la "
+"documentation d'Inkscape "
+"<http://wiki.inkscape.org/wiki/index.php/Tricks_and_tips#Scaling_images_to_fit_in_webpages.2FHTML>`_"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:340
+msgid ""
+"Afin de s'intégrer au mieux dans le design standard, les couleurs "
+"suivantes sont recommandées :"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:342
+msgid ""
+"Blanc sur fond transparent pour les pratiques et les catégories de "
+"contenus touristiques,"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:343
+msgid "Gris sur fond transparent pour les thèmes,"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:344
+msgid "Blanc sur fond orange pour les types de POI."
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:346
+msgid ""
+"Voici quelques ressources en ligne proposant des pictogrammes (sous "
+"licence libre) :"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:348
+msgid ""
+"`https://pictogrammers.com/library/mdi/ "
+"<https://pictogrammers.com/library/mdi/>`_"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:349
+msgid "`https://thenounproject.com/ <https://thenounproject.com/>`_"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:350
+msgid "`http://map-icons.com/ <http://map-icons.com/>`_"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:351
+msgid "`https://www.opensymbols.org/ <https://www.opensymbols.org/>`_"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:352
+msgid "`https://www.svgrepo.com/ <https://www.svgrepo.com/>`_"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:353
+msgid "`http://www.entypo.com/ <http://www.entypo.com/>`_"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:354
+msgid "`https://icons.getbootstrap.com/ <https://icons.getbootstrap.com/>`_"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:355
+msgid "`https://icongr.am/ <https://icongr.am/>`_"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:356
+msgid "`https://cocomaterial.com/ <https://cocomaterial.com/>`_"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:357
+msgid "`https://icofont.com/ <https://icofont.com/>`_"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:358
+msgid "`https://fontello.com/ <https://fontello.com/>`_"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:359
+msgid "`https://iconmonstr.com/ <https://iconmonstr.com/>`_"
+msgstr ""
+
+#: ../../usage/configuration-ttw.rst:360
+msgid "`https://fontawesome.com/icons <https://fontawesome.com/icons>`_"
+msgstr ""
+
+#~ msgid ""
+#~ "**Actif** : si cette case est "
+#~ "coché, l’utilisateur peut se connecter à"
+#~ " Geotrek-admin"
+#~ msgstr ""
+

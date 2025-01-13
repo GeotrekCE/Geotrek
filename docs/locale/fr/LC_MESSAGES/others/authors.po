@@ -1,222 +1,237 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) 2013-2014, Makina Corpus
+# Copyright (C) 2013-2024, Makina Corpus
 # This file is distributed under the same license as the Geotrek package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Geotrek 2.38\n"
+"Project-Id-Version: Geotrek \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-08 08:02+0000\n"
+"POT-Creation-Date: 2024-11-13 11:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: fr\n"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.12.1\n"
+"Generated-By: Babel 2.16.0\n"
 
-#: ../../authors.rst:3
+#: ../../others/authors.rst:3
 msgid "Authors"
 msgstr ""
 
-#: ../../authors.rst:6
+#: ../../others/authors.rst:10
 msgid "Makina Corpus"
 msgstr ""
 
-#: ../../authors.rst:8
+#: ../../others/authors.rst:12
 msgid "Gilles Bassière"
 msgstr ""
 
-#: ../../authors.rst:9
+#: ../../others/authors.rst:13
 msgid "Sylvain Beorchia"
 msgstr ""
 
-#: ../../authors.rst:10
+#: ../../others/authors.rst:14
 msgid "Mathieu Leplatre"
 msgstr ""
 
-#: ../../authors.rst:11
+#: ../../others/authors.rst:15
 msgid "Anaïs Peyrucq"
 msgstr ""
 
-#: ../../authors.rst:12
+#: ../../others/authors.rst:16
 msgid "Satya Azemar"
 msgstr ""
 
-#: ../../authors.rst:13
+#: ../../others/authors.rst:17
 msgid "Simon Thépot"
 msgstr ""
 
-#: ../../authors.rst:14
+#: ../../others/authors.rst:18
 msgid "Chloé Morisset"
 msgstr ""
 
-#: ../../authors.rst:15
+#: ../../others/authors.rst:19
 msgid "Frédéric Bonifas"
 msgstr ""
 
-#: ../../authors.rst:16
+#: ../../others/authors.rst:20
 msgid "Benjamin Marguin"
 msgstr ""
 
-#: ../../authors.rst:17
+#: ../../others/authors.rst:21
 msgid "Eric Brehault"
 msgstr ""
 
-#: ../../authors.rst:18
+#: ../../others/authors.rst:22
 msgid "Célian Garcia"
 msgstr ""
 
-#: ../../authors.rst:19
+#: ../../others/authors.rst:23
 msgid "Gaël Utard"
 msgstr ""
 
-#: ../../authors.rst:20
+#: ../../others/authors.rst:24
 msgid "Jean-Etienne Castagnede"
 msgstr ""
 
-#: ../../authors.rst:21
+#: ../../others/authors.rst:25
 msgid "Timothée de Montety"
 msgstr ""
 
-#: ../../authors.rst:22
+#: ../../others/authors.rst:26
 msgid "Bastien Potiron"
 msgstr ""
 
-#: ../../authors.rst:23
+#: ../../others/authors.rst:27
 msgid "Emmanuelle Helly"
 msgstr ""
 
-#: ../../authors.rst:24
+#: ../../others/authors.rst:28
 msgid "Célia Prat"
 msgstr ""
 
-#: ../../authors.rst:25
+#: ../../others/authors.rst:29
 msgid "Paul Florence"
 msgstr ""
 
-#: ../../authors.rst:26
+#: ../../others/authors.rst:30
 msgid "Marine Faucher"
 msgstr ""
 
-#: ../../authors.rst:27
+#: ../../others/authors.rst:31
 msgid "Marc-Antoine Dupré"
 msgstr ""
 
-#: ../../authors.rst:28
+#: ../../others/authors.rst:32
 msgid "Hugo Hasson"
 msgstr ""
 
-#: ../../authors.rst:34
+#: ../../others/authors.rst:33
+msgid "Joaquim Nallar"
+msgstr ""
+
+#: ../../others/authors.rst:34
+msgid "Justine Fricou"
+msgstr ""
+
+#: ../../others/authors.rst:40
 msgid "Parc national des Ecrins"
 msgstr ""
 
-#: ../../authors.rst:36
+#: ../../others/authors.rst:42
 msgid "Camille Monchicourt"
 msgstr ""
 
-#: ../../authors.rst:37
+#: ../../others/authors.rst:43
 msgid "Théo Lechémia"
 msgstr ""
 
-#: ../../authors.rst:38
+#: ../../others/authors.rst:44
 msgid "Élie Bouttier"
 msgstr ""
 
-#: ../../authors.rst:41
+#: ../../others/authors.rst:47
 msgid "Others"
 msgstr ""
 
-#: ../../authors.rst:43
+#: ../../others/authors.rst:49
 msgid "Michaël Viadere (OpenIG)"
 msgstr ""
 
-#: ../../authors.rst:44
+#: ../../others/authors.rst:50
 msgid "Guillaume Boitel"
 msgstr ""
 
-#: ../../authors.rst:45
+#: ../../others/authors.rst:51
 msgid "Jean Lenormand"
 msgstr ""
 
-#: ../../authors.rst:46
+#: ../../others/authors.rst:52
 msgid "Claude Paroz"
 msgstr ""
 
-#: ../../authors.rst:47
+#: ../../others/authors.rst:53
 msgid "Amandine Sahl (Parc National des Cévennes)"
 msgstr ""
 
-#: ../../authors.rst:48
+#: ../../others/authors.rst:54
 msgid "Frédéric Cloitre (LPO AuRA)"
 msgstr ""
 
-#: ../../authors.rst:49
+#: ../../others/authors.rst:55
 msgid "Idrissa Djepa Creutz (OepnIG / Parc National des Cévennes)"
 msgstr ""
 
-#: ../../authors.rst:50
+#: ../../others/authors.rst:56
 msgid "Yannick LE DUC"
 msgstr ""
 
-#: ../../authors.rst:51
+#: ../../others/authors.rst:57
 msgid "Guillaume Boitel (Parc National de Port Cros)"
 msgstr ""
 
-#: ../../authors.rst:52
+#: ../../others/authors.rst:58
 msgid "Pierre Loicq (Parc National de la Vanoise)"
 msgstr ""
 
-#: ../../authors.rst:55
+#: ../../others/authors.rst:59
+msgid "Nathanaël (@roipoussiere)"
+msgstr ""
+
+#: ../../others/authors.rst:62
 msgid "Credits"
 msgstr ""
 
-#: ../../authors.rst:57
+#: ../../others/authors.rst:64
 msgid "*Information desk* by Alex Berkowitz from The Noun Project"
 msgstr ""
 
-#: ../../authors.rst:58
+#: ../../others/authors.rst:65
 msgid "*Calendar* by Laurent Patain from The Noun Project"
 msgstr ""
 
-#: ../../authors.rst:59
+#: ../../others/authors.rst:66
 msgid "*Restaurant* designed by Roberto Pinto from the Noun Project"
 msgstr ""
 
-#: ../../authors.rst:60
+#: ../../others/authors.rst:67
 msgid "*Kayak* designed by johanna from the Noun Project"
 msgstr ""
 
-#: ../../authors.rst:61
+#: ../../others/authors.rst:68
 msgid "*Luggage* designed by Luis Prado from the Noun Project"
 msgstr ""
 
-#: ../../authors.rst:62
+#: ../../others/authors.rst:69
 msgid "*Location* designed by Jacob Lowe from the Noun Project"
 msgstr ""
 
-#: ../../authors.rst:63
+#: ../../others/authors.rst:70
 msgid "*Food* designed by Rémy Médard from the Noun Project"
 msgstr ""
 
-#: ../../authors.rst:64
+#: ../../others/authors.rst:71
 msgid "*Climbing* designed by Eric Milet from the Noun Project"
 msgstr ""
 
-#: ../../authors.rst:65
+#: ../../others/authors.rst:72
 msgid "*Box Office* designed by Alessio Damiano from the Noun Project"
 msgstr ""
 
-#: ../../authors.rst:66
+#: ../../others/authors.rst:73
 msgid "*Steep Descent* designed by Sergey Patutin from the Noun Project"
 msgstr ""
 
-#: ../../authors.rst:67
+#: ../../others/authors.rst:74
 msgid "*Landscape* by Adrien Coquet from the Noun Project"
 msgstr ""
 
-#: ../../authors.rst:68
+#: ../../others/authors.rst:75
 msgid "*Ski course* by Sahua D from the Noun Project"
 msgstr ""
+

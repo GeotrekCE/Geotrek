@@ -1,0 +1,375 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2013-2024, Makina Corpus
+# This file is distributed under the same license as the Geotrek package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Geotrek \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-13 11:25+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr\n"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: ../../install/upgrade.rst:3
+msgid "Upgrade"
+msgstr ""
+
+#: ../../install/upgrade.rst:11
+msgid "From Geotrek-admin >= 2.33"
+msgstr ""
+
+#: ../../install/upgrade.rst:13
+msgid "Beforehand you should update your system's catalog:"
+msgstr ""
+
+#: ../../install/upgrade.rst:19
+msgid "If your current version is <= 2.40.1 you should run instead:"
+msgstr ""
+
+#: ../../install/upgrade.rst:25
+msgid "To display the installed version and the latest upgradeable version, run:"
+msgstr ""
+
+#: ../../install/upgrade.rst:31
+msgid "To upgrade only geotrek-admin and its dependencies, run:"
+msgstr ""
+
+#: ../../install/upgrade.rst:37 ../../install/upgrade.rst:66
+#: ../../install/upgrade.rst:187 ../../install/upgrade.rst:229
+#: ../../install/upgrade.rst:261
+msgid "Note"
+msgstr ""
+
+#: ../../install/upgrade.rst:39
+msgid ""
+"It is only possible to install the latest version of geotrek-admin via "
+"this command line"
+msgstr ""
+
+#: ../../install/upgrade.rst:40
+msgid ""
+"All package versions remain available as `release assets "
+"<https://github.com/GeotrekCE/Geotrek-admin/releases/>`_. Download the "
+".deb for your architecture and do ``sudo apt-get install <the .deb "
+"package>``."
+msgstr ""
+
+#: ../../install/upgrade.rst:41
+msgid ""
+"Example : ``sudo apt-get install geotrek-"
+"admin_2.106.0.ubuntu20.04_amd64.deb``"
+msgstr ""
+
+#: ../../install/upgrade.rst:43
+msgid ""
+"Once geotrek-admin has been upgraded you may want to prevent unwanted "
+"upgrade with the whole distribution, you can run:"
+msgstr ""
+
+#: ../../install/upgrade.rst:51
+msgid "From Geotrek-admin <= 2.32"
+msgstr ""
+
+#: ../../install/upgrade.rst:53
+msgid ""
+"First of all, make sure your current Geotrek-admin version works "
+"correctly. Especially, after an upgrade of the Ubuntu distribution, you "
+"will have to run ``./install.sh`` before proceeding with Geotrek-admin "
+"upgrade."
+msgstr ""
+
+#: ../../install/upgrade.rst:57
+msgid ""
+"Then, go inside your existing Geotrek-admin installation directory and "
+"run the dedicated migration script:"
+msgstr ""
+
+#: ../../install/upgrade.rst:64
+msgid ""
+"Check if ``SPATIAL_EXTENT`` is well set in ``/opt/geotrek-"
+"admin/var/conf/custom.py`` (see Advanced configuration section)"
+msgstr ""
+
+#: ../../install/upgrade.rst:68
+msgid ""
+"Geotrek-admin is now automatically installed in ``/opt/geotrek-admin/`` "
+"directory and the advanced configuration file moved to ``/opt/geotrek-"
+"admin/var/conf/custom.py`` (with spatial extent, map and modules "
+"configuration...)."
+msgstr ""
+
+#: ../../install/upgrade.rst:72
+msgid "See advanced configuration documentation for details."
+msgstr ""
+
+#: ../../install/upgrade.rst:74
+msgid ""
+"The ``etc/settings.ini`` file is replaced by basic configuration, updated"
+" with ``sudo dpkg-reconfigure geotrek-admin`` command (database, SRID, "
+"languages, server_name, timeout...)."
+msgstr ""
+
+#: ../../install/upgrade.rst:77
+msgid "Update your imports, synchronization and backup commands and directories."
+msgstr ""
+
+#: ../../install/upgrade.rst:81
+msgid "From Geotrek-admin <= 2.69.0"
+msgstr ""
+
+#: ../../install/upgrade.rst:83
+msgid "**WARNING!**"
+msgstr ""
+
+#: ../../install/upgrade.rst:85
+msgid ""
+"Starting from version 2.70.0, Geotrek now needs PostgreSQL extension "
+"'pgrypto'."
+msgstr ""
+
+#: ../../install/upgrade.rst:87
+msgid "Make sure to run the following command **BEFORE** upgrading:"
+msgstr ""
+
+#: ../../install/upgrade.rst:89
+msgid ""
+"``su postgres -c \"psql -q -d $POSTGRES_DB -c 'CREATE EXTENSION "
+"pgcrypto;'\"``"
+msgstr ""
+
+#: ../../install/upgrade.rst:93
+msgid "Server migration"
+msgstr ""
+
+#: ../../install/upgrade.rst:95
+msgid ""
+"It is a new installation with an additional backup/restore and a file "
+"transfert in between. The commands below are examples to adapt to your "
+"actual configuration (server names, database configuration). These "
+"commands apply to versions >= 2.33. If your version is below 2.33, please"
+" check the doc of your version."
+msgstr ""
+
+#: ../../install/upgrade.rst:97
+msgid "Backup settings, media files and database on the old server:"
+msgstr ""
+
+#: ../../install/upgrade.rst:104
+msgid "Restore files on the new server:"
+msgstr ""
+
+#: ../../install/upgrade.rst:113
+msgid "PostgreSQL"
+msgstr ""
+
+#: ../../install/upgrade.rst:115
+msgid ""
+"Geotrek-admin support PostgreSQL 12+ and PostGIS 2.5+ for now. We "
+"recommend to upgrade to PostgreSQL 16 and PostGIS 3.4."
+msgstr ""
+
+#: ../../install/upgrade.rst:118
+msgid "You can check your PostgreSQL version with the following command:"
+msgstr ""
+
+#: ../../install/upgrade.rst:125
+msgid ""
+"If your PostgreSQL version is below 12, you should upgrade your "
+"PostgreSQL server. If you can not upgrade for the moment, check release "
+"notes before each Geotrek-admin upgrade to ensure compatibility. You will"
+" be able to mark hold your Geotrek-admin Ubuntu package to prevent "
+"unwanted upgrade."
+msgstr ""
+
+#: ../../install/upgrade.rst:134
+msgid ""
+"In case of unwanted upgrade, you will be able to revert your Geotrek-"
+"admin version to last supporting PostgreSQL 10 with, for example:"
+msgstr ""
+
+#: ../../install/upgrade.rst:142
+msgid "for Ubuntu 20.04, or"
+msgstr ""
+
+#: ../../install/upgrade.rst:149
+msgid "for Ubuntu bionic"
+msgstr ""
+
+#: ../../install/upgrade.rst:153
+msgid "Update PostgreSQL / PostGIS on Ubuntu Bionic"
+msgstr ""
+
+#: ../../install/upgrade.rst:155 ../../install/upgrade.rst:211
+#: ../../install/upgrade.rst:236
+msgid "Warning"
+msgstr ""
+
+#: ../../install/upgrade.rst:157
+msgid ""
+"Ubuntu Bionic is already deprecated. We recommend you to install "
+"PostgreSQL on a dedicated server, with a most recent version of Ubuntu. "
+"If possible, on the same host or datacenter than your Geotrek-admin "
+"instance. If you can't, you can follow these instructions to upgrade "
+"PostgreSQL and PostGIS on Ubuntu Bionic with official PostgreSQL APT "
+"archive repository. The ultimate version published for Bionic is "
+"PostgreSQL 14, supported until November 12, 2026."
+msgstr ""
+
+#: ../../install/upgrade.rst:172
+msgid ""
+"Then, make a database dump. You can see user / database / password in "
+"/opt/geotrek-admin/conf/env file."
+msgstr ""
+
+#: ../../install/upgrade.rst:179
+msgid "Now, install newest version of PostgreSQL and PostGIS:"
+msgstr ""
+
+#: ../../install/upgrade.rst:189
+msgid ""
+"Installing many PostgreSQL versions on the same system will use another "
+"port than default 5432. You can check the newest port with "
+"``pg_lsclusters`` command. For next lines, we consider new port is 5433."
+msgstr ""
+
+#: ../../install/upgrade.rst:193
+msgid "Recreate user and database:"
+msgstr ""
+
+#: ../../install/upgrade.rst:213
+msgid ""
+"You should report configuration from "
+"``/etc/postgresql/10/main/pg_hba.conf`` to "
+"``/etc/postgresql/14/main/pg_hba.conf``. Then restart your PostgreSQL"
+msgstr ""
+
+#: ../../install/upgrade.rst:222
+msgid "You can now restore your database dump."
+msgstr ""
+
+#: ../../install/upgrade.rst:231
+msgid ""
+"Note you have to use ``-h 127.0.0.1`` to connect with the ``geotrek`` "
+"user (this user cannot connect with the default unix socket). Connecting "
+"with ``geotrek`` is important for restored entities to have the right "
+"owner. Some errors can occurs, around extensions creation or "
+"``spatial_ref_sys`` table content. This is normal. We already create "
+"these extensions on previous steps."
+msgstr ""
+
+#: ../../install/upgrade.rst:238
+msgid ""
+"Any special configuration or tune setting in your ``postgresql.conf`` "
+"will not be reported, you should report configuration yourself in "
+"``/etc/postgresql/14/main/postgresql.conf``. Then restart your PostgreSQL"
+msgstr ""
+
+#: ../../install/upgrade.rst:248
+msgid ""
+"Now, you can update your Geotrek-admin configuration to use the new "
+"PostgreSQL server, by changing its default port to the new one."
+msgstr ""
+
+#: ../../install/upgrade.rst:256
+msgid "And change ``POSTGRES_PORT`` to 5433"
+msgstr ""
+
+#: ../../install/upgrade.rst:259
+msgid ""
+"You can now upgrade your Geotrek-admin, and check that the right database"
+" is used."
+msgstr ""
+
+#: ../../install/upgrade.rst:263
+msgid ""
+"If you want to use default 5432 port, you should change it in "
+"``/etc/postgresql/14/main/postgresql.conf``, restart PostgreSQL service, "
+"and change it by reconfiguring Geotrek-admin."
+msgstr ""
+
+#: ../../install/upgrade.rst:271
+msgid "If it shows PostgreSQL 14, you can remove the old PostgreSQL version."
+msgstr ""
+
+#~ msgid "To upgrade geotrek-admin to a **specific version**, run:"
+#~ msgstr ""
+
+#~ msgid "For instance:"
+#~ msgstr ""
+
+#~ msgid "or"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "**Note:** all package versions remain "
+#~ "available. Even when not listed with "
+#~ "``apt list``."
+#~ msgstr ""
+
+#~ msgid "Restore files on the new server: ::"
+#~ msgstr ""
+
+#~ msgid "Ubuntu bionic PostGIS 2.5 upgrade"
+#~ msgstr ""
+
+#~ msgid "Geotrek-admin requires at least PostGIS 2.5."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "If you installed Geotrek-admin on "
+#~ "bionic ubuntu with provided install "
+#~ "method, you should update your database"
+#~ " : ::"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "If you use an external database, "
+#~ "you should adapt this method along "
+#~ "your system"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Geotrek-admin support PostgreSQL 10+ and"
+#~ " PostGIS 2.5+ for now. In next "
+#~ "release, Django 4.2 will drop PostgreSQL"
+#~ " < 12 support. We recommend to "
+#~ "upgrade to PostgreSQL 16 and PostGIS "
+#~ "3.4."
+#~ msgstr ""
+
+#~ msgid "Then, make a database dump."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "You should report configuration from "
+#~ "/etc/postgresql/10/pg_hba.conf to "
+#~ "/etc/postgresql/14/pg_hba.conf. Then restart your"
+#~ " postgresql"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Any special configuration or tune "
+#~ "setting in your `postgresql.conf` will "
+#~ "not be reported, you should report "
+#~ "configuration yourself in "
+#~ "/etc/postgresql/14/postgresql.conf. Then restart "
+#~ "your postgresql"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "If you want to use default 5432"
+#~ " port, you should change it in "
+#~ "`postgresql.conf`, restart postgresql service, "
+#~ "and change it by reconfiguring "
+#~ "Geotrek-admin."
+#~ msgstr ""
+

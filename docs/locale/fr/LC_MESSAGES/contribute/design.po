@@ -1,0 +1,230 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2013-2024, Makina Corpus
+# This file is distributed under the same license as the Geotrek package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Geotrek \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-14 11:31+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr\n"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.14.0\n"
+
+#: ../../contribute/design.rst:5
+msgid "Design"
+msgstr ""
+
+#: ../../contribute/design.rst:12
+msgid "Architecture"
+msgstr ""
+
+#: ../../contribute/design.rst:17
+msgid "**Geotrek-admin**, the web application"
+msgstr ""
+
+#: ../../contribute/design.rst:18
+msgid ""
+"**Convertit**, a Web API to convert document and image formats (*.odt to "
+".doc*, *.svg to .png*)"
+msgstr ""
+
+#: ../../contribute/design.rst:19
+msgid ""
+"**Screamshotter**, a Web API to perform Web pages screenshots (*map image"
+" exports*)."
+msgstr ""
+
+#: ../../contribute/design.rst:23
+msgid "Main components"
+msgstr ""
+
+#: ../../contribute/design.rst:25
+msgid ""
+"The whole project is built on top of *mapentity*, a generic application "
+"in charge of:"
+msgstr ""
+
+#: ../../contribute/design.rst:27
+msgid "Menus and models registry"
+msgstr ""
+
+#: ../../contribute/design.rst:28
+msgid "List/Detail/Create/Update/Delete views"
+msgstr ""
+
+#: ../../contribute/design.rst:29
+msgid "Filtering"
+msgstr ""
+
+#: ../../contribute/design.rst:30
+msgid "Map images exports"
+msgstr ""
+
+#: ../../contribute/design.rst:31
+msgid "File attachment"
+msgstr ""
+
+#: ../../contribute/design.rst:32
+msgid "Document export"
+msgstr ""
+
+#: ../../contribute/design.rst:33
+msgid "Shapefile/GPX/CSV serializers"
+msgstr ""
+
+#: ../../contribute/design.rst:35
+msgid "For a Django model, we use the registry to activate all views and menus:"
+msgstr ""
+
+#: ../../contribute/design.rst:40
+msgid ""
+"Business specific notions are implemented in Geotrek-admin respective "
+"applications:"
+msgstr ""
+
+#: ../../contribute/design.rst:42
+msgid ""
+"**common**: shared concepts between all applications (*Organism*, "
+"*utils*, ...)"
+msgstr ""
+
+#: ../../contribute/design.rst:43
+msgid ""
+"**authent**: groups, user, profile and structure notions. Optional "
+"external authent backend."
+msgstr ""
+
+#: ../../contribute/design.rst:44
+msgid "**core**: paths, snapping, spatial referencing (topologies)"
+msgstr ""
+
+#: ../../contribute/design.rst:45
+msgid "**land**: physical types, competence, signage and work management"
+msgstr ""
+
+#: ../../contribute/design.rst:46
+msgid "**infrastructure**: buildings"
+msgstr ""
+
+#: ../../contribute/design.rst:47
+msgid "**signage**: signages and blades related content"
+msgstr ""
+
+#: ../../contribute/design.rst:48
+msgid ""
+"**maintenance**: interventions (on paths or on infrastructures) and "
+"projects"
+msgstr ""
+
+#: ../../contribute/design.rst:49
+msgid "**trekking**: POIs and treks"
+msgstr ""
+
+#: ../../contribute/design.rst:50
+msgid "**outdoor**: outdoor sites and courses"
+msgstr ""
+
+#: ../../contribute/design.rst:51
+msgid "**zoning**: static cities/districts/restricted areas layers"
+msgstr ""
+
+#: ../../contribute/design.rst:52
+msgid "**altimetry**: elevation, DEM"
+msgstr ""
+
+#: ../../contribute/design.rst:53
+msgid "**api**: manage all external communications interfaces (api v2, mobile)"
+msgstr ""
+
+#: ../../contribute/design.rst:54
+msgid "**cirkwi**: implementation of cirkwi related api"
+msgstr ""
+
+#: ../../contribute/design.rst:55
+msgid "**feedback**: feedbacks content, implementation of suricate workflow"
+msgstr ""
+
+#: ../../contribute/design.rst:56
+msgid ""
+"**flatpages**: flatpages models, used for publishing content on rando and"
+" mobile apps"
+msgstr ""
+
+#: ../../contribute/design.rst:57
+msgid ""
+"**sensitivity**: sensitive areas and species related content, link with "
+"Biodiv'Sport"
+msgstr ""
+
+#: ../../contribute/design.rst:58
+msgid ""
+"**tourism**: touristic contents and events, links with SIT (apidae, "
+"tourinsoft)"
+msgstr ""
+
+#: ../../contribute/design.rst:62
+msgid "Django conventions twists"
+msgstr ""
+
+#: ../../contribute/design.rst:64
+msgid "We have a couple of Django conventions infringements:"
+msgstr ""
+
+#: ../../contribute/design.rst:66
+msgid ""
+"SQL triggers everywhere: since Geotrek-admin database is to become the "
+"central storage component of all territory organisation data, it has to "
+"behave consistently whether data is modified through the Web application "
+"or raw access tools (pgadmin, QGIS). (For example, insertion & update "
+"timestamps, geometry computation or DEM wrapping.)"
+msgstr ""
+
+#: ../../contribute/design.rst:70
+msgid ""
+"Safe delete: update field ``deleted = True`` instead of performing actual"
+" delete in table. Requires every querysets to be filtered on deleted. "
+"(**TODO**: use dango-safedelete, `issue 813 <https://github.com/GeotrekCE"
+"/Geotrek-admin/issues/813>`_)"
+msgstr ""
+
+#: ../../contribute/design.rst:75
+msgid "Main roles of PostgreSQL triggers"
+msgstr ""
+
+#: ../../contribute/design.rst:77
+msgid "Automatic computation of fields :"
+msgstr ""
+
+#: ../../contribute/design.rst:79
+msgid "Date insert/update"
+msgstr ""
+
+#: ../../contribute/design.rst:80
+msgid "Geometry computation of linear referencing (topologies)"
+msgstr ""
+
+#: ../../contribute/design.rst:81
+msgid "DEM elevation wrapping (3D length, slope, etc.)"
+msgstr ""
+
+#: ../../contribute/design.rst:83
+msgid "Topological path network :"
+msgstr ""
+
+#: ../../contribute/design.rst:85
+msgid "Split paths at intersection"
+msgstr ""
+
+#: ../../contribute/design.rst:86
+msgid "Snap paths extremities"
+msgstr ""
+

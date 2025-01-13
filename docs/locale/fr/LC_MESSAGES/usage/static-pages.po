@@ -1,0 +1,824 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2013-2024, Makina Corpus
+# This file is distributed under the same license as the Geotrek package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Geotrek \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-13 11:25+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr\n"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: ../../usage/static-pages.rst:3
+msgid "Pages statiques & menus"
+msgstr ""
+
+#: ../../usage/static-pages.rst:9
+msgid ""
+"Les pages statiques sont les pages d'information et de contextualisation "
+"de votre portail web Geotrek-rando. Comme pourraient l'être les premières"
+" pages d'un topo-guide papier. Elles peuvent aussi être consultées dans "
+"votre application Geotrek-mobile."
+msgstr ""
+
+#: ../../usage/static-pages.rst:13
+msgid ""
+"Exemple de page statique (https://www.grand-tour-ecrins.fr/information/1"
+"-Le-Grand-Tour-des-Ecrins)"
+msgstr ""
+
+#: ../../usage/static-pages.rst:15
+msgid ""
+"Les pages statiques permettent de fournir à l’internaute et futur "
+"randonneur des informations génériques : présentation de votre "
+"territoire, structures, partenaires, recommandations, informations "
+"pratiques, etc."
+msgstr ""
+
+#: ../../usage/static-pages.rst:17
+msgid ""
+"Elles sont gérées depuis le site d'administration de Geotrek-admin et "
+"sont ensuite publiées sur Geotrek-rando via l'API."
+msgstr ""
+
+#: ../../usage/static-pages.rst:21
+msgid ""
+"Du point de vue d'un portail de valorisation comme Geotrek-rando on parle"
+" des pages statiques par opposition aux pages « dynamiques » qui "
+"correspondent aux objets saisis dans les différents modules de Geotrek-"
+"admin (itinéraires, POIs, contenus et événements touristiques, sites et "
+"parcours Outdoor...). Ces derniers sont accessibles depuis la page de "
+"recherche avec ses filtres et la carte, ainsi qu'avec leurs pages de "
+"détails. Ces pages ne sont pas conçues manuellement mais sont un "
+"assemblage dynamique de multiples sources de données effectué par le "
+"logiciel Geotrek."
+msgstr ""
+
+#: ../../usage/static-pages.rst:23
+msgid ""
+"Pour rendre les pages statiques accessibles aux visiteurs, Geotrek-admin "
+"permet de gérer les menus dans le bandeau du portail Geotrek-rando. Les "
+"éléments du premier niveau sont toujours apparents (s'il y a assez "
+"d'espace d'affichage, ou dans un menu « Burger » sinon). Et il est "
+"possible de définir des éléments de menu dans un 2ème niveau, accessibles"
+" en déroulant les menus."
+msgstr ""
+
+#: ../../usage/static-pages.rst:27
+msgid "Exemple de menus déroulants définis dans Geotrek-admin"
+msgstr ""
+
+#: ../../usage/static-pages.rst:29
+msgid ""
+"La section correspondante et le type d'entités s'appelle \"Élément "
+"Menu\", dans cette documentation on pourra parler de menu pour signifier "
+"les éléments de menu."
+msgstr ""
+
+#: ../../usage/static-pages.rst:31
+msgid ""
+"Les exemples de présentation visuelle des menus et des pages statiques "
+"décrivent la manière dont Geotrek-rando peut exploiter ces données et "
+"paramètrages. La présentation pourrait être différente si le portail "
+"n'est pas propulsé par Geotrek-rando."
+msgstr ""
+
+#: ../../usage/static-pages.rst:34
+msgid "Créer une page statique"
+msgstr ""
+
+#: ../../usage/static-pages.rst:38
+msgid ""
+"Le formulaire de création/modification d'une page statique contient les "
+"champs suivants :"
+msgstr ""
+
+#: ../../usage/static-pages.rst:40
+msgid "**Titre \\***"
+msgstr ""
+
+#: ../../usage/static-pages.rst:41
+msgid "Publiée"
+msgstr ""
+
+#: ../../usage/static-pages.rst:42
+msgid "Portails"
+msgstr ""
+
+#: ../../usage/static-pages.rst:43
+msgid "Sources"
+msgstr ""
+
+#: ../../usage/static-pages.rst:44
+msgid "Image de couverture"
+msgstr ""
+
+#: ../../usage/static-pages.rst:45
+msgid "Auteur image couverture"
+msgstr ""
+
+#: ../../usage/static-pages.rst:46
+msgid "Contenu"
+msgstr ""
+
+#: ../../usage/static-pages.rst:47
+msgid "Position"
+msgstr ""
+
+#: ../../usage/static-pages.rst:48
+msgid "Relative à"
+msgstr ""
+
+#: ../../usage/static-pages.rst:50
+msgid "Seul le champ \"Titre\" est obligatoire pour créer une page statique."
+msgstr ""
+
+#: ../../usage/static-pages.rst:52
+msgid ""
+"Les champs \"Titre\", \"Publiée\" et \"Contenu\" peuvent recevoir une "
+"valeur différente pour chaque langue configurée."
+msgstr ""
+
+#: ../../usage/static-pages.rst:54 ../../usage/static-pages.rst:165
+msgid "*Titre*"
+msgstr ""
+
+#: ../../usage/static-pages.rst:56
+msgid ""
+"Il s'agit du titre de votre page qui sera visible et mis en avant sur la "
+"page elle-même. Le titre sert également à générer l'adresse web de la "
+"page."
+msgstr ""
+
+#: ../../usage/static-pages.rst:58
+msgid "*Publiée*"
+msgstr ""
+
+#: ../../usage/static-pages.rst:60
+msgid ""
+"Une page n'est visible sur le portail de valorisation que si elle a été "
+"publiée dans l'admin. On peut publier une page uniquement pour certaines "
+"langues."
+msgstr ""
+
+#: ../../usage/static-pages.rst:62 ../../usage/static-pages.rst:167
+msgid "*Portails*"
+msgstr ""
+
+#: ../../usage/static-pages.rst:64
+msgid ""
+"Ce champ ne concerne que les pages qui ne sont pas ciblées par un menu et"
+" les Geotrek-rando qui sont filtrés par portail. Permet de rendre la page"
+" visible sur certains portails pour y faire référence en-dehors des menus"
+" de navigation (dans le bas de page, dans le contenu d'une autre page, "
+"etc). Si une page est associée à un élément de menu, alors ce sera le (ou"
+" les) portail(s) associé(s) à cet élément de menu qui définira sur quel "
+"portail elle sera affichée et accessible."
+msgstr ""
+
+#: ../../usage/static-pages.rst:66
+msgid "*Sources*"
+msgstr ""
+
+#: ../../usage/static-pages.rst:68
+msgid ""
+"Permet d'attribuer une ou plusieurs sources au contenu de la page. Les "
+"sources peuvent être créées sur le site d'administration dans la section "
+"COMMUN ou directement avec le bouton + à côté de ce champ."
+msgstr ""
+
+#: ../../usage/static-pages.rst:70
+msgid "*Cover image*"
+msgstr ""
+
+#: ../../usage/static-pages.rst:72
+msgid ""
+"Permet de saisir une image grand format qui sera affichée en mode bandeau"
+" en haut de la page."
+msgstr ""
+
+#: ../../usage/static-pages.rst:74
+msgid "*Contenu*"
+msgstr ""
+
+#: ../../usage/static-pages.rst:76
+msgid ""
+"Le contenu de la page, sa mise en forme, les médias qui y sont insérés. "
+"Le contenu peut être traduit avec les valeurs spécifiques pour chaque "
+"langue configurée."
+msgstr ""
+
+#: ../../usage/static-pages.rst:78 ../../usage/static-pages.rst:171
+msgid "*Position* et *Relative à*"
+msgstr ""
+
+#: ../../usage/static-pages.rst:80
+msgid ""
+"Ces champs sont une alternative au glisser-déposer sur la liste des Pages"
+" Statiques et permettent de déplacer les pages dans l'arborescence (voir "
+"`Arborescence des pages statiques`_)."
+msgstr ""
+
+#: ../../usage/static-pages.rst:83
+msgid "Mise en forme et médias"
+msgstr ""
+
+#: ../../usage/static-pages.rst:87
+msgid ""
+"Le champ \"Contenu\" expose un éditeur de texte riche (TinyMCE) "
+"permettant d'ajouter de la mise en forme et des médias dans le contenu de"
+" la page."
+msgstr ""
+
+#: ../../usage/static-pages.rst:89
+msgid "mise en forme du texte : titres, style du texte, couleur du texte"
+msgstr ""
+
+#: ../../usage/static-pages.rst:90
+msgid "insertion de listes"
+msgstr ""
+
+#: ../../usage/static-pages.rst:91
+msgid "encart \"Information\""
+msgstr ""
+
+#: ../../usage/static-pages.rst:92
+msgid "lien sous forme de bouton"
+msgstr ""
+
+#: ../../usage/static-pages.rst:93
+msgid "citation"
+msgstr ""
+
+#: ../../usage/static-pages.rst:95
+msgid "Médias :"
+msgstr ""
+
+#: ../../usage/static-pages.rst:97
+msgid "insérer une image"
+msgstr ""
+
+#: ../../usage/static-pages.rst:98
+msgid "insérer une vidéo YouTube"
+msgstr ""
+
+#: ../../usage/static-pages.rst:99
+msgid "insérer un lien vers une autre page"
+msgstr ""
+
+#: ../../usage/static-pages.rst:100
+msgid "encart de suggestion de contenu Geotrek"
+msgstr ""
+
+#: ../../usage/static-pages.rst:103
+msgid "Insérer une image"
+msgstr ""
+
+#: ../../usage/static-pages.rst:107
+msgid ""
+"L'outil *Insérer/modifier* une image permet d'insérer une image dans le "
+"contenu. Il est possible d'insérer une image déjà en ligne en renseignant"
+" son URL, ou de la télécharger sur le serveur. Privilégiez des images de "
+"taille suffisante, mais pas trop grande et volumineuse non plus car cela "
+"alourdira le chargement des pages inutilement."
+msgstr ""
+
+#: ../../usage/static-pages.rst:109
+msgid "Les champs suivants sont à renseigner :"
+msgstr ""
+
+#: ../../usage/static-pages.rst:111
+msgid "Source"
+msgstr ""
+
+#: ../../usage/static-pages.rst:112
+msgid ""
+"Description alternative : non-affichée, pour l'accessibilité et les "
+"formes de consultation alternatives du contenu"
+msgstr ""
+
+#: ../../usage/static-pages.rst:113
+msgid "Largeur et Hauteur de présentation de l'image en pixels"
+msgstr ""
+
+#: ../../usage/static-pages.rst:114
+msgid ""
+"checkbox \"Afficher le sous-titrage\" insère une zone de texte collée à "
+"l'image pour afficher la légende et l'auteur de l'image (le titre est à "
+"saisir dans le contenu à la place du terme \"Caption\", une fois le "
+"formulaire d'ajout de l'image validé)"
+msgstr ""
+
+#: ../../usage/static-pages.rst:116
+msgid ""
+"Une fois l'image chargée, il est possible de la redimensionner, et de "
+"l'aligner à gauche ou à droite du reste du contenu."
+msgstr ""
+
+#: ../../usage/static-pages.rst:119
+msgid "Insérer des suggestions de contenus Geotrek"
+msgstr ""
+
+#: ../../usage/static-pages.rst:123
+msgid "Avec l'outil *Suggestions*, les champs suivants sont à renseigner :"
+msgstr ""
+
+#: ../../usage/static-pages.rst:125
+msgid ""
+"le type de contenu (itinéraires, contenu touristique, événements ou site "
+"outdoor)"
+msgstr ""
+
+#: ../../usage/static-pages.rst:126
+msgid ""
+"les identifiants des contenus (séparés par des virgules. Par exemple : "
+"12,8,73)"
+msgstr ""
+
+#: ../../usage/static-pages.rst:127
+msgid "un titre pour l'encart de suggestions"
+msgstr ""
+
+#: ../../usage/static-pages.rst:129
+msgid ""
+"Après la validation du formulaire une zone récapitulant les informations "
+"saisies sous forme textuelle est placée dans le contenu de la page. Le "
+"portail Geotrek-rando enrichira la présentation des suggestions avec les "
+"titres des contenus suggérés à la place des identifiants et les images "
+"associées."
+msgstr ""
+
+#: ../../usage/static-pages.rst:132
+msgid "Vérifier la mise en page du contenu"
+msgstr ""
+
+#: ../../usage/static-pages.rst:136
+msgid "Les outils suivants sont disponibles :"
+msgstr ""
+
+#: ../../usage/static-pages.rst:138
+msgid ""
+"*Afficher les blocs* : permet de contrôler finement la séparation du "
+"contenu en blocs (pratique pour les paragraphes de texte)"
+msgstr ""
+
+#: ../../usage/static-pages.rst:139
+msgid ""
+"*Code source* : affiche et permet de modifier directement le contenu au "
+"format HTML (pour les utilisateurs avertis)"
+msgstr ""
+
+#: ../../usage/static-pages.rst:141
+msgid ""
+"Il est aussi possible de prévisualiser une page statique avant de la "
+"rendre accessible à tous en l'associant à un élément de menu. Pour cela, "
+"créer la page, la publier et y accéder en saisissant son URL directement "
+": ``https://URL-GEOTREK-RANDO/information/ID-PAGE`` (exemple : "
+"``https://gtr3demo.ecrins-parcnational.fr/information/6``). Vous pourrez "
+"aussi alors récupérer son URL complète générée par Geotrek-rando, si vous"
+" souhaitez faire un lien vers cette page statique sans la rendre "
+"accessible depuis le menu."
+msgstr ""
+
+#: ../../usage/static-pages.rst:144
+msgid "Publier une page"
+msgstr ""
+
+#: ../../usage/static-pages.rst:146
+msgid ""
+"Une page créée n'est pas immédiatement visible sur un portail Geotrek-"
+"rando. Il faut d'abord la marquer comme \"Publiée\" pour chacune des "
+"langues souhaitées. Il faut ensuite lui donner un moyen d'être accessible"
+" sur le site portail. Plusieurs options :"
+msgstr ""
+
+#: ../../usage/static-pages.rst:148
+msgid ""
+"faire figurer un lien vers la page dans les menus déroulants (voir "
+"`Arborescence de menus`_)"
+msgstr ""
+
+#: ../../usage/static-pages.rst:149
+msgid ""
+"placer la page dans l'arborescence des pages (voir `Arborescence des "
+"pages statiques`_)"
+msgstr ""
+
+#: ../../usage/static-pages.rst:150
+msgid ""
+"placer un lien direct dans une autre section du site : dans une page "
+"d'accueil personnalisée, dans un bas de page, etc."
+msgstr ""
+
+#: ../../usage/static-pages.rst:153
+msgid "Arborescence de menus"
+msgstr ""
+
+#: ../../usage/static-pages.rst:157
+msgid ""
+"La page listant les \"Éléments Menus\" indique la structure arborescente "
+"qui sous-tend les menus tels qu'ils apparaîtront sur le portail."
+msgstr ""
+
+#: ../../usage/static-pages.rst:159
+msgid "Note"
+msgstr ""
+
+#: ../../usage/static-pages.rst:161
+msgid "Un portail de type Geotrek-rando ne peut afficher que 2 niveaux de menus !"
+msgstr ""
+
+#: ../../usage/static-pages.rst:163
+msgid "Chaque élément de menu a les champs suivants :"
+msgstr ""
+
+#: ../../usage/static-pages.rst:166
+msgid "*Publié*"
+msgstr ""
+
+#: ../../usage/static-pages.rst:168
+msgid "*Type de cible*"
+msgstr ""
+
+#: ../../usage/static-pages.rst:169
+msgid "[Si type de cible est \"page\"] la *page* cible"
+msgstr ""
+
+#: ../../usage/static-pages.rst:170
+msgid ""
+"[Si type de cible est \"lien\"] l'*URL du lien* (par langue) et checkbox "
+"*Ouvrir dans un nouvel onglet*"
+msgstr ""
+
+#: ../../usage/static-pages.rst:173
+msgid ""
+"Chaque élément de menu peut avoir une cible ou non. S'il a une cible le "
+"clic sur le menu y accédera. Il y a trois possibilités de cibles :"
+msgstr ""
+
+#: ../../usage/static-pages.rst:175
+msgid "une page statique Geotrek, avec le type de cible = \"page\""
+msgstr ""
+
+#: ../../usage/static-pages.rst:176
+msgid ""
+"avec le type de cible = \"lien\" : + une page web externe sur un autre "
+"site web, par exemple ``https://fr.wikipedia.org/wiki/Randonnée``. Auquel"
+" cas une bonne pratique web est de l'ouvrir un nouvel onglet (checkbox "
+"cochée) + une page web interne au portail, typiquement une recherche "
+"pré-enregistrée, par exemple "
+"\"/search?practices=4&difficulty=2&duration=1\". Auquel cas une bonne "
+"pratique est de rester sur le même onglet (checkbox non-cochée)"
+msgstr ""
+
+#: ../../usage/static-pages.rst:180
+msgid ""
+"Le champ *Plateforme* permet de différencier des menus destinés "
+"uniquement à un portail web ou uniquement à une application Geotrek-"
+"mobile. Cette possibilité de paramètrage sera bientôt supprimée."
+msgstr ""
+
+#: ../../usage/static-pages.rst:183
+msgid "Arborescence des pages statiques"
+msgstr ""
+
+#: ../../usage/static-pages.rst:187
+msgid ""
+"Les pages statiques sont organisées dans une structure arborescente. Une "
+"page statique peut avoir des pages enfants et une unique page parente. "
+"L'arborescence des pages statiques permet d'organiser le contenu statique"
+" d'un portail d'une manière intelligible pour les visiteurs du site."
+msgstr ""
+
+#: ../../usage/static-pages.rst:189
+msgid ""
+"Les pages enfants sont accessibles depuis le bas d'une page parente dans "
+"Geotrek-rando."
+msgstr ""
+
+#: ../../usage/static-pages.rst:192
+msgid "Compatibilité de contenu créé avec l'ancien éditeur"
+msgstr ""
+
+#: ../../usage/static-pages.rst:194
+msgid ""
+"L'ancien éditeur de contenu des pages statiques (éditeur de grille avec "
+"Bootstrap) a été supprimé avec la déprécation de Geotrek-rando-v2."
+msgstr ""
+
+#: ../../usage/static-pages.rst:196
+msgid ""
+"Les pages statiques créées avec l'ancienne version de l'éditeur "
+"continueront de fonctionner sans changement sur le portail Geotrek-rando "
+"v3. Cependant il se peut que le balisage du contenu créé par l'ancien "
+"éditeur doive être retiré pour pouvoir utiliser à nouveau les styles et "
+"outils de mise en forme."
+msgstr ""
+
+#: ../../usage/static-pages.rst:198
+msgid "Comment procéder ?"
+msgstr ""
+
+#: ../../usage/static-pages.rst:200
+msgid ""
+"par précaution faire une copie du contenu, en incluant toutes les "
+"informations (URLs des images, etc)"
+msgstr ""
+
+#: ../../usage/static-pages.rst:201
+msgid ""
+"utiliser l'outil *code* ( ``< >`` ) pour obtenir une copie du contenu "
+"incluant les balises HTML"
+msgstr ""
+
+#: ../../usage/static-pages.rst:202
+msgid "retirer toutes les balises grâce à un outil en ligne (voir ci-dessous)"
+msgstr ""
+
+#: ../../usage/static-pages.rst:203
+msgid ""
+"remplacer l'ancien code avec le contenu nettoyé dans la fenêtre de "
+"l'outil *code*, valider"
+msgstr ""
+
+#: ../../usage/static-pages.rst:204
+msgid "refaire la mise en forme"
+msgstr ""
+
+#: ../../usage/static-pages.rst:206
+msgid ""
+"Il existe beaucoup de service web pour nettoyer un contenu de ses balises"
+" HTML. Voici les deux premiers résultats provenant d'un moteur de "
+"recherche :"
+msgstr ""
+
+#: ../../usage/static-pages.rst:208
+msgid "https://striphtml.com/"
+msgstr ""
+
+#: ../../usage/static-pages.rst:209
+msgid "https://www.w3docs.com/tools/string-remove-tags"
+msgstr ""
+
+#~ msgid "Pages statiques"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Depuis Geotrek-Rando V3, le composant"
+#~ " Bootstrap n'est plus utilisé pour "
+#~ "gérer les différentes tailles d'écran. "
+#~ "Cela signifie que la mise en page"
+#~ " créée dans Geotrek-Admin n'est pas"
+#~ " reproduite sur le site public. Cette"
+#~ " documentation n'est valable que pour "
+#~ "Geotrek-Rando V2 en attendant sa "
+#~ "mise à jour expliquant le fonctionnement"
+#~ " actuel. Voir le ticket : "
+#~ "https://github.com/GeotrekCE/Geotrek-rando-v3/issues/466"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Exemple de page statique (http://www.grand-"
+#~ "tour-ecrins.fr/informations/le-grand-tour-"
+#~ "des-ecrins/)"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Elles permettent de fournir à "
+#~ "l'internaute et futur randonneur des "
+#~ "informations génériques : présentation de "
+#~ "votre structure, votre projet de "
+#~ "randonnée, recommandations, informations pratiques,"
+#~ " etc."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Elles sont gérées depuis le module "
+#~ "de configuration de Geotrek-admin et "
+#~ "sont ensuite publiées sur Geotrek-rando"
+#~ " à chaque synchronisation du contenu."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Depuis le module de configuration de "
+#~ "Geotrek-admin, sélectionnez \"Pages "
+#~ "statiques\" dans la rubrique \"Flatpages\"."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Vous accédez alors à la liste des"
+#~ " pages statiques. Cliquer sur \"Ajouter "
+#~ "Page statique\" en haut à droite "
+#~ "de l'écran pour créer une première "
+#~ "page."
+#~ msgstr ""
+
+#~ msgid "Construire une page statique"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Sélectionnez la langue du contenu que"
+#~ " vous souhaitez saisir : en / "
+#~ "fr / it..."
+#~ msgstr ""
+
+#~ msgid "Saisissez :"
+#~ msgstr ""
+
+#~ msgid "un titre (sans guillemets, parenthèses, etc.)"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "un ordre optionnel (pour définir l'ordre"
+#~ " d'apparition dans le menu de votre"
+#~ " Geotrek-rando)"
+#~ msgstr ""
+
+#~ msgid "cochez « publié » lorsque vous souhaiterez mettre en ligne votre page"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "définissez la « source » (comprendre "
+#~ "ici la destination d'affichage et donc"
+#~ " votre Geotrek-rando)"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "sélectionnez une cible (Geotrek-rando "
+#~ "et/ou Geotrek-mobile ou cachée pour "
+#~ "créer une page qui ne sera pas "
+#~ "listée dans le menu)."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Attention, à chaque fois que cela "
+#~ "vous est demandé, veillez à sélectionner"
+#~ " la langue de votre contenu."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "L'interface permet de construire sa page"
+#~ " en responsive design, c'est-à-dire qu'il"
+#~ " est possible de disposer les blocs"
+#~ " de contenu pour s'adapter aux "
+#~ "différentes tailles d'écrans des utilisateurs."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Choisissez le gabarit sur lequel vous"
+#~ " souhaitez construire votre page : 12"
+#~ " / 6-6 / 4-4-4 / etc. Ce "
+#~ "sont des formats prédéfinis d'assemblage "
+#~ "de blocs basés sur 12 colonnes qui"
+#~ " occupent 100% de la largeur de "
+#~ "l'écran (Bootstrap)."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Vous pouvez aussi utiliser ou vous "
+#~ "inspirer des 2 gabarits d'exemple "
+#~ "(Gabarit 1 et Gabarit 2)."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Vous pouvez ajouter autant de gabarits"
+#~ " que vous le souhaitez sur une "
+#~ "seule page."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Une fois que vous avez ajusté vos"
+#~ " blocs de contenu pour un affichage"
+#~ " sur ordinateur (Desktop), vous devez "
+#~ "basculer sur l'affichage sur mobile "
+#~ "(Phone) pour l'adapter à de plus "
+#~ "petits écrans (en cliquant sur les "
+#~ "+ et - bleus de chaque bloc). "
+#~ "Privilégiez alors des blocs sur une "
+#~ "colonne faisant 100% de large."
+#~ msgstr ""
+
+#~ msgid "Ajouter du contenu dans un bloc"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "En cliquant dans la zone de texte,"
+#~ " une barre d'édition apparaît. Sur un"
+#~ " format classique comme dans les "
+#~ "logiciels de traitement texte, plusieurs "
+#~ "menus et outils sont alors disponibles"
+#~ " :"
+#~ msgstr ""
+
+#~ msgid "File : (fichier)"
+#~ msgstr ""
+
+#~ msgid "Edit : retour, copier-coller,"
+#~ msgstr ""
+
+#~ msgid "Insert : Insérer une image, un lien, des caractères spéciaux"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Insérer une image : cela ouvre une"
+#~ " nouvelle fenêtre avec différents champs"
+#~ " à remplir :"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Source : insérer l'URL de l'image "
+#~ "(idéalement dans le répertoire "
+#~ "/custom/public/images/ de votre Geotrek-rando)"
+#~ msgstr ""
+
+#~ msgid "Image description : légender l'image pour optimiser son référencement"
+#~ msgstr ""
+
+#~ msgid "Dimensions : ajuster le format et cocher « Constrain proportions »"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Insérer un lien : cela ouvre une"
+#~ " nouvelle fenêtre avec différents champs"
+#~ " à remplir :"
+#~ msgstr ""
+
+#~ msgid "URL : lien de destination"
+#~ msgstr ""
+
+#~ msgid "Title : texte à afficher pour le lien"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Target : « New window » si "
+#~ "vous souhaitez que le lien s'ouvre "
+#~ "dans un nouvel onglet"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "View : « Show blocks » permet "
+#~ "de faire apparaître les différents "
+#~ "paragraphes de votre texte. Elles sont"
+#~ " utiles à la structure de votre "
+#~ "texte."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Format : gras, italique, souligner, etc."
+#~ " Le sous-menu « Formats » "
+#~ "permet de choisir un style prédéfini "
+#~ "pour les titres (Heading 1, Heading "
+#~ "2, etc.). Pour que le style "
+#~ "s'applique uniquement au titre et non"
+#~ " pas à tout le texte, faire un"
+#~ " retour à la ligne et vérifier "
+#~ "sa prise en compte en activant «"
+#~ " Shox blocks »."
+#~ msgstr ""
+
+#~ msgid "Table : insertion de tableau"
+#~ msgstr ""
+
+#~ msgid "Tools : Afficher le code source de la page"
+#~ msgstr ""
+
+#~ msgid "Astuces"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Ne jamais utiliser la touche retour "
+#~ "du clavier [ ? ] sans avoir "
+#~ "le curseur sélectionné dans une zone "
+#~ "de texte. Cela équivaut à revenir "
+#~ "à la page précédente et vous "
+#~ "perdrez tout votre contenu sans le "
+#~ "sauvegarder."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Pour reproduire une page dans une "
+#~ "langue différente : copier le Code "
+#~ "Source et coller-le Code Source de"
+#~ " votre nouvelle langue. Vous n'aurez "
+#~ "plus qu'à traduire votre texte ! "
+#~ "Idem pour traduire un contenu dans "
+#~ "une autre langue."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Si deux de vos pages ont le "
+#~ "même numéro d'ordre d'apparition, une "
+#~ "seule des deux sera affichée sur "
+#~ "la plate-forme numérique."
+#~ msgstr ""
+

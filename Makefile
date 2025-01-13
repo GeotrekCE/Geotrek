@@ -41,6 +41,9 @@ serve:
 deps:
 	$(docker_compose) run --rm web bash -c "pip-compile -q --strip-extras && pip-compile -q --strip-extras dev-requirements.in && pip-compile -q --strip-extras docs/requirements.in"
 
+doc_translations:
+	$(docker_compose) run --rm sphinx bash -c "make gettext && rm ./_build/locale/changelog.pot && sphinx-intl update -l fr"
+
 flake8:
 	$(docker_compose) run --rm web flake8 geotrek
 

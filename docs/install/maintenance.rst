@@ -6,8 +6,8 @@ Maintenance
    :local:
    :depth: 2
 
-Application backup
-------------------
+Backup
+------
 
 Database
 
@@ -28,8 +28,8 @@ Configuration
     tar -zcvf `date +%Y%m%d%H%M`-conf.tar.gz /opt/geotrek-admin/var/conf/
 
 
-Application restore
--------------------
+Restore
+-------
 
 If you restore Geotrek-admin on a new server, you will have to install PostgreSQL and PostGIS and create a database user first.
 Otherwise go directly to the database creation step.
@@ -37,14 +37,14 @@ Otherwise go directly to the database creation step.
 .. code-block:: bash
 
     sudo apt install postgresql-14 postgresql-14-postgis-3
-    sudo -u postgres psql -c "CREATE USER geotrek PASSWORD 'geotrek';"
+    sudo -u postgres psql -c "CREATE USER geotrek WITH ENCRYPTED PASSWORD 'geotrek';"
 
 
 Create an empty database (``geotrekdb`` in this example):
 
 .. code-block:: bash
 
-    sudo -u postgres psql -c "CREATE DATABASE geotrekdb OWNER geotrek;"
+    sudo -u postgres psql -c "CREATE DATABASE geotrekdb WITH OWNER geotrek;"
     sudo -u postgres psql -d geotrekdb -c "CREATE EXTENSION postgis;"
     sudo -u postgres psql -d geotrekdb -c "CREATE EXTENSION postgis_raster;"
     sudo -u postgres psql -d geotrekdb -c "CREATE EXTENSION pgcrypto;"
@@ -76,6 +76,8 @@ PostgreSQL optimization
 * `Log long queries <http://wiki.postgresql.org/wiki/Logging_Difficult_Queries>`_
 
 * Use `pg activity <https://github.com/julmon/pg_activity#readme>`_ for monitoring
+
+* Use `pgtune <http://pgtune.leopard.in.ua/#/>`_ to optimize your configuration
 
 
 Access your database securely on your local machine (QGIS)

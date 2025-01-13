@@ -1,0 +1,562 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2013-2024, Makina Corpus
+# This file is distributed under the same license as the Geotrek package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Geotrek \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-13 11:25+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr\n"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: ../../usage/apis.rst:3
+msgid "APIs"
+msgstr ""
+
+#: ../../usage/apis.rst:12
+msgid "API Geotrek"
+msgstr ""
+
+#: ../../usage/apis.rst:14
+msgid ""
+"Geotrek dispose d’une API (Application Programming Interface) qui sert à "
+"exposer les données stockées dans une instance de Geotrek-admin, dans le "
+"but de pouvoir la faire communiquer avec d'autres outils, systèmes et "
+"plateforme et ainsi échanger des données."
+msgstr ""
+
+#: ../../usage/apis.rst:16
+msgid ""
+"Cette API, désormais dans sa version 2 permet à toute structure tierce de"
+" récupérer des données et de les intégrer dans son système ou ses "
+"applications."
+msgstr ""
+
+#: ../../usage/apis.rst:18
+msgid ""
+"À ce jour de nombreux partenaires des structures utilisatrices de "
+"l’application Geotrek ont déjà utilisé cette API pour intégrer les "
+"données dans leurs outils."
+msgstr ""
+
+#: ../../usage/apis.rst:20
+msgid ""
+"L'API Geotrek est le point central pour permettre les interconnexions "
+"avec divers services. Grâce à cette interface de données, Geotrek s'est "
+"positionné comme un point central dans un écosystème de solutions du "
+"monde de la gestion et promotion des activités de pleine nature."
+msgstr ""
+
+#: ../../usage/apis.rst:22
+msgid ""
+"Pour changer les paramètres d'accès de l'API, référez vous à cette "
+"section :ref:`API <api>`"
+msgstr ""
+
+#: ../../usage/apis.rst:25
+msgid "APIs externes"
+msgstr ""
+
+#: ../../usage/apis.rst:28
+msgid "Geotrek et IGNrando'"
+msgstr ""
+
+#: ../../usage/apis.rst:30
+msgid ""
+"Geotrek-admin est capable de produire un flux des itinéraires et POIs "
+"présents dans sa BDD au format Cirkwi pour pouvoir les importer "
+"directement dans IGNrando' (https://makina-corpus.com/sig-webmapping"
+"/geotrek-et-lign-ca-fonctionne)."
+msgstr ""
+
+#: ../../usage/apis.rst:32
+msgid ""
+"Exemple des randonnées et POIs du Parc national des Ecrins publiées sur "
+"IGNrando' depuis Geotrek-admin : https://ignrando.fr/fr/communautes/parc-"
+"national-des-ecrins"
+msgstr ""
+
+#: ../../usage/apis.rst:34
+msgid ""
+"Depuis cette version, 2 flux sont automatiquement générés par Geotrek-"
+"admin au format attendu par l'IGN :"
+msgstr ""
+
+#: ../../usage/apis.rst:36
+msgid "[URL_GEOTREK-ADMIN]/api/cirkwi/circuits.xml"
+msgstr ""
+
+#: ../../usage/apis.rst:37
+msgid "[URL_GEOTREK-ADMIN]/api/cirkwi/pois.xml"
+msgstr ""
+
+#: ../../usage/apis.rst:39
+msgid ""
+"Il est possible d'exclure les POI du flux pour ne diffuser que les "
+"randonnées. Pour cela, ajouter le paramètre ``?withoutpois=1`` à la fin "
+"de l'URL (``http://XXXXX/api/cirkwi/circuits.xml?withoutpois=1``)."
+msgstr ""
+
+#: ../../usage/apis.rst:41
+msgid ""
+"Il est possible de filtrer les POI du flux par structure. Pour cela, "
+"ajouter le paramètre ``?structures=<identifiant_de_la_structure>`` à la "
+"fin de l'URL (``http://XXXXX/api/cirkwi/pois.xml?structures=2``). Vous "
+"pouvez filtrer avec plusieurs structures : en séparant les identifiants "
+"par des virgules (``http://XXXXX/api/cirkwi/pois.xml?structures=2,5,3``)."
+msgstr ""
+
+#: ../../usage/apis.rst:44
+msgid ""
+"Il est également possible de filtrer les randonnées du flux par structure"
+" et par portail. Pour cela, ajouter le paramètre "
+"``?structures=<identifiant_de_la_structure>`` ou "
+"``?portals=<identifiant_de_la_structure>`` à la fin de l'URL "
+"(``http://XXXXX/api/cirkwi/circuits.xml?portals=3``)."
+msgstr ""
+
+#: ../../usage/apis.rst:47 ../../usage/apis.rst:52
+msgid ""
+"Il est également possible d'exclure du flux les randonnées provenant de "
+"sources externes à Geotrek-Admin. Ce filtre est notamment nécessaire pour"
+" ne pas renvoyer à Cirkwi les randonnées qui en proviennent déjà. Pour "
+"cela, ajouter le paramètre ``?include_externals=false`` à la fin de l'URL"
+" (``http://XXXXX/api/cirkwi/circuits.xml?include_externals=false``)."
+msgstr ""
+
+#: ../../usage/apis.rst:50 ../../usage/apis.rst:54
+msgid ""
+"Il est possible de cumuler ces différents filtres, en séparant les "
+"valeurs par un ``&`` "
+"(``http://XXXXX/api/cirkwi/circuits.xml?portals=3&structures=1&include_externals=false``)."
+msgstr ""
+
+#: ../../usage/apis.rst:56
+msgid ""
+"Le référentiel CIRKWI a été intégré dans 3 tables accessibles dans le "
+"module de configuration (à ne pas modifier) :"
+msgstr ""
+
+#: ../../usage/apis.rst:62
+msgid "Ensemble des champs paramétrables pour le référentiel CIRKWI"
+msgstr ""
+
+#: ../../usage/apis.rst:64
+msgid ""
+"Si vous ne souhaitez pas utiliser les valeurs par défaut ou avez créez "
+"vos propres typologies, il faut que vous renseigniez les correspondances "
+"entre les catégories de votre Geotrek et celles du référentiel IGN "
+"(Cirkwi) dans le module de configuration. Comme indiqué ici : "
+"https://github.com/GeotrekCE/Geotrek-admin/issues/806."
+msgstr ""
+
+#: ../../usage/apis.rst:66
+msgid "Pratique >> locomotion/loisirs"
+msgstr ""
+
+#: ../../usage/apis.rst:67
+msgid "Accessibilite >> thematiques/tags"
+msgstr ""
+
+#: ../../usage/apis.rst:68
+msgid "Themes >> thematiques/tags"
+msgstr ""
+
+#: ../../usage/apis.rst:69
+msgid "Types de POI >> Categories POI"
+msgstr ""
+
+#: ../../usage/apis.rst:71
+msgid ""
+"Les correspondances avec les valeurs de ces 3 tables sont donc à "
+"renseigner dans les tables Geotrek des Pratiques, Accessibilités, Thèmes "
+"et Types de POI."
+msgstr ""
+
+#: ../../usage/apis.rst:73
+msgid ""
+"Ce même flux est aussi utilisable pour alimenter directement la "
+"plateforme Cirkwi : https://pro.cirkwi.com/importez-vos-donnees-geotrek-"
+"dans-cirkwi/."
+msgstr ""
+
+#: ../../usage/apis.rst:75 ../../usage/apis.rst:113 ../../usage/apis.rst:243
+msgid "Note"
+msgstr ""
+
+#: ../../usage/apis.rst:77
+msgid ""
+"Geotrek-admin dispose aussi d'une API générique permettant d'accéder aux "
+"contenus d'une instance à l'adresse : ``[URL_GEOTREK-ADMIN]/api/v2/``"
+msgstr ""
+
+#: ../../usage/apis.rst:80
+msgid "Geotrek et APIDAE"
+msgstr ""
+
+#: ../../usage/apis.rst:82
+msgid ""
+"Il existe plusieurs passerelles entre la plateforme d'informations "
+"touristiques APIDAE et Geotrek."
+msgstr ""
+
+#: ../../usage/apis.rst:85
+msgid "APIDAE vers Geotrek"
+msgstr ""
+
+#: ../../usage/apis.rst:87
+msgid ""
+"Actuellement, certains contenus touristiques peuvent être synchronisés "
+"automatiquement avec une base APIDAE. Il s'agit des contenus situés dans "
+"les catégories suivantes :"
+msgstr ""
+
+#: ../../usage/apis.rst:89
+msgid ""
+"Contenus touristiques (hébergements, restaurants, produits du territoire,"
+" lieux de visites...)"
+msgstr ""
+
+#: ../../usage/apis.rst:90
+msgid "Evénements touristiques (expositions, conférences, sorties...)"
+msgstr ""
+
+#: ../../usage/apis.rst:92
+msgid ""
+"Les contenus touristiques peuvent aussi être synchronisés depuis des flux"
+" Tourinsoft ou Esprit Parc National."
+msgstr ""
+
+#: ../../usage/apis.rst:94
+msgid ""
+"Il est également possible de mettre en place des passerelles pour "
+"importer des POIs, des lieux de renseignement, des aménagements ainsi que"
+" des randonnées d'APIDAE vers Geotrek. Il est aussi possible d'enrichir "
+"le lien avec les contenus touristiques pour avoir par exemple d'autres "
+"catégories."
+msgstr ""
+
+#: ../../usage/apis.rst:96
+msgid ""
+"Pour configurer APIDAE, se référer à cette section :ref:`Configure APIDAE"
+" (ex-SITRA) import <configure-apidae-ex-sitra-import>`"
+msgstr ""
+
+#: ../../usage/apis.rst:99
+msgid "Geotrek vers APIDAE"
+msgstr ""
+
+#: ../../usage/apis.rst:101
+msgid ""
+"Il existe aussi un lien dans l'autre sens, permettant d'importer "
+"automatiquement vers APIDAE les itinéraires existants dans une instance "
+"Geotrek."
+msgstr ""
+
+#: ../../usage/apis.rst:103
+msgid ""
+"L'API permet de connecter une instance Geotrek pour importer des "
+"itinéraires vers les objets de type \"Équipements\" dans APIDAE."
+msgstr ""
+
+#: ../../usage/apis.rst:105
+msgid ""
+"Les randonnées VTT, trail, vélo et les tours itinérants sont également "
+"intégrés dans la passerelle."
+msgstr ""
+
+#: ../../usage/apis.rst:107
+msgid ""
+"Pour plus d'information, se référer à la documentation en ligne de "
+"`Sitourisme <https://github.com/GeotrekCE/Sitourisme#sitourisme-paca-"
+"api>`_."
+msgstr ""
+
+#: ../../usage/apis.rst:111
+msgid "Sensitivity module (or Biodiv'Sports)"
+msgstr ""
+
+#: ../../usage/apis.rst:115
+msgid ""
+"You can play with API using Biodiv'Sports widget tool: https"
+"://biodivsports-widget.lpo-aura.org/"
+msgstr ""
+
+#: ../../usage/apis.rst:117
+msgid ""
+"The Geotrek API provides a set of parameters that can be used to filter "
+"and sort data. There is a Swagger documentation (see :ref:`advanced-"
+"configuration-section` to enable it on your instance if needed) existing "
+"to test and browse those parameters that can be found at this address: "
+"``/api/v2/``."
+msgstr ""
+
+#: ../../usage/apis.rst:119
+msgid ""
+"This section focuses on some common parameters useful to work with "
+"sensitivity information and gives details about some endpoints."
+msgstr ""
+
+#: ../../usage/apis.rst:125
+msgid ""
+"If ``language`` parameter is provided, API returns directly translated "
+"fields, else, a dictionnary of traductions is returned"
+msgstr ""
+
+#: ../../usage/apis.rst:127
+msgid "e.g. ``/api/v2/sensitivearea_practice/1/?``"
+msgstr ""
+
+#: ../../usage/apis.rst:142
+msgid "e.g. ``/api/v2/sensitivearea_practice/1/?language=en``"
+msgstr ""
+
+#: ../../usage/apis.rst:155
+msgid "List of sport practices"
+msgstr ""
+
+#: ../../usage/apis.rst:157
+msgid "``/api/v2/sensitivearea_practice/``"
+msgstr ""
+
+#: ../../usage/apis.rst:159
+msgid "e.g. https://biodiv-sports.fr/api/v2/sensitivearea_practice/"
+msgstr ""
+
+#: ../../usage/apis.rst:164
+msgid "List of sensitive areas"
+msgstr ""
+
+#: ../../usage/apis.rst:166
+msgid "``/api/v2/sensitivearea/``"
+msgstr ""
+
+#: ../../usage/apis.rst:168
+msgid ""
+"The default output format is ``json``. To obtain output in ``geojson`` "
+"format, simply add the ``format=geojson`` parameter."
+msgstr ""
+
+#: ../../usage/apis.rst:170
+msgid "``/api/v2/sensitivearea/?format=geojson``"
+msgstr ""
+
+#: ../../usage/apis.rst:172
+msgid "e.g. https://biodiv-sports.fr/api/v2/sensitivearea/?format=geojson"
+msgstr ""
+
+#: ../../usage/apis.rst:174
+msgid "**Filtering data**"
+msgstr ""
+
+#: ../../usage/apis.rst:176
+msgid "Data can be filtered through these parameters:"
+msgstr ""
+
+#: ../../usage/apis.rst:178
+msgid "``language`` : API language (see :envvar:`Commons parameters`)"
+msgstr ""
+
+#: ../../usage/apis.rst:180
+msgid "Expected values: ``fr``, ``en``, ``es`` or ``it``"
+msgstr ""
+
+#: ../../usage/apis.rst:181
+msgid "e.g. ``/api/v2/sensitivearea/?language=fr``"
+msgstr ""
+
+#: ../../usage/apis.rst:183
+msgid "``period`` : Sensitivy period (months list)"
+msgstr ""
+
+#: ../../usage/apis.rst:185
+msgid "Expected values: List of month numbers (from 1 to 12), comma separated"
+msgstr ""
+
+#: ../../usage/apis.rst:186
+msgid "e.g. ``/api/v2/sensitivearea/?period=4,5,6,7``"
+msgstr ""
+
+#: ../../usage/apis.rst:188
+msgid "``practices`` : Sport practices"
+msgstr ""
+
+#: ../../usage/apis.rst:190
+msgid "Expected values: List of practices ids (see :envvar:`Sport practices`)"
+msgstr ""
+
+#: ../../usage/apis.rst:191
+msgid "e.g. ``/api/v2/sensitivearea/?practices=1,2``"
+msgstr ""
+
+#: ../../usage/apis.rst:193
+msgid "``structure`` : Organization that declared the sensitive area."
+msgstr ""
+
+#: ../../usage/apis.rst:195
+msgid "Expected values: List of structures ids"
+msgstr ""
+
+#: ../../usage/apis.rst:196
+msgid "e.g. ``/api/v2/sensitivearea/?structures=1,2``"
+msgstr ""
+
+#: ../../usage/apis.rst:198
+msgid "``in_bbox``"
+msgstr ""
+
+#: ../../usage/apis.rst:200
+msgid ""
+"Expected values: List of bbox coordinates (respectively longitude and "
+"latitude South-West then North-East corner), comma separated."
+msgstr ""
+
+#: ../../usage/apis.rst:201
+msgid "e.g. ``/api/v2/sensitivearea/?in_bbox=5.0,45.0,6.0,46.0``"
+msgstr ""
+
+#: ../../usage/apis.rst:203
+msgid ""
+"Full example https://biodiv-"
+"sports.fr/api/v2/sensitivearea/?format=geojson&language=fr&practices=1,2&period=4,5,6,7&in_bbox=5.0,45.0,6.0,46.0"
+msgstr ""
+
+#: ../../usage/apis.rst:205
+msgid "**Filtering fields**"
+msgstr ""
+
+#: ../../usage/apis.rst:207
+msgid ""
+"``fields``: List of expected fields (see :ref:`Field Descriptions "
+"<FielDesc>`)"
+msgstr ""
+
+#: ../../usage/apis.rst:209 ../../usage/apis.rst:214
+msgid "Expected values: List of field names, comma separated"
+msgstr ""
+
+#: ../../usage/apis.rst:210
+msgid "e.g. ``/api/v2/sensitivearea/?fields=name,geometry``"
+msgstr ""
+
+#: ../../usage/apis.rst:212
+msgid ""
+"``omit``: List of excluded fields (see :ref:`Field Descriptions "
+"<FielDesc>`)"
+msgstr ""
+
+#: ../../usage/apis.rst:215
+msgid "e.g. ``/api/v2/sensitivearea/?omit=name,geometry``"
+msgstr ""
+
+#: ../../usage/apis.rst:217
+msgid "Warning"
+msgstr ""
+
+#: ../../usage/apis.rst:218
+msgid "**GeoJSON** format expect at least `id` and `geometry` fields."
+msgstr ""
+
+#: ../../usage/apis.rst:222
+msgid "**Field descriptions**"
+msgstr ""
+
+#: ../../usage/apis.rst:225
+msgid "``id`` : local unique identifier of the sensitive area (integer)."
+msgstr ""
+
+#: ../../usage/apis.rst:226
+msgid "``name`` : Area name (string)."
+msgstr ""
+
+#: ../../usage/apis.rst:227
+msgid "``description`` : Area description (string in HTML format)."
+msgstr ""
+
+#: ../../usage/apis.rst:228
+msgid ""
+"``period`` : Area occupancy for each of the 12 months of the year "
+"(ordered array of 12 Booleans)."
+msgstr ""
+
+#: ../../usage/apis.rst:229
+msgid ""
+"``contact`` : Contact for further information about the sensitive area "
+"(string in HTML format)."
+msgstr ""
+
+#: ../../usage/apis.rst:230
+msgid ""
+"``practices``: sports practices concerned by the hotspot (array of "
+"identifiers)."
+msgstr ""
+
+#: ../../usage/apis.rst:231
+msgid "``info_url`` : URL containing further information about the area (URL)."
+msgstr ""
+
+#: ../../usage/apis.rst:232
+msgid ""
+"``structure`` : Structure or acronyme that provided information on the "
+"area (string)."
+msgstr ""
+
+#: ../../usage/apis.rst:233
+msgid ""
+"``elevation`` : Elevation used to define area sensitivity volume "
+"(globally elevation, buffer radius for areas declared as Point)."
+msgstr ""
+
+#: ../../usage/apis.rst:234
+msgid "``geometry`` : Area GeoJSON geometry. Type is always \"Polygon\"."
+msgstr ""
+
+#: ../../usage/apis.rst:235
+msgid "``species_id``: species identifier or null for regulatory areas."
+msgstr ""
+
+#: ../../usage/apis.rst:236
+msgid ""
+"``kml_url`` : URL of the downloadable KML file representing this "
+"regulatory zone."
+msgstr ""
+
+#: ../../usage/apis.rst:237
+msgid ""
+"``openair_url`` : URL of the downloadable OpenAir file representing the "
+"regulatory zone (available only for aerial activities)."
+msgstr ""
+
+#: ../../usage/apis.rst:238
+msgid "``attachment`` : List of area attachment files."
+msgstr ""
+
+#: ../../usage/apis.rst:239
+msgid "``rules`` : List of regulatory rules."
+msgstr ""
+
+#: ../../usage/apis.rst:240
+msgid "``update_datetime``: last update timestamp."
+msgstr ""
+
+#: ../../usage/apis.rst:241
+msgid "``create_datetime``: create timestamp."
+msgstr ""
+
+#: ../../usage/apis.rst:244
+msgid ""
+"Species informations are commons for each species areas sharing the same "
+"``species_id`` value, also share the same values for the ``name``, "
+"``period``, ``practices`` and ``info_url`` fields."
+msgstr ""
+

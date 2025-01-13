@@ -1,0 +1,458 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2013-2024, Makina Corpus
+# This file is distributed under the same license as the Geotrek package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version:  Geotrek\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-13 11:25+0000\n"
+"PO-Revision-Date: 2024-03-14 11:57+0100\n"
+"Last-Translator: Jean-Etienne Castagnede <jecastagnede@vivaldi.net>\n"
+"Language: fr\n"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: ../../install/installation.rst:3
+msgid "Installation"
+msgstr "Installation"
+
+#: ../../install/installation.rst:11
+msgid "Ubuntu package"
+msgstr "Paquet Ubuntu"
+
+#: ../../install/installation.rst:13
+msgid ""
+"Use these instructions to install Geotrek-admin in an easy way on a "
+"dedicated Ubuntu Focal Fossa 20.04 LTS server for production. For another"
+" distributions, please use :ref:`the Docker installation method <docker-"
+"section>`. It requires more technical skills. Lastly, for a developer "
+"instance, please follow :ref:`the dedicated procedure <development-"
+"section>`."
+msgstr ""
+"Utilisez ces instructions pour installer Geotrek-admin de manière simple "
+"sur un serveur Ubuntu Focal Fossa 20.04 LTS dédié à la production. Pour "
+"d'autres distributions, veuillez utiliser :ref:`la méthode d'installation"
+" Docker <docker-section>`. Elle nécessite plus de compétences techniques."
+" Enfin, pour une instance de développeur, veuillez suivre :ref:`la "
+"procédure dédiée <development-section>`."
+
+#: ../../install/installation.rst:19
+msgid "Requirements"
+msgstr "Prérequis"
+
+#: ../../install/installation.rst:21
+msgid ""
+"Geotrek is mostly a CPU-bound application due to the complex queries "
+"including geometric operations (such as intersections) which are executed"
+" on the database. This is especially true in the setup with a Geotrek "
+"Rando v3 portal requesting dynamic geometric data through the Geotrek "
+"API."
+msgstr ""
+"Geotrek est principalement une application liée au CPU en raison des "
+"requêtes complexes comprenant des opérations géométriques (telles que les"
+" intersections) qui sont exécutées sur la base de données. Ceci est "
+"particulièrement vrai dans le cas d'un portail Geotrek Rando v3 qui "
+"demande des données géométriques dynamiques via l'API de Geotrek."
+
+#: ../../install/installation.rst:25
+msgid "In such a configuration the required system resources should be:"
+msgstr ""
+"Dans une telle configuration, les ressources nécessaires au système "
+"devraient être les suivantes :"
+
+#: ../../install/installation.rst:27
+msgid "4 cores"
+msgstr "4 cœurs"
+
+#: ../../install/installation.rst:28
+msgid "8 Go RAM or more"
+msgstr "8 Go de RAM ou plus"
+
+#: ../../install/installation.rst:29
+msgid ""
+"50 Go disk space or more (20 Go + estimated size of attached files like "
+"photos, including elements imported from SIT)"
+msgstr ""
+"50 Go d'espace disque ou plus (20 Go + taille estimée des fichiers joints"
+" tels que les photos, y compris les éléments importés des SIT)"
+
+#: ../../install/installation.rst:31
+msgid ""
+"If spreading the components on multiple hosts keep in mind the bottleneck"
+" will most likely be the CPU and RAM at the database server level."
+msgstr ""
+"Si vous répartissez les composants sur plusieurs hôtes, n'oubliez pas que"
+" le goulot d'étranglement sera très probablement l'unité centrale et la "
+"mémoire vive au niveau du serveur de base de données."
+
+#: ../../install/installation.rst:34
+msgid "Software requirements are:"
+msgstr "Les prérequis logiciels sont :"
+
+#: ../../install/installation.rst:36
+msgid ""
+"Ubuntu Focal Fossa 20.04 LTS. Server flavor is recommended but any other "
+"flavors work too (desktop…)"
+msgstr ""
+"Ubuntu Focal Fossa 20.04 LTS. La version 'serveur' est recommandée, mais "
+"d'autres peuvent fonctionner (desktop…)"
+
+#: ../../install/installation.rst:38
+msgid ""
+"An Internet connection with open HTTP and HTTPS destination ports is "
+"required."
+msgstr "Une connexion internet avec les port HTTP et HTTPS est requise."
+
+#: ../../install/installation.rst:42
+msgid "Information to prepare before installation"
+msgstr "Informations à préparer avant l'installation"
+
+#: ../../install/installation.rst:44
+msgid ""
+"These information will be asked during the installation process and are "
+"the basic configuration of Geotrek-admin:"
+msgstr ""
+"Ces informations vous seront demandées lors de l'installation et "
+"constituent la configuration de base de Geotrek-admin :"
+
+#: ../../install/installation.rst:46
+msgid ""
+"The **domain name** or **IP** to use to access to **Geotrek-admin** web "
+"application."
+msgstr ""
+"Le **nom de domaine** ou **IP** à utiliser pour accéder à l'application "
+"web **Geotrek-admin**."
+
+#: ../../install/installation.rst:47
+msgid ""
+"Rando server name: the **domain name** to use to access to **Geotrek-"
+"rando** website (optional, if appropriate)."
+msgstr ""
+"Nom du serveur Rando : le **nom de domaine** à utiliser pour accéder au "
+"site web **Geotrek-rando** (facultatif, le cas échéant)."
+
+#: ../../install/installation.rst:48
+msgid ""
+"PostgreSQL **host, port, user, password and DB name** if you use an "
+"external DB server."
+msgstr ""
+"PostgreSQL **hôte, port, utilisateur, mot de passe et nom de la base de "
+"données** si vous utilisez un serveur de base de données externe."
+
+#: ../../install/installation.rst:49
+msgid ""
+"The **SRID** of the projection to use to store geometries. The projection"
+" must match your geographic area and coordinates must be in meters."
+msgstr ""
+"Le **SRID** de la projection à utiliser pour stocker les géométries. La "
+"projection doit correspondre à votre zone géographique et les coordonnées"
+" doivent être exprimées en mètres."
+
+#: ../../install/installation.rst:50
+msgid "The list of **languages** into which translation of contents will be made"
+msgstr ""
+"La liste des **langues** dans lesquelles la traduction du contenu sera "
+"effectuée"
+
+#: ../../install/installation.rst:51
+msgid "The name or acronym of your **organization**"
+msgstr "Le nom ou l'acronyme de votre  **organisation**"
+
+#: ../../install/installation.rst:55
+msgid "Fresh installation"
+msgstr "Nouvelle installation"
+
+#: ../../install/installation.rst:57
+msgid "Run the following command in a shell prompt on your server:"
+msgstr "Exécutez la commande suivante dans une invite shell sur votre serveur :"
+
+#: ../../install/installation.rst:63
+msgid ""
+"If you don't want to use a local database, you can run the following "
+"command instead. This will prevent the script to install PostgreSQL "
+"server locally. Don't forget to enable PostGIS extension in your remote "
+"database before installation."
+msgstr ""
+"Si vous ne souhaitez pas utiliser une base de données locale, vous pouvez"
+" exécuter la commande suivante à la place. Cela empêchera le script "
+"d'installer le serveur PostgreSQL localement. N'oubliez pas d'activer "
+"l'extension PostGIS dans votre base de données distante avant "
+"l'installation."
+
+#: ../../install/installation.rst:71
+msgid ""
+"Then create the application administrator account and connect to the web "
+"interface."
+msgstr ""
+"Créez ensuite le compte de l'administrateur de l'application et "
+"connectez-vous à l'interface web."
+
+#: ../../install/installation.rst:77
+msgid ""
+"If you are not confident with the ``install.sh`` script, or if you are "
+"having troubles, you can do the same operations by hand:"
+msgstr ""
+"Si vous n'avez pas confiance dans le script ``install.sh``, ou si vous "
+"avez des problèmes, vous pouvez faire les mêmes opérations à la main :"
+
+#: ../../install/installation.rst:79
+msgid ""
+"Add ``deb https://packages.geotrek.fr/ubuntu bionic main`` to APT sources"
+" list."
+msgstr ""
+"Ajoutez ``deb https://packages.geotrek.fr/ubuntu focal main`` aux sources"
+" APT."
+
+#: ../../install/installation.rst:80
+msgid "Add https://packages.geotrek.fr/geotrek.gpg.key to apt keyring."
+msgstr ""
+"Ajouter https://packages.geotrek.fr/geotrek.gpg.key au gestionnaire de "
+"clés APT."
+
+#: ../../install/installation.rst:81
+msgid "Run ``apt-get update``"
+msgstr "Lancer ``apt-get update``"
+
+#: ../../install/installation.rst:82
+msgid ""
+"If you want to use a local database, install PostGIS package (before "
+"installing Geotrek-admin, not at the same time). If not, you must create "
+"database and enable PostGIS extension before."
+msgstr ""
+"Si vous souhaitez utiliser une base de données locale, installez le "
+"paquet PostGIS (avant d'installer Geotrek-admin, pas en même temps). "
+"Sinon, vous devez créer une base de données et activer l'extension "
+"PostGIS au préalable."
+
+#: ../../install/installation.rst:84
+msgid "Install the Geotrek-admin package (``sudo apt install geotrek-admin``)."
+msgstr "Installez le paquet Geotrek-admin (``sudo apt install geotrek-admin``)."
+
+#: ../../install/installation.rst:86
+msgid "Note"
+msgstr ""
+
+#: ../../install/installation.rst:88
+msgid ""
+"Geotrek-admin is automatically installed in ``/opt/geotrek-admin/`` "
+"directory."
+msgstr ""
+"Geotrek-admin est automatiquement installé dans le répertoire ``opt"
+"/geotrek-admin/``."
+
+#: ../../install/installation.rst:90
+msgid ""
+"The installation automatically creates an internal ``geotrek`` linux "
+"user, owner of this directory"
+msgstr ""
+"L'installation crée automatiquement un utilisateur linux interne "
+"``geotrek``, propriétaire de ce répertoire"
+
+#: ../../install/installation.rst:92
+msgid ""
+"The Geotrek-admin Python application is located in ``/opt/geotrek-"
+"admin/lib/python3.x/site-packages/geotrek`` directory"
+msgstr ""
+"L'application Python Geotrek-admin se trouve dans le répertoire ``opt"
+"/geotrek-admin/lib/python3.x/site-packages/geotrek``"
+
+#: ../../install/installation.rst:96
+msgid "Extra steps"
+msgstr "Étapes supplémentaires"
+
+#: ../../install/installation.rst:98
+msgid ""
+"We highly recommend installing an antivirus software to regularly scan "
+"uploaded files located under ``/opt/geotrek-admin/var/media/``."
+msgstr ""
+"Nous vous recommandons vivement d'installer un logiciel antivirus pour "
+"analyser régulièrement les fichiers téléchargés situés sous ``/opt"
+"/geotrek-admin/var/media/``."
+
+#: ../../install/installation.rst:100
+msgid "Here is the installation process for `ClamAV <https://www.clamav.net/>`_ :"
+msgstr "Voici le processus d'installation de `ClamAV <https://www.clamav.net/>`_ :"
+
+#: ../../install/installation.rst:106
+msgid "Prepare quarantine folder for suspicious files:"
+msgstr "Créer un dossier de quarantaine pour les fichiers suspects :"
+
+#: ../../install/installation.rst:114
+msgid ""
+"Configure ClamAV via cron, to scan the folder once a day, put suspicious "
+"files in quarantine, and raise email alerts, by creating file "
+"``/etc/cron.daily/clamscan`` with the following content:"
+msgstr ""
+"Configurer ClamAV via cron, pour scanner le dossier une fois par jour, "
+"mettre les fichiers suspects en quarantaine, et envoyer des alertes par "
+"email, en créant le fichier ``/etc/cron.daily/clamscan`` avec le contenu "
+"suivant :"
+
+#: ../../install/installation.rst:129
+msgid ""
+"Make sure to change alert recepient (``admin@example.com`` above) and "
+"make this cron file executable:"
+msgstr ""
+"Assurez-vous de changer le destinataire de l'alerte "
+"(``admin@example.com``) et de rendre ce fichier cron exécutable :"
+
+#: ../../install/installation.rst:135
+msgid ""
+"If a suspicious file is put in quarantine, you will need to manually "
+"delete the corresponding attachment from Geotrek-Admin (since the file "
+"for this attachment has moved to the quarantine folder, it will no longer"
+" be found)."
+msgstr ""
+"Si un fichier suspect est placé en quarantaine, vous devez supprimer "
+"manuellement la pièce jointe correspondante à partir de Geotrek-Admin "
+"(puisque le fichier de cette pièce jointe a été déplacé dans le dossier "
+"de quarantaine, il ne sera plus trouvé)."
+
+#: ../../install/installation.rst:139
+msgid "Uninstallation"
+msgstr "Désinstallation"
+
+#: ../../install/installation.rst:141
+msgid "Run:"
+msgstr "Lancez :"
+
+#: ../../install/installation.rst:147
+msgid ""
+"Media files will be left in ``/opt/geotrek-admin/var`` directory. To "
+"remove them, run:"
+msgstr ""
+"Les fichiers médias seront laissés dans le répertoire ``opt/geotrek-"
+"admin/var``. Pour les supprimer, exécutez :"
+
+#: ../../install/installation.rst:153
+msgid "To remove dependencies (convertit, screamshoter…), run:"
+msgstr "Pour supprimer des dépendences (convertit, screamshoter…), lancer :"
+
+#: ../../install/installation.rst:159
+msgid "Warning"
+msgstr ""
+
+#: ../../install/installation.rst:161
+msgid ""
+"PostgreSQL and its database will not be removed by these commands. If "
+"need be, remove them manually."
+msgstr ""
+"PostgreSQL et ses bases de données ne seront pas supprimés par ces "
+"commandes. Si besoin, supprimez-les manuellement."
+
+#: ../../install/installation.rst:168
+msgid "Docker"
+msgstr "Docker"
+
+#: ../../install/installation.rst:170
+msgid ""
+"Docker is an alternative installation method, recommended for experts "
+"only. It allows to install several instances of Geotrek-admin on the same"
+" serveur, and to install it on other distributions than Ubuntu."
+msgstr ""
+"Docker est une méthode d'installation alternative, recommandée uniquement"
+" aux experts. Elle permet d'installer plusieurs instances de Geotrek-"
+"admin sur le même serveur, et de l'installer sur d'autres distributions "
+"qu'Ubuntu."
+
+#: ../../install/installation.rst:175
+msgid ""
+"Install Docker and Docker Compose, either from your distribution or from "
+"upstream packages (cf. https://docs.docker.com/install/)"
+msgstr ""
+"Installer Docker et Docker Compose, soit à partir de votre distribution, "
+"soit à partir de paquets amont (cf. https://docs.docker.com/install/)."
+
+#: ../../install/installation.rst:177
+msgid ""
+"Download the code from https://github.com/GeotrekCE/Geotrek-"
+"admin/releases or checkout it with git from https://github.com/GeotrekCE"
+"/Geotrek-admin/"
+msgstr ""
+"Télécharger le code à partir de https://github.com/GeotrekCE/Geotrek-"
+"admin/releases ou le récupérer avec git à partir de "
+"https://github.com/GeotrekCE/Geotrek-admin/"
+
+#: ../../install/installation.rst:179
+msgid "Unzip the tarball"
+msgstr "Décompresser l'archive"
+
+#: ../../install/installation.rst:180
+msgid "Copy docker/install folder where you want"
+msgstr "Copier le dossier docker/install à l'endroit désiré"
+
+#: ../../install/installation.rst:181
+#, fuzzy
+msgid "Edit ``docker-compose.yml`` to feed your needs if necessary"
+msgstr "Modifiez `docker-compose.yml` pour répondre à vos besoins si nécessaire"
+
+#: ../../install/installation.rst:182
+msgid ""
+"Copy ``.env.dist`` to ``.env`` and edit to feed your needs if necessary. "
+"Leave the ``GUNICORN_CMD_ARGS`` variable only if you're not using any "
+"other scaling system."
+msgstr ""
+
+#: ../../install/installation.rst:183
+msgid "Create user and database, enable PostGIS extension"
+msgstr "Créer un utilisateur et une base de données, activer l'extension PostGIS"
+
+#: ../../install/installation.rst:184
+#, fuzzy
+msgid "Run ``docker compose run --rm web update.sh``"
+msgstr "Exécutez `docker-compose run --rm web update.sh`"
+
+#: ../../install/installation.rst:185
+#, fuzzy
+msgid "Run ``docker compose up``"
+msgstr "Lancez `docker-compose up`"
+
+#: ../../install/installation.rst:186
+msgid ""
+"Install NGINX (or equivalent) and add a configuration file (taking "
+"inspiration from `nginx.conf.in`)"
+msgstr ""
+"Installez NGINX (ou équivalent) et ajouter un fichier de configuration "
+"(en s'inspirant de `nginx.conf.in`)"
+
+#: ../../install/installation.rst:189
+msgid "Management commands"
+msgstr "Commandes de gestion"
+
+#: ../../install/installation.rst:191
+#, fuzzy
+msgid ""
+"Replace ``sudo geotrek …`` commands by ``cd <install directory>; docker "
+"compose run --rm web ./manage.py …``"
+msgstr ""
+"Remplacer les commandes ``sudo geotrek ...`` par ``cd <répertoire "
+"d'installation> ; docker-compose run --rm web ./manage.py ...``"
+
+#: ../../install/installation.rst:193
+#, fuzzy
+msgid ""
+"Replace ``sudo dpkg-reconfigure geotrek-admin`` by ``cd <install "
+"directory>; docker compose run --rm web update.sh``"
+msgstr ""
+"Remplacer les commandes ``sudo geotrek ...`` par ``cd <répertoire "
+"d'installation> ; docker-compose run --rm web ./manage.py ...``"
+
+#: ../../install/installation.rst:195
+msgid "To load minimal data and create an application superuser, run:"
+msgstr ""
+"Pour charger les données minimales et créer un superutilisateur "
+"d'application, exécutez :"
+
+#~ msgid "Copy `.env.dist` to `.env` and edit to feed your needs if necessary"
+#~ msgstr ""
+#~ "Copiez `.env.dist` dans `.env` et "
+#~ "modifiez-le pour répondre à vos "
+#~ "besoins si nécessaire"
+

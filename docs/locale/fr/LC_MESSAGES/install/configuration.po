@@ -1,0 +1,289 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2013-2024, Makina Corpus
+# This file is distributed under the same license as the Geotrek package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Geotrek \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-13 11:25+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr\n"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: ../../install/configuration.rst:3
+msgid "Configuration"
+msgstr ""
+
+#: ../../install/configuration.rst:11
+msgid "Basic configuration update"
+msgstr ""
+
+#: ../../install/configuration.rst:13
+msgid ""
+"To update basic configuration (server name, database connection, "
+"languages, or set workers number or timeout), run:"
+msgstr ""
+
+#: ../../install/configuration.rst:19
+msgid ""
+"The basic configuration is stored in ``/opt/geotrek-admin/var/conf/env`` "
+"file, not to be changed manually. This file also contains the PostgreSQL "
+"authentification details, if you need to access your Geotrek-admin "
+"database."
+msgstr ""
+
+#: ../../install/configuration.rst:24
+msgid "Custom setting file"
+msgstr ""
+
+#: ../../install/configuration.rst:26
+msgid ""
+"Geotrek-admin advanced configuration is done in ``/opt/geotrek-"
+"admin/var/conf/custom.py`` file."
+msgstr ""
+
+#: ../../install/configuration.rst:28
+msgid ""
+"The list of all overridable setting and default values can be found "
+"`there <https://github.com/GeotrekCE/Geotrek-"
+"admin/blob/master/geotrek/settings/base.py>`_."
+msgstr ""
+
+#: ../../install/configuration.rst:31
+msgid "After any change in ``custom.py``, run:"
+msgstr ""
+
+#: ../../install/configuration.rst:37
+msgid "Sometimes you also have to run:"
+msgstr ""
+
+#: ../../install/configuration.rst:43 ../../install/configuration.rst:177
+msgid "Note"
+msgstr ""
+
+#: ../../install/configuration.rst:45
+msgid ""
+"Don't override the ``os.getenv()`` settings as they are managed with "
+"Basic configuration."
+msgstr ""
+
+#: ../../install/configuration.rst:49
+msgid "NGINX configuration"
+msgstr ""
+
+#: ../../install/configuration.rst:51
+msgid ""
+"NGINX configuration is controlled by Geotrek-admin and will be erased at "
+"each upgrade. Do not modify ``/etc/nginx/sites-available/geotrek.conf`` "
+"or ``/etc/nginx/sites-enable/geotrek.conf``. Modify ``/opt/geotrek-"
+"admin/var/conf/nginx.conf.in`` instead. To update ``nginx.conf``, then "
+"run:"
+msgstr ""
+
+#: ../../install/configuration.rst:61
+msgid "Activate SSL / HTTPS"
+msgstr ""
+
+#: ../../install/configuration.rst:63
+msgid "To activate https, you need firstly to change ``custom.py`` and add:"
+msgstr ""
+
+#: ../../install/configuration.rst:70
+msgid "After this, edit ``nginx.conf.in`` to add your certificate."
+msgstr ""
+
+#: ../../install/configuration.rst:72
+msgid ""
+"If you generate it with letsencrypt : You can use certbot to add the "
+"certificate in your configuration. But you will have to move the "
+"configuration automatically added into ``nginx.conf``, to the file "
+"``nginx.conf.in`` in ``/opt/geotrek-admin/var/conf/`` directory"
+msgstr ""
+
+#: ../../install/configuration.rst:77
+msgid ""
+"You have to move the configuration to the file ``nginx.conf.in`` because "
+"``nginx.conf`` is automatically changed during command ``dpkg-reconfigure"
+" geotrek-admin``."
+msgstr ""
+
+#: ../../install/configuration.rst:82
+msgid "Mandatory settings"
+msgstr ""
+
+#: ../../install/configuration.rst:85
+msgid "Spatial reference identifier"
+msgstr ""
+
+#: ../../install/configuration.rst:91
+msgid ""
+"Spatial reference identifier of your database. Default 2154 is RGF93 / "
+"Lambert-93 - France"
+msgstr ""
+
+#: ../../install/configuration.rst:93
+msgid "*It should not be change after any creation of geometries.*"
+msgstr ""
+
+#: ../../install/configuration.rst:95
+msgid "*Choose wisely with epsg.io for example*"
+msgstr ""
+
+#: ../../install/configuration.rst:100
+msgid "Default Structure"
+msgstr ""
+
+#: ../../install/configuration.rst:106
+msgid "Name for your default structure."
+msgstr ""
+
+#: ../../install/configuration.rst:108
+msgid "*This one can be changed, except it's tricky.*"
+msgstr ""
+
+#: ../../install/configuration.rst:110
+msgid "*First change the name in the admin (authent/structure),*"
+msgstr ""
+
+#: ../../install/configuration.rst:111
+msgid "*Stop your instance admin.*"
+msgstr ""
+
+#: ../../install/configuration.rst:112
+msgid "*Change in the settings*"
+msgstr ""
+
+#: ../../install/configuration.rst:113
+msgid "*Re-run the server.*"
+msgstr ""
+
+#: ../../install/configuration.rst:117
+msgid "Dynamic segmentation"
+msgstr ""
+
+#: ../../install/configuration.rst:123
+msgid "Use dynamic segmentation or not."
+msgstr ""
+
+#: ../../install/configuration.rst:125
+msgid ""
+"`Dynamic segmentation <https://geotrek.readthedocs.io/en/latest/usage"
+"/editing-objects.html#segmentation-dynamique>`_ is used by default when "
+"installing Geotrek-admin."
+msgstr ""
+
+#: ../../install/configuration.rst:127
+msgid "With this mode, linear objects are built and stored related to paths."
+msgstr ""
+
+#: ../../install/configuration.rst:129
+msgid ""
+"Without this mode, linear geometry of objects is built and stored as an "
+"independent geographic object without relation to paths."
+msgstr ""
+
+#: ../../install/configuration.rst:131
+msgid ""
+"So if you want to use Geotrek-admin without dynamic segmentation, set "
+"TREKKING_TOPOLOGY_ENABLED to false after installation."
+msgstr ""
+
+#: ../../install/configuration.rst:133
+msgid "Do not change it again to true after setting it to false."
+msgstr ""
+
+#: ../../install/configuration.rst:137
+msgid "Translations"
+msgstr ""
+
+#: ../../install/configuration.rst:143
+msgid "Language of your interface."
+msgstr ""
+
+#: ../../install/configuration.rst:149
+msgid ""
+"Languages of your project. It will be used to generate fields for "
+"translations. (ex: description_fr, description_en)"
+msgstr ""
+
+#: ../../install/configuration.rst:151
+msgid ""
+"*You won't be able to change it easily, avoid to add any languages and do"
+" not remove any.*"
+msgstr ""
+
+#: ../../install/configuration.rst:155
+msgid "Spatial extents"
+msgstr ""
+
+#: ../../install/configuration.rst:157
+msgid "Bounding box of your project : x minimum , y minimum , x max, y max::"
+msgstr ""
+
+#: ../../install/configuration.rst:167
+msgid "Default values::"
+msgstr ""
+
+#: ../../install/configuration.rst:171
+msgid ""
+"*If you extend spatial extent, don't forget to load a new DEM that covers"
+" all the zone.* *If you shrink spatial extent, be sure there is no "
+"element in the removed zone or you will no more be able to see and edit "
+"it.*"
+msgstr ""
+
+#: ../../install/configuration.rst:174
+msgid ""
+"In order to check your configuration of spatial extents, a small tool is "
+"available at ``http://<server_url>/tools/extents/``."
+msgstr ""
+
+#: ../../install/configuration.rst:179
+msgid "Administrator privileges are required."
+msgstr ""
+
+#: ../../install/configuration.rst:183
+msgid "Users management"
+msgstr ""
+
+#: ../../install/configuration.rst:185
+msgid "See :ref:`user management section in usage <user-management-section>`."
+msgstr ""
+
+#: ../../install/configuration.rst:189
+msgid "Database users"
+msgstr ""
+
+#: ../../install/configuration.rst:191
+msgid ""
+"It is not safe to use the ``geotrek`` user in QGIS, or to give its "
+"password to many collaborators."
+msgstr ""
+
+#: ../../install/configuration.rst:194
+msgid ""
+"A wise approach, is to create a *read-only* user, or with specific "
+"permissions."
+msgstr ""
+
+#: ../../install/configuration.rst:196
+msgid "With *pgAdmin*, you can create database users like this:"
+msgstr ""
+
+#: ../../install/configuration.rst:204
+msgid "And give them permissions by schema :"
+msgstr ""
+
+#: ../../install/configuration.rst:212
+msgid "You can also create groups, etc. See PostgreSQL documentation."
+msgstr ""
+

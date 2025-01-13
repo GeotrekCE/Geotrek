@@ -1,0 +1,50 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2013-2024, Makina Corpus
+# This file is distributed under the same license as the Geotrek package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version:  Geotrek\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-13 11:25+0000\n"
+"PO-Revision-Date: 2024-03-14 11:33+0100\n"
+"Last-Translator: Jean-Etienne Castagnede <jecastagnede@vivaldi.net>\n"
+"Language: fr\n"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: ../../index.rst:6
+msgid "💡 About"
+msgstr "💡 À propos"
+
+#: ../../index.rst:12
+msgid "🚀 User manual"
+msgstr "🚀 Manuel utilisateur"
+
+#: ../../index.rst:26
+msgid "🔧 Installation & configuration"
+msgstr "🔧 Installation & configuration"
+
+#: ../../index.rst:39
+msgid "✨ Contribute"
+msgstr "✨ Contribuer"
+
+#: ../../index.rst:49
+msgid "📝 Others"
+msgstr "📝 Autres"
+
+#: ../../index.rst:2
+msgid "Geotrek-admin's documentation"
+msgstr "Documentation de Geotrek-admin"
+
+#: ../../index.rst:4
+msgid ""
+"Geotrek-admin is backend management data for Geotrek-rando, Geotrek-"
+"mobile and Geotrek-widget."
+msgstr ""

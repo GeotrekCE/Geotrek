@@ -1,0 +1,316 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2013-2024, Makina Corpus
+# This file is distributed under the same license as the Geotrek package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Geotrek \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-13 11:25+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr\n"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: ../../others/troubleshooting.rst:3
+msgid "Troubleshooting"
+msgstr ""
+
+#: ../../others/troubleshooting.rst:9
+msgid ""
+"Geotrek-admin logs are stored in ``/opt/geotrek-"
+"admin/var/log/geotrek.log`` file."
+msgstr ""
+
+#: ../../others/troubleshooting.rst:11
+msgid ""
+"But if Geotrek-admin does not start, take a look at systemd logs for each"
+" of the 3 Geotrek-admin services (user web interface, API and "
+"asynchronous tasks):"
+msgstr ""
+
+#: ../../others/troubleshooting.rst:20
+msgid ""
+"The output is paginated. With -e option you are at the end of the logs "
+"but you can go up an down with arrows. Type Q to quit. If you want to "
+"copy the log to a file, run:"
+msgstr ""
+
+#: ../../others/troubleshooting.rst:29
+msgid "Frequently encountered problems"
+msgstr ""
+
+#: ../../others/troubleshooting.rst:32
+msgid ""
+"Error 500 with ``django.db.utils.IntegrityError … NOT NULL for column "
+"\"language\"``"
+msgstr ""
+
+#: ../../others/troubleshooting.rst:34
+msgid ""
+"``django.db.utils.IntegrityError: ERREUR:  une valeur NULL viole la "
+"contrainte NOT NULL de la colonne « language »``"
+msgstr ""
+
+#: ../../others/troubleshooting.rst:36
+msgid ""
+"This means specific migrations for translated fields have not been "
+"executed on database during update. You have to run them manually, "
+"classical migrations included:"
+msgstr ""
+
+#: ../../others/troubleshooting.rst:48
+msgid "Error 500 with document generation or map capture"
+msgstr ""
+
+#: ../../others/troubleshooting.rst:50
+msgid ""
+"Les captures de carte (utiles entre autre à la génération des documents "
+"et aux PDF) utilise un logiciel nommé screamshotter. Ce logiciel, pilote "
+"un navigateur web (chromium, via puppeteer) qui va appeler la page web de"
+" geotrek-admin de l'objet dont il doit réaliser une capture de carte."
+msgstr ""
+
+#: ../../others/troubleshooting.rst:53
+msgid "ex: ``https://mon-geotrek-admin.fr/trek/1/``"
+msgstr ""
+
+#: ../../others/troubleshooting.rst:55
+msgid "Il est donc nécessaire que cette URL lui soit accessible."
+msgstr ""
+
+#: ../../others/troubleshooting.rst:58
+msgid "Paquet Debian :"
+msgstr ""
+
+#: ../../others/troubleshooting.rst:58
+msgid ""
+"l'URL utilisée depuis le navigateur (``https://mon-geotrek-"
+"admin.fr/trek/1/``) doit être accessible depuis l'hôte de l'application "
+"Geotrek-admin."
+msgstr ""
+
+#: ../../others/troubleshooting.rst:61
+msgid "Image docker :"
+msgstr ""
+
+#: ../../others/troubleshooting.rst:61
+msgid ""
+"l'URL utilisée depuis le navigateur (``https://mon-geotrek-"
+"admin.fr/trek/1/``) doit être accessible depuis le container de "
+"l'application screamshotter (et convertit)."
+msgstr ""
+
+#: ../../others/troubleshooting.rst:63
+msgid "Warning"
+msgstr ""
+
+#: ../../others/troubleshooting.rst:64
+msgid ""
+"Faites attention aux pare-feux, proxy et domaines privés. L'hôte (ou le "
+"container docker) doit pouvoir correctement résoudre l'adresse IP du "
+"domaine utilisé."
+msgstr ""
+
+#: ../../others/troubleshooting.rst:66
+msgid ""
+"Sur certaines infrastructures, en particulier en entreprise ou derrière "
+"certains proxy, il se peut que la configuration de base empêche le bon "
+"fonctionnement."
+msgstr ""
+
+#: ../../others/troubleshooting.rst:68
+msgid "**Exemple :**"
+msgstr ""
+
+#: ../../others/troubleshooting.rst:70
+msgid ""
+"l'IP derriere le domaine demo-admin.geotrek.fr depuis mon poste de "
+"travail est 88.77.66.55, il s'affiche bien, mais depuis le serveur c'est "
+"172.16.0.10, les captures de carte ne fonctionnent pas. Il faut jouer "
+"avec la configuration de la machine, les serveurs DNS, les paramètres "
+"network/alias ou extra_hosts du docker-compose.yml afin de le rendre "
+"accessible."
+msgstr ""
+
+#: ../../others/troubleshooting.rst:71
+msgid ""
+"le Proxy qui gère les certificats SSL ne transmet pas les bons en-têtes à"
+" geotrek-admin. De ce fait, geotrek-admin pense tourner en http et génère"
+" des url en http:// à screamshotter (ex: prend une capture de ``http"
+"://mon-geotrek-admin.fr/trek/1/`` au lieu de ``https://mon-geotrek-"
+"admin.fr/trek/1/``). Il faut penser à bien transmettre l'en-tête ``X"
+"-Forwarded-Proto https``."
+msgstr ""
+
+#: ../../others/troubleshooting.rst:74
+msgid "Comment débloquer le bon fonctionnement ?"
+msgstr ""
+
+#: ../../others/troubleshooting.rst:76
+msgid ""
+"Tout d'abord, vérifiez que vous utilisez bien les dernières versions des "
+"outils screamshotter et convertit."
+msgstr ""
+
+#: ../../others/troubleshooting.rst:85
+msgid "Pour docker"
+msgstr ""
+
+#: ../../others/troubleshooting.rst:92
+msgid "puis relancer toute l'application (down / up)"
+msgstr ""
+
+#: ../../others/troubleshooting.rst:95
+msgid ""
+"Vérifiez que l'URL de votre geotrek-admin est accessible depuis le "
+"serveur ou le container."
+msgstr ""
+
+#: ../../others/troubleshooting.rst:102
+msgid "Depuis docker :"
+msgstr ""
+
+#: ../../others/troubleshooting.rst:110
+msgid "La réponse devrait ressembler à une page HTML de connexion."
+msgstr ""
+
+#: ../../others/troubleshooting.rst:112
+msgid "Si ce n'est pas le cas, vérifiez l'IP du domaine"
+msgstr ""
+
+#: ../../others/troubleshooting.rst:119
+msgid ""
+"La réponse doit être une IP publique, idéalement la même que depuis votre"
+" poste de travail."
+msgstr ""
+
+#: ../../others/troubleshooting.rst:121
+msgid ""
+"Testez la capture de carte depuis geotrek-admin, sur une carte, le bouton"
+" avec un appareil photo."
+msgstr ""
+
+#: ../../others/troubleshooting.rst:123
+msgid "Si ça ne fonctionne pas, vérifiez le message d'erreur :"
+msgstr ""
+
+#: ../../others/troubleshooting.rst:125
+msgid ""
+"Request on http://screamshotter:8000/?url=http%3A//mon-geotrek-"
+"admin.fr/trek/1/xxxx failed (status=500)"
+msgstr ""
+
+#: ../../others/troubleshooting.rst:127
+msgid ""
+"On peut voir que l'URL est **http** et non **https**, c'est un problème d"
+"'en-tête non transmis. Il faut régler ça au niveau du proxy."
+msgstr ""
+
+#: ../../others/troubleshooting.rst:131
+msgid "Signature check for Debian packages"
+msgstr ""
+
+#: ../../others/troubleshooting.rst:133
+msgid ""
+"When you try to upgrade your Geotrek-admin, you can have problems with "
+"signature check:"
+msgstr ""
+
+#: ../../others/troubleshooting.rst:141
+msgid "You have to update the signature key to get the last update:"
+msgstr ""
+
+#: ../../others/troubleshooting.rst:149
+msgid "Show main packages versions"
+msgstr ""
+
+#: ../../others/troubleshooting.rst:151
+msgid ""
+"To debug or to report a bug, you can check or provide in issue the main "
+"versions of Geotrek-admin and its dependencies:"
+msgstr ""
+
+#: ../../others/troubleshooting.rst:158
+msgid "From docker:"
+msgstr ""
+
+#: ../../others/troubleshooting.rst:165
+msgid "Some examples:"
+msgstr ""
+
+#: ../../others/troubleshooting.rst:173
+msgid "Check command help for more options:"
+msgstr ""
+
+#~ msgid ""
+#~ "Error 500 with `django.db.utils.IntegrityError "
+#~ "… NOT NULL for column \"language\"`"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "`django.db.utils.IntegrityError: ERREUR:  une valeur"
+#~ " NULL viole la contrainte NOT NULL"
+#~ " de la colonne « language »`"
+#~ msgstr ""
+
+#~ msgid "ex: https://mon-geotrek-admin.fr/trek/1/"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "l'URL utilisée depuis le navigateur "
+#~ "(https://mon-geotrek-admin.fr/trek/1/) doit "
+#~ "être accessible depuis l'hôte de "
+#~ "l'application geotrek-admin."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "l'URL utilisée depuis le navigateur "
+#~ "(https://mon-geotrek-admin.fr/trek/1/) doit "
+#~ "être accessible depuis le container de"
+#~ " l'application screamshotter (et convertit)."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "le Proxy qui gère les certificats "
+#~ "SSL ne transmet pas les bons "
+#~ "en-têtes à geotrek-admin. De ce "
+#~ "fait, geotrek-admin pense tourner en "
+#~ "http et génère des url en http://"
+#~ " à screamshotter (ex: prend une "
+#~ "capture de http://mon-geotrek-admin.fr/trek/1/"
+#~ " au lieu de https://mon-geotrek-"
+#~ "admin.fr/trek/1/). Il faut penser à bien"
+#~ " transmettre l'en-tête **X-Forwarded-Proto"
+#~ " https** ."
+#~ msgstr ""
+
+#~ msgid "la réponse devrait ressembler à une page HTML de connexion."
+#~ msgstr ""
+
+#~ msgid "Signature check for debian packages"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "When you try to upgrade your "
+#~ "Geotrek-admin, you can have problems "
+#~ "with signature check :"
+#~ msgstr ""
+
+#~ msgid "You have to update the signature key to get the last update :"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "To debug or to report a bug, "
+#~ "you can check or provide in issue"
+#~ " the main versions of Geotrek-admin"
+#~ " and its dependencies :"
+#~ msgstr ""
+

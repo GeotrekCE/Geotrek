@@ -1,0 +1,222 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2013-2024, Makina Corpus
+# This file is distributed under the same license as the Geotrek package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Geotrek \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-13 11:25+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr\n"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: ../../contribute/translating.rst:3
+msgid "Translating"
+msgstr ""
+
+#: ../../contribute/translating.rst:9
+msgid ""
+"Geotrek-admin can be translated online on `Makina Corpus Weblate instance"
+" <https://weblate.makina-corpus.net/projects/geotrek-admin/>`_"
+msgstr ""
+
+#: ../../contribute/translating.rst:13
+msgid "Getting started"
+msgstr ""
+
+#: ../../contribute/translating.rst:15 ../../contribute/translating.rst:20
+msgid "Create an account"
+msgstr ""
+
+#: ../../contribute/translating.rst:16 ../../contribute/translating.rst:39
+msgid "Browse by project"
+msgstr ""
+
+#: ../../contribute/translating.rst:17 ../../contribute/translating.rst:57
+msgid "Browse by language"
+msgstr ""
+
+#: ../../contribute/translating.rst:22
+msgid "Click on \"Register\""
+msgstr ""
+
+#: ../../contribute/translating.rst:24
+msgid "Fill the register form"
+msgstr ""
+
+#: ../../contribute/translating.rst:-1 ../../contribute/translating.rst
+#: ../../contribute/translating.rst:95
+msgid "image"
+msgstr ""
+
+#: ../../contribute/translating.rst:29
+msgid "Validate your email"
+msgstr ""
+
+#: ../../contribute/translating.rst:31
+msgid "Fill the password"
+msgstr ""
+
+#: ../../contribute/translating.rst:33
+msgid "Then connect to weblate"
+msgstr ""
+
+#: ../../contribute/translating.rst:35
+msgid ""
+"`Official documentation "
+"<https://docs.weblate.org/en/latest/user/profile.html>`__ to create an "
+"account and manage your profile."
+msgstr ""
+
+#: ../../contribute/translating.rst:41
+msgid "Go to “Project > Browse all projects”"
+msgstr ""
+
+#: ../../contribute/translating.rst:46
+msgid "Select Geotrek-admin project"
+msgstr ""
+
+#: ../../contribute/translating.rst:48
+msgid "Click on tab “Languages”"
+msgstr ""
+
+#: ../../contribute/translating.rst:50
+msgid "Choose the language to translate"
+msgstr ""
+
+#: ../../contribute/translating.rst:59
+msgid "You could also choose language first"
+msgstr ""
+
+#: ../../contribute/translating.rst:61
+msgid "Go to “Languages > Browse all languages”"
+msgstr ""
+
+#: ../../contribute/translating.rst:62
+msgid "Choose the language you want to translate"
+msgstr ""
+
+#: ../../contribute/translating.rst:63
+msgid "Select the project to translate"
+msgstr ""
+
+#: ../../contribute/translating.rst:67
+msgid "Select a component to translate"
+msgstr ""
+
+#: ../../contribute/translating.rst:69
+msgid "Select a component (a module or a piece of documentation)"
+msgstr ""
+
+#: ../../contribute/translating.rst:70
+msgid "Click on \"Translate\" to start translating"
+msgstr ""
+
+#: ../../contribute/translating.rst:72
+msgid "And let's go!"
+msgstr ""
+
+#: ../../contribute/translating.rst:74
+msgid ""
+"`Weblate official documentation "
+"<https://docs.weblate.org/en/latest/user/translating.html>`__ for "
+"translation."
+msgstr ""
+
+#: ../../contribute/translating.rst:78
+msgid "Translation features"
+msgstr ""
+
+#: ../../contribute/translating.rst:80
+msgid ""
+"Weblate shows all translation by language and by module. Errors and left "
+"to translate can be displayed easily."
+msgstr ""
+
+#: ../../contribute/translating.rst:83
+msgid ""
+"Weblate can identify problematic translations as chains between projects,"
+" punctuation inconsistency."
+msgstr ""
+
+#: ../../contribute/translating.rst:88
+msgid "Other occurrences in all components allows to check consistency."
+msgstr ""
+
+#: ../../contribute/translating.rst:93
+msgid "Each translation generate a permalink (picto |image|)."
+msgstr ""
+
+#: ../../contribute/translating.rst:97
+msgid "Weblate has a \"Zen mode\" showing only chains to translate."
+msgstr ""
+
+#: ../../contribute/translating.rst:100
+msgid "Release translations (only for github repository managers)"
+msgstr ""
+
+#: ../../contribute/translating.rst:102
+msgid ""
+"Weblate send new translations to `translations` branch in Github, "
+"dedicated to translations. When new translations chains are validated, "
+"manager has to send them manually to Github."
+msgstr ""
+
+#: ../../contribute/translating.rst:105
+msgid ""
+"For each release, `translations` branch must be merged into master before"
+" building the release."
+msgstr ""
+
+#: ../../contribute/translating.rst:108
+msgid "Send modifications to Github repository"
+msgstr ""
+
+#: ../../contribute/translating.rst:110
+msgid "In component, click \"Manage > Repository maintenance\""
+msgstr ""
+
+#: ../../contribute/translating.rst:111
+msgid "Click \"Commit\" to save translation in local repository"
+msgstr ""
+
+#: ../../contribute/translating.rst:112
+msgid ""
+"Click \"Push\" to send local commits to `translations` branch in Github "
+"repository"
+msgstr ""
+
+#: ../../contribute/translating.rst:115
+msgid "Add translations to next release"
+msgstr ""
+
+#: ../../contribute/translating.rst:117
+msgid ""
+"In **Github**, merge `translations` branch into `master`, and update "
+"changelog."
+msgstr ""
+
+#: ../../contribute/translating.rst:119
+msgid "After releasing, in **Weblate**, rebase the branch:"
+msgstr ""
+
+#: ../../contribute/translating.rst:121
+msgid "In the component, click \"Manage > Repository maintenance\""
+msgstr ""
+
+#: ../../contribute/translating.rst:122
+msgid "Click \"Rebase\" to rebase `translations` branch onto `master`"
+msgstr ""
+
+#~ msgid "After releasing, in **Weblate**, rebase the branche :"
+#~ msgstr ""
+
