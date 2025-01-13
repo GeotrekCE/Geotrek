@@ -114,6 +114,7 @@ django==4.2.17
     #   django-leaflet
     #   django-modelcluster
     #   django-modeltranslation
+    #   django-tinymce
     #   django-treebeard
     #   django-weasyprint
     #   djangorestframework
@@ -158,7 +159,7 @@ django-modeltranslation==0.18.11
     # via mapentity
 django-mptt==0.14.0
     # via geotrek (setup.py)
-django-tinymce==3.5.0
+django-tinymce==4.1.0
     # via mapentity
 django-treebeard==4.7.1
     # via geotrek (setup.py)

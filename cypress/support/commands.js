@@ -22,3 +22,17 @@ Cypress.Commands.add('loginByCSRF', (username, password) => {
 Cypress.Commands.add('mockTiles', (username, password) => {
     cy.intercept("https://*.tile.opentopomap.org/*/*/*.png", {fixture: "images/tile.png"}).as("tiles");
 });
+
+Cypress.Commands.add('setTinyMceContent', (tinyMceId, content) => {
+  cy.window().then((win) => {
+    const editor = win.tinymce.get(tinyMceId);
+    editor.setContent(content);
+  });
+});
+
+Cypress.Commands.add('getTinyMceContent', (tinyMceId, content) => {
+  cy.window().then((win) => {
+    const editor = win.tinymce.get(tinyMceId);
+    return editor.getContent();
+  });
+});
