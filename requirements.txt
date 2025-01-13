@@ -29,7 +29,7 @@ btrees==6.1
     # via zodb
 cachetools==5.5.0
     # via large-image
-cairocffi==0.9.0
+cairocffi==1.7.0
     # via
     #   cairosvg
     #   geotrek (setup.py)
