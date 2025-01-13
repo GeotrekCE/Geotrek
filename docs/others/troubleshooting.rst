@@ -2,10 +2,6 @@
 Troubleshooting
 ===============
 
-.. contents::
-   :local:
-   :depth: 2
-
 Geotrek-admin logs are stored in ``/opt/geotrek-admin/var/log/geotrek.log`` file.
 
 But if Geotrek-admin does not start, take a look at systemd logs for each of the 3 Geotrek-admin services

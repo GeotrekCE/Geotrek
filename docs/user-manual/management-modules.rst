@@ -2,13 +2,9 @@
 Modules de gestion
 ==================
 
-.. contents::
-   :local:
-   :depth: 2
-
 Geotrek-admin comporte un certain nombre de modules de gestion des sentiers (tronçons, sentiers, statuts, aménagements, signalétique, interventions et chantiers).
 
-Les tronçons sont les éléments de base sur lesquels s'appuient l'ensemble des objets des autres modules, en utilisant la segmentation dynamique (https://makina-corpus.com/blog/metier/2014/la-segmentation-dynamique).
+Les tronçons sont les éléments de base sur lesquels s'appuient l'ensemble des objets des autres modules, en utilisant la `segmentation dynamique <https://makina-corpus.com/blog/metier/2014/la-segmentation-dynamique>`_.
 
 Les modules signalétique et aménagement ont initialement été conçus dans une logique d’inventaire avec des possibilités de description basiques et génériques. Pour tout complément, il est possible d’attacher un ou plusieurs fichiers joints à chaque objet (photos, PDF, tableurs…).
 
@@ -26,11 +22,15 @@ Lors de la saisie d'un objet sur la carte, il est possible d'afficher une couche
 Les tronçons
 ============
 
+.. ns-only-fr::
+
+    .. 
+
 C'est le socle essentiel et central de Geotrek. Un tronçon est un objet linéaire, entre deux intersections. Le mécanisme de segmentation dynamique permet de ne pas devoir le recouper pour y rattacher des informations.
 
 Les tronçons peuvent être soit numérisés dans Geotrek-admin, soit importés directement dans l'outil via :
 
-- la commande décrite `ici <https://geotrek.readthedocs.io/en/latest/install/import.html#import-paths>`_, après avoir préalablement nettoyé la géométrie des lignes à l'aide du plugin GRASS dans QGIS. Cette procédure est à privilégier car elle a l'avantage de faire des vérifications topologiques sur les données.
+- la commande décrite :ref:`ici <import-paths>`, après avoir préalablement nettoyé la géométrie des lignes à l'aide du plugin GRASS dans QGIS. Cette procédure est à privilégier car elle a l'avantage de faire des vérifications topologiques sur les données.
 - l'outil QGIS en suivant ce `tutoriel <https://makina-corpus.com/sig-webmapping/importer-une-couche-de-troncons-dans-geotrek>`_ pour charger des tronçons dans la base de données PostGIS Geotrek à partir d'un réseau de sentiers. Il faut s'assurer en amont que les lignes à insérer sont topologiquement propres. 
 
 Si ils sont numérisés directement dans Geotrek-admin, il est possible d'afficher sur la carte un fichier GPX ou GeoJSON pour faciliter leur localisation.
@@ -54,6 +54,11 @@ Enfin, toujours depuis la fiche détail d'un tronçon, il est possible d'en affi
 Les sentiers
 ============
 
+.. ns-only-fr::
+
+    .. 
+
+
 Il s'agit d'un ensemble linéaire composés d'un ou plusieurs tronçons (entiers ou partiels) grâce à la segmentation dynamique.
 
 Les sentiers permettent d'avoir une vision de gestionnaire sur un linéaire plus complet que les tronçons (qui sont découpés à chaque intersection) pour en connaitre les statuts, la signalétique, les aménagements, les interventions ainsi que les itinéraires et POI. Il est d'ailleurs possible d'ajouter une intervention sur un sentier complet directement depuis la fiche détail d'un sentier.
@@ -67,12 +72,20 @@ A ne pas confondre avec le module Itinéraires qui permet de créer des randonn�
 Les statuts
 ============
 
+.. ns-only-fr::
+
+    .. 
+
 Ils permettent de renseigner des informations sur le linéaire (type physique, statut foncier, organismes ayant la compétence sentiers, gestionnaires des travaux et de la signalétique) sans avoir à le faire tronçon par tronçon grâce à la segmentation dynamique qui permet de localiser le départ et l'arrivée sur un ou plusieurs tronçons.
 
 .. _les-amenagements:
 
 Les aménagements
 ================
+
+.. ns-detail-fr::
+
+    .. 
 
 Ils permettent d'inventorier les aménagements sur les sentiers (passerelles, mains courantes, cunettes, soutènements, bancs, parkings...) en les localisant, les typant, les décrivant, renseignant leur état et leur année d'implantation.
 
@@ -84,12 +97,18 @@ Comme pour les autres modules, il sont intersectés avec les autres modules pour
 
 Il est aussi possible de les exporter, de leur attacher des fichiers (images, PDF, tableurs, ZIP...) et d'en consulter l'historique des modifications.
 
-Pour importer automatiquement des éléments d'aménagements, se référer à la section :ref:`Import Infrastructure <import-infrastructure>`
+.. seealso::
+
+	Pour importer automatiquement des éléments d'aménagements, se référer à la section :ref:`Import Infrastructure <import-infrastructure>`
 
 .. _la-signaletique:
 
 La signalétique
 ===============
+
+.. ns-detail-fr::
+
+    .. 
 
 Centralise les informations sur la signalétique d'accueil, d'information et d'orientation des randonneurs. Permet de localiser, décrire l'implantation, et gérer les fichiers concernant la signalétique (BAT, maquettes, photos, etc.).
 
@@ -97,12 +116,18 @@ Pour une signalétique, il est possible de définir chaque lame et chaque ligne 
 
 .. image:: ../images/user-manual/signage.png
 
-Pour importer automatiquement des éléments de signalétiques, se référer à la section :ref:`Import Signage <import-signage>`
+.. seealso::
+
+	Pour importer automatiquement des éléments de signalétiques, se référer à la section :ref:`Import Signage <import-signage>`
 
 .. _les-interventions:
 
 Les interventions
 =================
+
+.. ns-detail-fr::
+
+    .. 
 
 Les interventions permettent d'inventorier et suivre les travaux réalisés sur les sentiers. Chaque intervention correspond à une action sur un tronçon, sentier, aménagement ou signalétique.
 

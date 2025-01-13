@@ -20,6 +20,7 @@ CHANGELOG
 - Update theme color
 - Fix typo in documentation
 - Update and homogenize README.rst
+- Reorganize sections (#4415)
 
 
 2.111.0     (2024-12-05)

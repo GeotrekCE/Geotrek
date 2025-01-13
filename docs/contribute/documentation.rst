@@ -1,23 +1,18 @@
 Documentation
 =============
-.. contents::
-   :local:
-   :depth: 2
 
-We use sphinx doc and sphinx-rtd-theme. Requirements are included.
+We use sphinx doc and `sphinx-immaterial theme <https://jbms.github.io/sphinx-immaterial/>`_. Requirements are included.
 
-A container based on sphinx image is created using ``docker-compose-dev.yml``,
+A container based on sphinx image is created using ``docker compose.yml``,
 documentation is built in watch mode thanks to sphinx-autobuild.
 
 To compile and test documentation on local environment, run:
 
 .. code-block:: bash
 
-    docker compose up -d sphinx
-
+    docker compose up sphinx postgres
 
 Access to documentation built in html : http://0.0.0.0:8800
-
 
 Translate documentation
 -----------------------

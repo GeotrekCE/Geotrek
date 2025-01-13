@@ -2,10 +2,6 @@
 APIs
 ====
 
-.. contents::
-   :local:
-   :depth: 2
-
 .. image:: ../images/user-manual/api-ecosystem.png
 
 API Geotrek
@@ -19,13 +15,17 @@ Cette API, désormais dans sa version 2 permet à toute structure tierce de réc
 
 L'API Geotrek est le point central pour permettre les interconnexions avec divers services. Grâce à cette interface de données, Geotrek s'est positionné comme un point central dans un écosystème de solutions du monde de la gestion et promotion des activités de pleine nature.
 
-Pour changer les paramètres d'accès de l'API, référez vous à cette section :ref:`API <api>`
+.. seealso:: 
+   
+   Pour changer les paramètres d'accès de l'API, référez vous à cette section :ref:`API <api>`
 
 APIs externes
 =============
 
-Geotrek et IGNrando'
---------------------
+.. _geotrek-ignrando-cirkwi-api:
+
+Geotrek et IGNrando' / Cirkwi
+-------------------------------
 
 Geotrek-admin est capable de produire un flux des itinéraires et POIs présents dans sa BDD au format Cirkwi pour pouvoir les importer directement dans IGNrando' `(voir cet article) <https://makina-corpus.com/sig-webmapping/geotrek-et-lign-ca-fonctionne>`_.
 
@@ -36,22 +36,17 @@ Depuis cette version, 2 flux sont automatiquement générés par Geotrek-admin a
 - [URL_GEOTREK-ADMIN]/api/cirkwi/circuits.xml
 - [URL_GEOTREK-ADMIN]/api/cirkwi/pois.xml
 
-Il est possible d'exclure les POI du flux pour ne diffuser que les randonnées. Pour cela, ajouter le paramètre ``?withoutpois=1`` à la fin de l'URL (``http://XXXXX/api/cirkwi/circuits.xml?withoutpois=1``).
+.. hint::
 
-Il est possible de filtrer les POI du flux par structure. Pour cela, ajouter le paramètre ``?structures=<identifiant_de_la_structure>`` à la fin de l'URL (``http://XXXXX/api/cirkwi/pois.xml?structures=2``).
-Vous pouvez filtrer avec plusieurs structures : en séparant les identifiants par des virgules (``http://XXXXX/api/cirkwi/pois.xml?structures=2,5,3``).
+   - **Exclure les POI du flux pour ne diffuser que les randonnées**. Pour cela, ajouter le paramètre ``?withoutpois=1`` à la fin de l'URL (``http://XXXXX/api/cirkwi/circuits.xml?withoutpois=1``).
 
-Il est également possible de filtrer les randonnées du flux par structure et par portail. 
-Pour cela, ajouter le paramètre ``?structures=<identifiant_de_la_structure>`` ou ``?portals=<identifian_de_la_structure>`` à la fin de l'URL (``http://XXXXX/api/cirkwi/circuits.xml?portals=3``).
+   - **Filtrer les POI du flux par structure**. Pour cela, ajouter le paramètre ``?structures=<identifiant_de_la_structure>`` à la fin de l'URL (``http://XXXXX/api/cirkwi/pois.xml?structures=2``). Vous pouvez filtrer avec plusieurs structures : en séparant les identifiants par des virgules (``http://XXXXX/api/cirkwi/pois.xml?structures=2,5,3``).
 
-Il est également possible d'exclure du flux les randonnées provenant de sources externes à Geotrek-Admin. Ce filtre est notamment nécessaire pour
-ne pas renvoyer à Cirkwi les randonnées qui en proviennent déjà. Pour cela, ajouter le paramètre ``?include_externals=false`` à la fin de l'URL (``http://XXXXX/api/cirkwi/circuits.xml?include_externals=false``).
+   - **Filtrer les randonnées du flux par structure et par portail**. Pour cela, ajouter le paramètre ``?structures=<identifiant_de_la_structure>`` ou ``?portals=<identifian_de_la_structure>`` à la fin de l'URL (``http://XXXXX/api/cirkwi/circuits.xml?portals=3``).
 
-Il est possible de cumuler ces différents filtres, en séparant les valeurs par un ``&`` (``http://XXXXX/api/cirkwi/circuits.xml?portals=3&structures=1&include_externals=false``).
+   - **Exclure du flux les randonnées provenant de sources externes à Geotrek-admin**. Ce filtre est notamment nécessaire pour ne pas renvoyer à Cirkwi les randonnées qui en proviennent déjà. Pour cela, ajouter le paramètre ``?include_externals=false`` à la fin de l'URL (``http://XXXXX/api/cirkwi/circuits.xml?include_externals=false``).
 
-Il est également possible d'exclure du flux les randonnées provenant de sources externes à Geotrek-Admin. Ce filtre est notamment nécessaire pour ne pas renvoyer à Cirkwi les randonnées qui en proviennent déjà. Pour cela, ajouter le paramètre ``?include_externals=false`` à la fin de l'URL (``http://XXXXX/api/cirkwi/circuits.xml?include_externals=false``).
-
-Il est possible de cumuler ces différents filtres, en séparant les valeurs par un ``&`` (``http://XXXXX/api/cirkwi/circuits.xml?portals=3&structures=1&include_externals=false``).
+   - **Cumuler ces différents filtres**, en séparant les valeurs par un ``&`` (``http://XXXXX/api/cirkwi/circuits.xml?portals=3&structures=1&include_externals=false``).
 
 Le référentiel CIRKWI a été intégré dans 3 tables accessibles dans le module de configuration (à ne pas modifier) :
 
@@ -61,7 +56,7 @@ Le référentiel CIRKWI a été intégré dans 3 tables accessibles dans le modu
 
    Ensemble des champs paramétrables pour le référentiel CIRKWI
 
-Si vous ne souhaitez pas utiliser les valeurs par défaut ou avez créez vos propres typologies, il faut que vous renseigniez les correspondances entre les catégories de votre Geotrek et celles du référentiel IGN (Cirkwi) dans le module de configuration. Comme indiqué ici : https://github.com/GeotrekCE/Geotrek-admin/issues/806.
+Si vous ne souhaitez pas utiliser les valeurs par défaut ou avez créez vos propres typologies, il faut que vous renseigniez les correspondances entre les catégories de votre Geotrek et celles du référentiel IGN (Cirkwi) dans le module de configuration, comme indiqué `dans ce ticket Github <https://github.com/GeotrekCE/Geotrek-admin/issues/806>`_.
 
 * Pratique >> locomotion/loisirs
 * Accessibilite >> thematiques/tags
@@ -70,11 +65,12 @@ Si vous ne souhaitez pas utiliser les valeurs par défaut ou avez créez vos pro
 
 Les correspondances avec les valeurs de ces 3 tables sont donc à renseigner dans les tables Geotrek des Pratiques, Accessibilités, Thèmes et Types de POI.
 
-Ce même flux est aussi utilisable pour alimenter directement la plateforme Cirkwi : https://pro.cirkwi.com/importez-vos-donnees-geotrek-dans-cirkwi/.
+Ce même flux est aussi utilisable pour alimenter directement la plateforme Cirkwi (`voir cette page <https://pro.cirkwi.com/importez-vos-donnees-geotrek-dans-cirkwi/>`_).
 
-.. note::
+.. seealso::
 
-    Geotrek-admin dispose aussi d'une API générique permettant d'accéder aux contenus d'une instance à l'adresse : ``[URL_GEOTREK-ADMIN]/api/v2/``
+    - Geotrek-admin dispose aussi d'une API générique permettant d'accéder aux contenus d'une instance à l'adresse ``[URL_GEOTREK-ADMIN]/api/v2/``
+    - Pour importer des itinéraires et contenus touristiques depuis CIRKWI, se référer à la section :ref:`Import from Cirkwi <import-from-cirkwi>`.
 
 Geotrek et APIDAE
 -----------------
@@ -93,7 +89,9 @@ Les contenus touristiques peuvent aussi être synchronisés depuis des flux Tour
 
 Il est également possible de mettre en place des passerelles pour importer des POIs, des lieux de renseignement, des aménagements ainsi que des randonnées d'APIDAE vers Geotrek. Il est aussi possible d'enrichir le lien avec les contenus touristiques pour avoir par exemple d'autres catégories.
 
-Pour configurer APIDAE, se référer à cette section :ref:`Configure APIDAE (ex-SITRA) import <configure-apidae-ex-sitra-import>`
+.. seealso::
+
+   Pour configurer APIDAE, se référer à cette section :ref:`Import from APIDAE <import-from-apidae>`
 
 Geotrek vers APIDAE
 ~~~~~~~~~~~~~~~~~~~
@@ -104,7 +102,9 @@ L'API permet de connecter une instance Geotrek pour importer des itinéraires ve
 
 Les randonnées VTT, trail, vélo et les tours itinérants sont également intégrés dans la passerelle.
 
-Pour plus d'information, se référer à la documentation en ligne de `Sitourisme <https://github.com/GeotrekCE/Sitourisme#sitourisme-paca-api>`_. 
+.. seealso::
+
+   Pour plus d'information, se référer à la documentation en ligne de `Sitourisme <https://github.com/GeotrekCE/Sitourisme#sitourisme-paca-api>`_. 
 
 
 Sensitivity module (or Biodiv'Sports)
@@ -114,68 +114,72 @@ Sensitivity module (or Biodiv'Sports)
 
   You can play with API using Biodiv'Sports widget tool: https://biodivsports-widget.lpo-aura.org/
 
-The Geotrek API provides a set of parameters that can be used to filter and sort data. There is a Swagger documentation (see :ref:`advanced-configuration-section` to enable it on your instance if needed) existing to test and browse those parameters that can be found at this address: ``/api/v2/``.
+The Geotrek API provides a set of parameters that can be used to filter and sort data. There is a Swagger documentation (see :ref:`application-settings` to enable it on your instance if needed) existing to test and browse those parameters that can be found at this address: ``/api/v2/``.
 
 This section focuses on some common parameters useful to work with sensitivity information and gives details about some endpoints.
 
+.. _commons-parameters:
 
-.. envvar:: Commons parameters
+Commons parameters
+~~~~~~~~~~~~~~~~~~~
 
-
-   If ``language`` parameter is provided, API returns directly translated fields, else, a dictionnary of traductions is returned
+If ``language`` parameter is provided, API returns directly translated fields, else, a dictionnary of traductions is returned
       
-   e.g. ``/api/v2/sensitivearea_practice/1/?``
+e.g. ``/api/v2/sensitivearea_practice/1/?``
 
 
-   .. code-block:: JSON
+.. code-block:: JSON
 
-      {
-         "id":1,
-         "name":{
-         "fr":"Terrestre",
-         "en":"Land",
-         "it":null
-         }
+   {
+      "id":1,
+      "name":{
+      "fr":"Terrestre",
+      "en":"Land",
+      "it":null
       }
+   }
 
 
-   e.g. ``/api/v2/sensitivearea_practice/1/?language=en``
+e.g. ``/api/v2/sensitivearea_practice/1/?language=en``
 
 
-   .. code-block:: JSON
+.. code-block:: JSON
 
-      {
-         "id":1,
-         "name":"Land"
-      }
+   {
+      "id":1,
+      "name":"Land"
+   }
+
+.. _sport-practices:
+
+Sport practices
+~~~~~~~~~~~~~~~~
+
+List of sport practices
+
+``/api/v2/sensitivearea_practice/``
+
+e.g. https://biodiv-sports.fr/api/v2/sensitivearea_practice/
 
 
-.. envvar:: Sport practices
+Sensitive areas
+~~~~~~~~~~~~~~~~
 
-   List of sport practices
+List of sensitive areas
 
-   ``/api/v2/sensitivearea_practice/``
+``/api/v2/sensitivearea/``
 
-   e.g. https://biodiv-sports.fr/api/v2/sensitivearea_practice/
+The default output format is ``json``. To obtain output in ``geojson`` format, simply add the ``format=geojson`` parameter.
 
+``/api/v2/sensitivearea/?format=geojson`` 
 
-.. envvar:: Sensitive areas
-
-   List of sensitive areas
-
-   ``/api/v2/sensitivearea/``
-
-   The default output format is ``json``. To obtain output in ``geojson`` format, simply add the ``format=geojson`` parameter.
-
-   ``/api/v2/sensitivearea/?format=geojson`` 
-
-   e.g. https://biodiv-sports.fr/api/v2/sensitivearea/?format=geojson
+e.g. https://biodiv-sports.fr/api/v2/sensitivearea/?format=geojson
 
    **Filtering data**
 
    Data can be filtered through these parameters:
 
-   - ``language`` : API language (see :envvar:`Commons parameters`)
+   - ``language`` : API language (see :ref:`Commons parameters <commons-parameters>`)
 
    - Expected values: ``fr``, ``en``, ``es`` or ``it``
    - e.g. ``/api/v2/sensitivearea/?language=fr``
@@ -187,7 +191,7 @@ This section focuses on some common parameters useful to work with sensitivity i
 
    - ``practices`` : Sport practices
 
-   - Expected values: List of practices ids (see :envvar:`Sport practices`)
+   - Expected values: List of practices ids (see :ref:`Sport practices <sport-practices>`)
    - e.g. ``/api/v2/sensitivearea/?practices=1,2``
 
    - ``structure`` : Organization that declared the sensitive area. 

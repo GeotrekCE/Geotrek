@@ -1,22 +1,18 @@
+.. _installation:
+
 ============
 Installation
 ============
 
-.. contents::
-   :local:
-   :depth: 2
-
-
 Ubuntu package
-~~~~~~~~~~~~~~
+==============
 
 Use these instructions to install Geotrek-admin in an easy way on a dedicated Ubuntu Focal Fossa 20.04 LTS server for production.
 For another distributions, please use :ref:`the Docker installation method <docker-section>`. It requires more technical skills.
 Lastly, for a developer instance, please follow :ref:`the dedicated procedure <development-section>`.
 
-
 Requirements
-------------
+=============
 
 Geotrek is mostly a CPU-bound application due to the complex queries including geometric operations (such as intersection)
 which are executed on the database. This is especially true in the setup with a Geotrek Rando v3 portal requesting
@@ -37,9 +33,8 @@ Software requirements are :
 
 An Internet connection with open HTTP and HTTPS destination ports is required.
 
-
 Information to prepare before installation
-------------------------------------------
+===========================================
 
 These information will be asked during the installation process and are the basic configuration of Geotrek-admin:
 
@@ -50,9 +45,8 @@ These information will be asked during the installation process and are the basi
 * The list of **languages** into which translation of contents will be made
 * The name or acronym of your **organization**
 
-
 Fresh installation
-------------------
+==================
 
 Run the following command in a shell prompt on your server:
 
@@ -70,9 +64,21 @@ Don't forget to enable PostGIS extension in your remote database before installa
 
 Then create the application administrator account and connect to the web interface.
 
-::
+.. md-tab-set::
+    :name: create-superuser-command-tabs
 
-   sudo geotrek createsuperuser
+    .. md-tab-item:: With Debian
+
+         .. code-block:: python
+
+          sudo geotrek createsuperuser
+
+    .. md-tab-item:: With Docker
+
+         .. code-block:: python
+    
+          docker compose run --rm web ./manage.py createsuperuser
+
 
 If you are not confident with the ``install.sh`` script, or if you are having troubles, you can do the same operations by hand:
 
@@ -91,9 +97,8 @@ If you are not confident with the ``install.sh`` script, or if you are having tr
 
     The Geotrek-admin Python application is located in ``/opt/geotrek-admin/lib/python3.6/site-packages/geotrek`` directory
 
-
 Extra steps
------------
+============
 
 We highly recommend installing an antivirus software to regularly scan uploaded files located under ``/opt/geotrek-admin/var/media/``.
 
@@ -109,7 +114,6 @@ Prepare quarantine folder for suspicious files :
 
    mkdir /var/lib/clamav/quarantine/
    chmod 700 /var/lib/clamav/quarantine/
-
 
 Configure ClamAV via cron, to scan the folder once a day, put suspicious files in quarantine, and raise email alerts, by creating file ``/etc/cron.daily/clamscan`` with the following content :
 
@@ -134,9 +138,8 @@ Make sure to change alert recepient (``admin@example.com`` above) and make this 
 
 If a suspicious file is put in quarantine, you will need to manually delete the corresponding attachment from Geotrek-Admin (since the file for this attachment has moved to the quarantine folder, it will no longer be found).
 
-
 Uninstallation
---------------
+===============
 
 Run:
 
@@ -160,22 +163,18 @@ To remove dependencies (convertit, screamshooter…), run:
 
     PostgreSQL and its database will not be removed by these commands. If need be, remove them manually.
 
-
-
 .. _docker-section:
 
 Docker
-~~~~~~
+=======
 
 Docker is an alternative installation method, recommended for experts only.
 It allows to install several instances of Geotrek-admin on the same serveur,
 and to install it on other distributions than Ubuntu Linux 18.04.
 
 
-1. Install Docker and Docker Compose, either from your distribution or from upstream packages
-   (cf. https://docs.docker.com/install/)
-2. Download the code from https://github.com/GeotrekCE/Geotrek-admin/releases
-   or checkout it with git from https://github.com/GeotrekCE/Geotrek-admin/
+1. Install Docker and Docker Compose, either from your distribution or `from upstream packages <https://docs.docker.com/install/>`_
+2. Download the code from `Geotrek-admin releases page <https://github.com/GeotrekCE/Geotrek-admin/releases>`_ or checkout it with git from `Geotrek-admin GitHub repository <https://github.com/GeotrekCE/Geotrek-admin/>`_
 3. Unzip the tarball
 4. Copy docker/install folder where you want
 5. Edit ``docker-compose.yml`` to feed your needs if necessary
@@ -186,11 +185,17 @@ and to install it on other distributions than Ubuntu Linux 18.04.
 10. Install NGINX (or equivalent) and add a configuration file (taking inspiration from `nginx.conf.in`)
 
 Management commands
--------------------
+====================
 
-Replace ``sudo geotrek …`` commands by ``cd <install directory>; docker compose run --rm web ./manage.py …``
+Replace ``sudo geotrek …`` commands by :
 
-Replace ``sudo dpkg-reconfigure geotrek-admin`` by ``cd <install directory>; docker compose run --rm web update.sh``
+1. ``cd <install directory>``
+2. ``docker compose run --rm web ./manage.py …``
+
+Replace ``sudo dpkg-reconfigure geotrek-admin`` by :
+
+1. ``cd <install directory>`` 
+2. ``docker compose run --rm web update.sh``
 
 To load minimal data and create an application superuser, run:
 
@@ -198,3 +203,7 @@ To load minimal data and create an application superuser, run:
 
    docker compose run --rm web load_data.sh
    docker compose run --rm web ./manage.py createsuperuser
+
+.. IMPORTANT::
+   Once your Geotrek is installed, you need to import :ref:`initial data <minimal-initial-data>`.
+

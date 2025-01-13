@@ -2,10 +2,6 @@
 Présentation générale
 =====================
 
-.. contents::
-   :local:
-   :depth: 2
-
 Architecture
 ============
 
@@ -30,7 +26,6 @@ Page d'authentification
 
    Accès à Geotrek-admin via un login et un mot de passe
 
-
 Les modules de Geotrek
 =======================
 
@@ -39,7 +34,7 @@ Geotrek-admin est composé de deux types de modules pour la gestion et la valori
 Modules de gestion
 -------------------
 
-.. list-table:: Modules de gestion
+.. list-table:: 
    :widths: 25 25 50
    :header-rows: 1
 
@@ -47,58 +42,71 @@ Modules de gestion
      - Module
      - Description
    * - .. figure:: ../images/user-manual/modules/troncons.png
-     - :ref:`Tronçon <les-troncons>`
+          :alt: Tronçon
+     - :ref:`Tronçon <les-troncons>` ✨
      - | C'est l’équivalent du réseau routier : ils constituent le support des tracés
        | des objets linéaires (itinéraires, statuts, interventions, aménagements...). 
        | Leur modification est relativement rare (fermeture d’un chemin, 
        | éboulement...).
    * - .. figure:: ../images/user-manual/modules/sentier.png
-     - :ref:`Sentier <les-sentiers>`
+          :alt: Sentier
+     - :ref:`Sentier <les-sentiers>` ✨
      - | Les itinéraires, non pas de randonnée, mais de gestion, correspondent au 
        | départ et à l'arrivée d'un sentier.
    * - .. figure:: ../images/user-manual/modules/statut.png
-     - :ref:`Statut <les-statuts>`
+          :alt: Statut
+     - :ref:`Statut <les-statuts>` ✨
      - | Gestion des organismes ayant la compétence sentiers,  
        | gestionnaires des travaux et de la signalétique.  
        | Type physique (route, piste, sente, etc.)
    * - .. figure:: ../images/user-manual/modules/amenagement.png
-     - :ref:`Aménagement <les-amenagements>`
+          :alt: Aménagement
+     - :ref:`Aménagement <les-amenagements>` 🗺️
      - | Décrit et localise les ouvrages, le mobilier, les équipements.
    * - .. figure:: ../images/user-manual/modules/signaletique.png
-     - :ref:`Signalétique <la-signaletique>`
+          :alt: Signalétique
+     - :ref:`Signalétique <la-signaletique>` 🗺️
      - | Reprend l'ensemble de la signalétique d'accueil, d'information et 
        | d'orientation à destination des randonneurs.
-       | Gestion des fichiers associés comme les BAT, les maquettes…
+       | Gestion des fichiers associés comme les BAT, les maquettes...
    * - .. figure:: ../images/user-manual/modules/intervention.png
-     - :ref:`Intervention <les-interventions>`
+          :alt: Intervention
+     - :ref:`Intervention <les-interventions>` 🗺️
      - | Répertorie les travaux liés à l'entretien courant des ouvrages,
        | l'entretien sur les sentiers, la mise en place et l'entretien 
        | de la signalétique, etc...
    * - .. figure:: ../images/user-manual/modules/chantier.png
+          :alt: Chantier
      - :ref:`Chantier <les-chantiers>`
      - | Correspond à des ensembles d'interventions. Cela permet d'avoir une 
        | approche globale de chantiers significatifs et des informations 
        | administratives associées.
 
+.. legend:: Légende
+
+      ✨ : Disponible uniquement en segmentation dynamique
+
+      🗺️ : Calcul reposant sur la segmentation dynamique lorsqu'elle est activée
+
 Modules de valorisation
 ------------------------
 
-.. list-table:: Modules de valorisation
-   :widths: 25 25 50
+.. list-table:: 
+   :widths: 25 25 50 
    :header-rows: 1
 
    * - Icône
      - Module
      - Description
    * - .. figure:: ../images/user-manual/modules/itineraire.png
-     - :ref:`Itinéraire <itineraires>`
+     - :ref:`Itinéraire <itineraires>` 🗺️
      - | Randonnées présentées au grand public : l’itinéraire est 
        | défini selon la géométrie des tronçons empruntés. L’ajout, 
        | la modification sont fréquents. La dé-publication est fortement
        | déconseillée pour le référencement et les passerelles 
        | avec d'autres outils.
    * - .. figure:: ../images/user-manual/modules/poi.png
-     - :ref:`Points d'intérêts (POI) <points-d-interets-poi>`
+     - :ref:`Points d'intérêts (POI) <points-d-interets-poi>` 🗺️
      - | Ponctuels à découvrir associés aux randonnées : en fonction 
        | de leur  emplacement, ils sont associés automatiquement aux 
        | randonnées. Leur catégorie détermine leur pictogramme (faune,  
@@ -123,7 +131,7 @@ Modules de valorisation
        | des Systèmes d'Informations Touristiques (SIT), qui permettent
        | d'alimenter automatiquement la base de données Geotrek. 
        | Celles-ci sont regroupées dans des catégories de type : 
-       | conférences, expositions, sorties…
+       | conférences, expositions, sorties...
    * - .. figure:: ../images/user-manual/modules/signalements.png
      - :ref:`Signalements <signalements>`
      - | Contient les problèmes remontés par les internautes, par 
@@ -132,7 +140,7 @@ Modules de valorisation
      - :ref:`Zones sensibles <zones-sensibles>`
      - | Module non activé par défaut permettant de saisir et de gérer  
        | des zones de sensibilité de la faune sauvage pour les afficher 
-       | sur Geotrek-rando ou les diffuser avec l'API de Geotrek-admin). 
+       | sur Geotrek-rando ou les diffuser avec l'API de Geotrek-admin).
    * - .. figure:: ../images/user-manual/modules/sitesoutdoor.png
      - :ref:`Sites outdoor <pleinenature>`
      - | Permet de définir des sites d'activités de pleine nature 
@@ -143,5 +151,12 @@ Modules de valorisation
        | renseignant des activités de pleine nature diverses (kayak, 
        | rafting, parapente, course d'orientation, voie d'escalade, 
        | parcours d'eau vive…etc.) 
+
+.. legend:: Légende
+
+      ✨ : Disponible uniquement en segmentation dynamique
+
+      🗺️ : Calcul reposant sur la segmentation dynamique lorsqu'elle est activée
+
 
 Chaque module est accessible depuis le bandeau vertical situé à gauche de l'écran.

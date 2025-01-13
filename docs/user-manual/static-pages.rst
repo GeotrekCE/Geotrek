@@ -2,15 +2,11 @@
 Pages statiques & menus
 =======================
 
-.. contents::
-   :local:
-   :depth: 2
-
 Les pages statiques sont les pages d'information et de contextualisation de votre portail web Geotrek-rando. Comme pourraient l'être les premières pages d'un topo-guide papier. Elles peuvent aussi être consultées dans votre application Geotrek-mobile.
 
 .. figure:: ../images/user-manual/flatpages-gtecrins.jpg
 
-    Exemple de page statique (https://www.grand-tour-ecrins.fr/information/1-Le-Grand-Tour-des-Ecrins)
+    `Exemple de page statique <https://www.grand-tour-ecrins.fr/information/1-Le-Grand-Tour-des-Ecrins>`_
 
 Les pages statiques permettent de fournir à l’internaute et futur randonneur des informations génériques : présentation de votre territoire, structures, partenaires, recommandations, informations pratiques, etc.
 
@@ -203,7 +199,9 @@ Comment procéder ?
 - remplacer l'ancien code avec le contenu nettoyé dans la fenêtre de l'outil *code*, valider
 - refaire la mise en forme
 
-Il existe beaucoup de service web pour nettoyer un contenu de ses balises HTML. Voici les deux premiers résultats provenant d'un moteur de recherche :
+.. seealso::
 
-- https://striphtml.com/
-- https://www.w3docs.com/tools/string-remove-tags
+    Il existe beaucoup de service web pour nettoyer un contenu de ses balises HTML. Voici les deux premiers résultats provenant d'un moteur de recherche :
+
+    - `Striphtml <https://striphtml.com/>`_
+    - `W3docs <https://www.w3docs.com/tools/string-remove-tags>`_

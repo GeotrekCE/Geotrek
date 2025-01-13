@@ -1,0 +1,13 @@
+/* Remove icon */
+.ns-only p.admonition-title::before,
+.ns-only-fr p.admonition-title::before,
+.ns-detail-fr p.admonition-title::before {
+  display: none;
+}
+
+/* Re-init padding since icon is not displayed anymore */
+.ns-only p.admonition-title,
+.ns-only-fr p.admonition-title,
+.ns-detail-fr p.admonition-title {
+  padding-left: .6rem !important;
+}

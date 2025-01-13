@@ -2,10 +2,6 @@
 Edition d'un objet
 ==================
 
-.. contents::
-   :local:
-   :depth: 2
-
 Les calculs géométriques sur les objets
 ========================================
 
@@ -24,12 +20,13 @@ Nous calculons le `dénivelé positif cumulé <https://fr.wikipedia.org/wiki/D%C
 Nous échantillonnons le DEM tous les 25m par défaut (voir paramètre ``ALTIMETRIC_PROFILE_PRECISION``),
 et nous ajoutons un peu de lissage pour éviter le bruit.
 
-Pour plus de détails :
+.. seealso::
 
-* `The smoothing explanation <https://github.com/GeotrekCE/Geotrek-admin/issues/840#issuecomment-30229813>`_
-* `The piece of code to compute positive and negative accumulations <https://github.com/GeotrekCE/Geotrek-admin/blob/v0.27.2/geotrek/altimetry/sql/00_utilities.sql#L113-L132>`_
-* `Draping lines with PostGIS <http://blog.mathieu-leplatre.info/drape-lines-on-a-dem-with-postgis.html>`_
-  (or `french version <http://makina-corpus.com/blog/metier/2013/draper-des-lignes-sur-un-mnt-avec-postgis>`_)
+	* `The smoothing explanation <https://github.com/GeotrekCE/Geotrek-admin/issues/840#issuecomment-30229813>`_
+
+	* `The piece of code to compute positive and negative accumulations <https://github.com/GeotrekCE/Geotrek-admin/blob/v0.27.2/geotrek/altimetry/sql/00_utilities.sql#L113-L132>`_
+
+	* `Draping lines with PostGIS <http://blog.mathieu-leplatre.info/drape-lines-on-a-dem-with-postgis.html>`_ (or `french version <http://makina-corpus.com/blog/metier/2013/draper-des-lignes-sur-un-mnt-avec-postgis>`_)
 
 Lien entre les POIs et les itinéraires
 ---------------------------------------
@@ -42,12 +39,14 @@ Un itinéraire repose sur un ou plusieurs tronçons, et certains POIs leur sont 
 
 .. note::
 
-    Il n'existe actuellement aucun moyen de contrôler manuellement l'association entre
-    randonnées et les POIs.
+	Il n'existe actuellement aucun moyen de contrôler manuellement l'association entre
+	randonnées et les POIs.
 
-Si le paramètre ``TREKKING_TOPOLOGY_ENABLED`` est défini sur ``False``, aucun tronçon n'est impliqué.
-Les POIs sont ainsi liés à des treks utilisant une intersection spatiale de base, avec une
-distance définie dans le paramètre ``TREK_POI_INTERSECTION_MARGIN`` (par défaut à 500 mètres).
+	Si le paramètre ``TREKKING_TOPOLOGY_ENABLED`` est défini sur ``False``, aucun tronçon n'est impliqué.
+	Les POIs sont ainsi liés à des treks utilisant une intersection spatiale de base, avec une
+	distance définie dans le paramètre ``TREK_POI_INTERSECTION_MARGIN`` (par défaut à 500 mètres).
+
+.. _segmentation-dynamique:
 
 Segmentation dynamique
 -----------------------
@@ -70,7 +69,7 @@ Chaque évènement dispose néanmoins d'une géométrie calculée à partir de l
 
 .. note::
 
-    Des vues SQL sont disponibles pour accéder aux objets de manière plus lisible et simplifiée (``v_interventions`` par exemple).
+	Des vues SQL sont disponibles pour accéder aux objets de manière plus lisible et simplifiée (``v_interventions`` par exemple).
 
 Snapping - Aimantage - Accrochage
 ----------------------------------
@@ -87,18 +86,23 @@ L'édition des objets s'effectue en 2D, et leur géométrie est “drapée” au
 Cette information est visible à travers le profil altimétrique pour les tronçons, les itinéraires et les autres objets linéaires.
 
 .. figure:: ../images/user-manual/altimetrie.png
-   :alt: Profil altimétrique d'un itinéraire
-   :align: center
 
-   Profil altimétrique d'un itinéraire
+.. seealso::
 
-Pour importer automatiquement un MNT, se référer à la section :ref:`Import DEM (altimetry) <import-dem-altimetry>`
+	Pour importer automatiquement un MNT, se référer à la section :ref:`Import DEM (altimetry) <import-dem-altimetry>`
 
 Attributs aditionnels sur les objets
 =====================================
 
-Fichiers liés
--------------
+* `Tutoriel - ajout de photos <http://youtu.be/n96O09284ao>`_ :
+
+.. image:: https://img.youtube.com/vi/n96O09284ao/maxresdefault.jpg
+    :alt: Ajout de photos
+    :target: https://img.youtube.com/vi/n96O09284ao
+
+
+Ajout de fichiers
+------------------
 
 Fichiers liés
 ~~~~~~~~~~~~~~
@@ -112,11 +116,7 @@ Les contenus saisis sont publiés automatiquement.
 
 Il est possible de limiter la gestion des fichiers liés à un groupe restreint d’utilisateurs.
 
-.. figure:: ../images/user-manual/fichiers-lies.png
-   :alt: Fenêtre d'ajout de fichiers
-   :align: center
-
-   Fenêtre d'ajout de fichiers
+.. image:: ../images/user-manual/fichiers-lies.png
 
 Représentation verticale : les vues HD
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -139,28 +139,18 @@ La vue HD est également associée à une localisation correspondant à l'emplac
 
 .. note::
 
-    Les vues HD ne sont disponibles que pour les modules Itinéraires, POIs et Outdoor.
+	Les vues HD ne sont disponibles que pour les modules Itinéraires, POIs et Outdoor.
 
 Photos accessibilité
 ---------------------
 
 Cet onglet permet d'ajouter des photos afin d'illustrer les informations liées à l'accessibilité des randonnées.
 
-.. figure:: ../images/user-manual/photos-accessibilite.png
-   :alt: Fenêtre d'ajout de photos liées à l'accessibilité
-   :align: center
-
-   Fenêtre d'ajout de photos liées à l'accessibilité
-
+.. image:: ../images/user-manual/photos-accessibilite.png
 
 Historique
 -----------
 
 Tous les objets créés dans Geotrek-admin possèdent un historique donnant des renseignement sur la date de l'évènement, l'utilisateur à l'origine de l'évènement et l'action réalisée (modification, ajout de fichier, etc.)
 
-.. figure:: ../images/user-manual/historique.png
-   :alt: Historique des modifications sur un objet
-   :align: center
-
-   Historique des modifications sur un objet
-
+.. image:: ../images/user-manual/historique.png

@@ -2,10 +2,6 @@
 Geotrek
 =======
 
-.. contents::
-   :local:
-   :depth: 2
-
 .. _qu-est-ce-que-geotrek:
 
 Qu'est ce que Geotrek ?
@@ -33,7 +29,7 @@ Les quatre briques
 La suite logicielle Geotrek dispose de quatre briques à la fois distincts et complémentaires :
 
 * :ref:`Geotrek-admin <qu-est-ce-que-geotrek>`: outil de gestion et de saisie de l’ensemble des informations, intégrant les données des Systèmes d’Informations Touristiques (SIT) et pouvant être connecté à votre SIG ou à des systèmes d’information transport
-* `Geotrek-rando <https://github.com/GeotrekCE/Geotrek-rando-v3/blob/main/docs/presentation-fr.md>`_ : site web, reprenant les informations saisies dans Geotrek-admin, à destination des internautes grand public
+* `Geotrek-rando <https://geotrek-rando-v3.readthedocs.io/stable/>`_ : site web, reprenant les informations saisies dans Geotrek-admin, à destination des internautes grand public
 * `Geotrek-mobile <https://github.com/GeotrekCE/Geotrek-mobile#geotrek-mobile>`_ : application mobile fonctionnant sous Android et iOS, reprenant des informations saisies dans Geotrek-admin et optimisées pour l’usage mobile (volume, impact sur la batterie, hors-ligne, géolocalisation…)
 * `Geotrek-rando-widget <https://geotrek-rando-widget.readthedocs.io/>`_ : nouveau composant web permettant de valoriser une offre de contenus touristiques et de randonnées auprès des usagers du territoire, en l'intégrant dans un site internet existant
 

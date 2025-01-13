@@ -2,48 +2,81 @@
 Configuration
 =============
 
-.. contents::
-   :local:
-   :depth: 2
-   
+.. _basic-configuration-update:
 
 Basic configuration update
---------------------------
+===========================
 
 To update basic configuration (server name, database connection, languages, or set workers number or timeout), run:
 
-.. code-block:: bash
+.. md-tab-set::
+    :name: update-configuration-tabs
 
-    sudo dpkg-reconfigure geotrek-admin
+    .. md-tab-item:: With Debian
+
+            .. code-block:: bash
+    
+                sudo dpkg-reconfigure geotrek-admin 
+
+    .. md-tab-item:: With Docker
+
+         .. code-block:: bash
+
+                docker compose run --rm web update.sh 
 
 The basic configuration is stored in ``/opt/geotrek-admin/var/conf/env`` file, not to be changed manually.
 This file also contains the PostgreSQL authentification details, if you need to access your Geotrek-admin database.
 
+.. _custom-setting-file:
 
 Custom setting file
--------------------
+====================
 
 Geotrek-admin advanced configuration is done in ``/opt/geotrek-admin/var/conf/custom.py`` file.
 
-The list of all overridable setting and default values can be found
-`there <https://github.com/GeotrekCE/Geotrek-admin/blob/master/geotrek/settings/base.py>`_.
+The list of all overridable setting and default values can be found at : 
+`geotrek/settings/base.py <https://github.com/GeotrekCE/Geotrek-admin/blob/master/geotrek/settings/base.py>`_.
 
 After any change in ``custom.py``, run:
 
-.. code-block:: bash
+.. md-tab-set::
+    :name: restart-service-tabs
 
-    sudo service geotrek restart
+    .. md-tab-item:: With Debian
+
+            .. code-block:: bash
+    
+                sudo service geotrek restart 
+
+    .. md-tab-item:: With Docker
+
+         .. code-block:: bash
+
+                docker compose down && up -d 
+
 
 Sometimes you also have to run:
 
-.. code-block:: bash
+.. md-tab-set::
+    :name: reconfigure-tabs
 
-    sudo dpkg-reconfigure -u geotrek-admin
+    .. md-tab-item:: With Debian
+
+            .. code-block:: bash
+    
+                sudo dpkg-reconfigure geotrek-admin 
+
+    .. md-tab-item:: With Docker
+
+         .. code-block:: bash
+
+                docker compose run --rm web update.sh 
 
 .. note::
 
     Don't override the ``os.getenv()`` settings as they are managed with Basic configuration.
 
+.. _nginx-configuration:
 
 NGINX configuration
 -------------------
@@ -52,13 +85,25 @@ NGINX configuration is controlled by Geotrek-admin and will be erased at each up
 Do not modify ``/etc/nginx/sites-available/geotrek.conf`` or ``/etc/nginx/sites-enable/geotrek.conf``.
 Modify ``/opt/geotrek-admin/var/conf/nginx.conf.in`` instead. To update ``nginx.conf``, then run:
 
-.. code-block:: bash
+.. md-tab-set::
+    :name: reconfigure-ngninx-tabs
 
-    sudo dpkg-reconfigure geotrek-admin
+    .. md-tab-item:: With Debian
+    
+            .. code-block:: bash
+    
+                sudo dpkg-reconfigure geotrek-admin 
 
+    .. md-tab-item:: With Docker
+
+         .. code-block:: bash
+
+                docker compose run --rm web update.sh 
+
+.. _activate-ssl-https:
 
 Activate SSL / HTTPS
---------------------
+=====================
 
 To activate https, you need firstly to change ``custom.py`` and add:
 
@@ -75,16 +120,17 @@ But you will have to move the configuration automatically added into ``nginx.con
 
 You have to move the configuration to the file ``nginx.conf.in`` because ``nginx.conf`` is automatically changed during command ``dpkg-reconfigure geotrek-admin``.
 
-.. note::
+.. warning::
 
     You need to replace the ``$`` from Certbot with ``${DOLLAR}`` everywhere in the ``nginx.conf.in`` file, then run the command ``sudo dpkg-reconfigure geotrek-admin`` to regenerate the file.
 
+.. _mandatory-settings:
 
 Mandatory settings
-------------------
+==================
 
 Spatial reference identifier
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------
 
 .. code-block:: python
 
@@ -99,7 +145,7 @@ Spatial reference identifier of your database. Default 2154 is RGF93 / Lambert-9
 .. _default-structure:
 
 Default Structure
-~~~~~~~~~~~~~~~~~
+----------------------------
 
 .. code-block:: python
 
@@ -114,9 +160,10 @@ Name for your default structure.
    * *Change in the settings*
    * *Re-run the server.*
 
+.. _configuration-dynamic-segmentation:
 
 Dynamic segmentation
-~~~~~~~~~~~~~~~~~~~~
+----------------------
 
 .. code-block:: python
 
@@ -124,7 +171,7 @@ Dynamic segmentation
 
 Use dynamic segmentation or not.
 
-`Dynamic segmentation <https://geotrek.readthedocs.io/en/latest/usage/editing-objects.html#segmentation-dynamique>`_ is used by default when installing Geotrek-admin.
+:ref:`Dynamic segmentation <segmentation-dynamique>` is used by default when installing Geotrek-admin.
 
 With this mode, linear objects are built and stored related to paths.
 
@@ -134,9 +181,8 @@ So if you want to use Geotrek-admin without dynamic segmentation, set TREKKING_T
 
 Do not change it again to true after setting it to false.
 
-
 Translations
-~~~~~~~~~~~~
+-------------
 
 .. code-block:: python
 
@@ -152,11 +198,13 @@ Languages of your project. It will be used to generate fields for translations. 
 
 *You won't be able to change it easily, avoid to add any languages and do not remove any.*
 
+.. note::
+  It is preferable, when in doubt, to include all necessary languages during the initial installation, even if some remain unused afterward, rather than missing some and facing complications to add them later.
 
 Spatial extents
-~~~~~~~~~~~~~~~
+----------------
 
-Boundingbox of your project : x minimum , y minimum , x max, y max::
+Bounding box of your project : x minimum , y minimum , x max, y max::
 
         4 ^
           |
@@ -170,25 +218,28 @@ Default values::
 
     SPATIAL_EXTENT = (105000, 6150000, 1100000, 7150000)
 
-*If you extend spatial extent, don't forget to load a new DEM that covers all the zone.*
-*If you shrink spatial extent, be sure there is no element in the removed zone or you will no more be able to see and edit it.*
+.. warning::
+  * If you extend spatial extent, don't forget to load a new DEM that covers all the zone.
+  * If you shrink spatial extent, be sure there is no element in the removed zone or you will no more be able to see and edit it.
 
 In order to check your configuration of spatial extents, a small tool
-is available at ``http://<server_url>/tools/extents/``.
+is available at ``https://<server_url>/tools/extents/``. Administrator privileges are required.
 
-.. note::
+.. image:: /images/installation-and-configuration/toolextent.jpg
+   :align: center
+   :alt: Interface de Tool extents
 
-    Administrator privileges are required.
-
+.. _users-management:
 
 Users management
-----------------
+==================
 
-See :ref:`user management section in usage <user-management-section>`.
+See :ref:`User management section in usage <user-management-section>`.
 
+.. _database-users:
 
 Database users
---------------
+===============
 
 It is not safe to use the ``geotrek`` user in QGIS, or to give its password to
 many collaborators.
@@ -198,7 +249,6 @@ A wise approach, is to create a *read-only* user, or with specific permissions.
 With *pgAdmin*, you can create database users like this:
 
 ::
-
 
     CREATE ROLE lecteur LOGIN;
     ALTER USER lecteur PASSWORD 'passfacile';
@@ -213,6 +263,6 @@ And give them permissions by schema :
     GRANT SELECT ON ALL TABLES IN SCHEMA public TO lecteur;
     GRANT SELECT ON ALL TABLES IN SCHEMA geotrek TO lecteur;
 
+You can also create groups, etc. See `PostgreSQL documentation <https://www.postgresql.org/docs/>`_.
 
-You can also create groups, etc. See PostgreSQL documentation.
 

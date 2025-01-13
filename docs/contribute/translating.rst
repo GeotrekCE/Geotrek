@@ -1,20 +1,18 @@
+.. _translating-geotrek:
+
 ============
 Translating
 ============
 
-.. contents::
-   :local:
-   :depth: 2
-
 Geotrek-admin can be translated online on
 `Makina Corpus Weblate instance <https://weblate.makina-corpus.net/projects/geotrek-admin/>`_
 
+.. important::
+
+  Translating work needs to be synchronized with Geotrek-admin. If you intend to use `Weblate <https://weblate.makina-corpus.net/projects/geotrek-admin/>`_, please inform us by creating a ticket or sending us an email (page contact geotrek.fr).
+
 Getting started
 ---------------
-
--  Create an account
--  Browse by project
--  Browse by language
 
 Create an account
 ~~~~~~~~~~~~~~~~~
@@ -118,5 +116,5 @@ Add translations to next release
 
 2. After releasing, in **Weblate**, rebase the branch:
 
-    - In the component, click "Manage > Repository maintenance"
-    - Click "Rebase" to rebase `translations` branch onto `master`
+  - In the component, click "Manage > Repository maintenance"
+  - Click "Rebase" to rebase `translations` branch onto `master`

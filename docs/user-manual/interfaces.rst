@@ -2,14 +2,17 @@
 Interface, navigation et saisie
 =======================================
 
-.. contents::
-   :local:
-   :depth: 2
-
 Navigation et saisie
 ====================
 
-Les résultats sont affichés sous forme de carte et liste puis on accède aux détails des objets.
+Les résultats sont affichés sous forme de carte et liste, puis on accède aux détails des objets.
+
+`Présentation de l'interface <http://youtu.be/-iVe9cwBZ50>`_ :
+
+.. image:: https://img.youtube.com/vi/-iVe9cwBZ50/maxresdefault.jpg
+    :alt: Présentation de l'interface
+    :target: https://www.youtube.com/watch?v=-iVe9cwBZ50
+
 
 Vue liste
 ---------
@@ -19,7 +22,7 @@ Tous les modules sont construits de la même façon :
 * une liste paginée des objets du module
 * la possibilité de filtrer la liste selon des attributs ou de faire une recherche libre
 * la possibilité de filtrer selon l'étendue de la carte
-* la sélection coordonnée (liste → carte, carte → liste)
+* la sélection coordonnée (liste ⇔ carte)
 * la possibilité d'exporter les résultats au format CSV, SHAPEFILE et en GPX
 * une carte dans laquelle il est possible de naviguer (déplacer, zoomer), d'afficher en plein écran, de mesurer une longueur, d'exporter une image de la carte, de réinitialiser l'étendue, de zoomer sur une commune ou un secteur et de superposer des données des autres modules (contours communes / secteurs / physique / foncier / gestionnaires…)
 * l'accès à la vue détail d'un objet au clic sur celui-ci
@@ -83,10 +86,29 @@ Vue édition
 
    Fiche détail d'un itinéraire en édition
 
+* `Tutoriel - création d'un itinéraire <http://youtu.be/d37WixqDs6c>`_ :
+
+.. image:: https://img.youtube.com/vi/d37WixqDs6c/maxresdefault.jpg
+    :alt: Création d'un itinéraire
+    :target: https://www.youtube.com/watch?v=d37WixqDs6c
+
+* `Tutoriel - création d'un POI <http://youtu.be/PRY8y7y8WxM>`_ :
+
+.. image:: https://img.youtube.com/vi/PRY8y7y8WxM/maxresdefault.jpg
+    :alt: Création d'un POI
+    :target: https://www.youtube.com/watch?v=PRY8y7y8WxM
+
 Paramètres de configuration
 ============================
 
 Toutes les listes de choix (thématiques, pratiques, parcours…) sont administrables depuis le module de configuration, selon les droits dont dispose l’utilisateur connecté.
+
+* `Présentation de l'administration <http://youtu.be/P106bQCRZKk>`_ :
+
+.. image:: https://img.youtube.com/vi/P106bQCRZKk/maxresdefault.jpg
+    :alt: Administration
+    :target: https://www.youtube.com/watch?v=P106bQCRZKk
+
 
 .. figure:: ../images/admin/interface-django.png
    :alt: Interface complète du module de configuration
@@ -100,4 +122,7 @@ Toutes les listes de choix (thématiques, pratiques, parcours…) sont administr
 
    Exemple d’édition des pratiques et de leur pictogramme
 
-Voir la section :ref:`Paramétrage des modules <parametrages-des-modules>`
+.. seealso::
+    Voir la section :ref:`Paramétrage des modules <parametrages-des-modules>`
+
+

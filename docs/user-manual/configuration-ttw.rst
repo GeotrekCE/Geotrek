@@ -2,11 +2,6 @@
 Paramétrage
 ===========
 
-.. contents::
-   :local:
-   :depth: 2
-
-
 Accès interface de configuration
 =================================
 
@@ -143,7 +138,7 @@ sous-types et leur nom.
 Gestion des utilisateurs
 ========================
 
-Geotrek-admin s'appuie sur le `système d'authentification et de permissions Django <https://docs.djangoproject.com/en/4.2/topics/auth/default>`_ .
+Geotrek-admin s'appuie sur le `système d'authentification et de permissions Django <https://docs.djangoproject.com/en/4.2/topics/auth/default>`_.
 
 Les utilisateurs appartiennent à des groupes et les permissions peuvent être attribuées au niveau de l'utilisateur ou du groupe.
 
@@ -169,7 +164,7 @@ L’application permet de définir des rôles disposant chacun de certains droit
   - agents techniques
   - prestataires externes
   - administrateurs de l’application
-  - …
+  - etc.
 
 À chaque rôle est associé un ensemble de permissions (consulter telle donnée, la modifier…) qui peuvent être attribuées à un document ou à une catégorie.
 Les utilisateurs sont ensuite associés à un ou plusieurs rôles.
@@ -181,7 +176,7 @@ Un utilisateur donné peut avoir trois niveaux permissions basiques :
 .. note::
   Il est préférable de désactiver un compte lorsqu’un utilisateur n’intervient plus sur Geotrek, plutôt que de le supprimer. En effet supprimer le compte supprimera également par exemple toutes les entrées dans l’historique de Geotrek associées à ce compte.
 
-- **Équipe** : si la case est cochée l’utilisateur pourra accéder au module de configuration de Geotrek-Admin
+- **Équipe** : si la case est cochée l’utilisateur pourra accéder au module de configuration de Geotrek-admin
 
 - **Super-utilisateur** : permet d’octroyer toutes les permissions à un utilisateur sans avoir à les définir explicitement
 
@@ -263,7 +258,7 @@ Cette notion de structures permet de segmenter les périmètres d’action des u
 
     - celui-ci possède la permission « Can bypass structure », qui permet d’outrepasser la restriction des structures.
 
-Pour définir la structure par défaut, se référer à la section :ref:`Default structure <default-structure>`
+Pour définir la structure par défaut, se référer à la section :ref:`Default structure <default-structure>`.
 
 Gestion multilingue
 ===================
@@ -309,7 +304,7 @@ Il convient ensuite de configurer chaque flux dans Geotrek-Admin afin que ceux-c
 La fonctionnalité consiste à absorber le flux XML, afin de le remettre à disposition sous une forme optimisée et épurée. Les données sont alors exposées sous la forme d’une web API, au format GeoJSON.
 L’obtention d’un flux de données GeoJSON (agnostique et standard) présente de nombreux avantages pour l’intégration dans les applications tierces. Ce format est compatible nativement avec Rando V3, mais également avec la plupart des bibliothèques de cartographie (web et natives mobile).
 
-Pour configurer l'import de SIT, référez vous à cette section :ref:`Import data from touristic data systems (SIT) <import-data-from-touristic-data-systems-sit>`
+Pour configurer l'import de SIT, référez vous à cette section :ref:`Import from touristic data systems <import-from-touristic-data-systems>`.
 
 Intégration des fonds de cartes
 ===============================
@@ -320,7 +315,7 @@ Il est possible d'intégrer dans Geotrek différents fonds de carte comme :
 * `OpenTopoMap  <https://opentopomap.org/#map=6.49.000/10.000>`_
 * `ou les données IGN  <https://geoservices.ign.fr/services-geoplateforme-diffusion>`_
 
-Pour configurer l'ajout de fonds de plan, référez vous à cette section :ref:`Map settings <map-settings>`
+Pour configurer l'ajout de fonds de plan, référez vous à cette section :ref:`Map settings <map-settings>`.
 
 Intégration de pictogrammes
 ===========================
@@ -337,7 +332,7 @@ Il doivent :
   marge si nécessaire.
 * Avoir une dimension minimale de 56x56 pixels en ce qui concerne les PNG
 
-Si vous utilisez Inkscape, vous devez définir une viewBox. Voir `la documentation d'Inkscape <http://wiki.inkscape.org/wiki/index.php/Tricks_and_tips#Scaling_images_to_fit_in_webpages.2FHTML>`_ 
+Si vous utilisez Inkscape, vous devez définir une viewBox. Voir `la documentation d'Inkscape <http://wiki.inkscape.org/wiki/index.php/Tricks_and_tips#Scaling_images_to_fit_in_webpages.2FHTML>`_.
 
 Afin de s'intégrer au mieux dans le design standard, les couleurs suivantes sont recommandées :
 
