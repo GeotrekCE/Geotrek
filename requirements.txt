@@ -294,7 +294,7 @@ pyopenair==1.2.1
     # via geotrek (setup.py)
 pypdf2==1.27.5
     # via pdfimpose
-pyphen==0.11.0
+pyphen==0.16.0
     # via weasyprint
 python-dateutil==2.9.0.post0
     # via celery
