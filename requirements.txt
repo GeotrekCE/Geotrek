@@ -148,7 +148,7 @@ django-filter==24.3
     # via mapentity
 django-js-asset==2.2.0
     # via django-mptt
-django-large-image==0.8.1
+django-large-image==0.10.0
     # via geotrek (setup.py)
 django-leaflet==0.19.post11
     # via mapentity
