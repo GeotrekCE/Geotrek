@@ -47,7 +47,7 @@ lxml==4.9.3
     #   -r dev-requirements.in
 mccabe==0.7.0
     # via flake8
-packaging==24.0
+packaging==24.2
     # via
     #   -c requirements.txt
     #   build
